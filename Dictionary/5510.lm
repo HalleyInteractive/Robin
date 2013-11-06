@@ -1,0 +1,85 @@
+Language model created by QuickLM on Wed Nov  6 01:06:34 EST 2013
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 9 sentences and 17 words
+
+\data\
+ngram 1=17
+ngram 2=26
+ngram 3=19
+
+\1-grams:
+-0.9488 </s> -0.3010
+-0.9488 <s> -0.2492
+-1.9031 BYE -0.2492
+-1.9031 DANKJEWEL -0.2492
+-1.6021 DATUM -0.2240
+-1.6021 DE -0.2844
+-1.9031 GOEDEMORGEN -0.2492
+-1.9031 HALLO -0.2492
+-1.6021 HET -0.2492
+-1.9031 HOE -0.2956
+-1.3010 IS -0.2788
+-1.9031 LAAT -0.2788
+-1.9031 TIJD -0.2492
+-1.9031 TOT -0.2956
+-1.6021 WAT -0.2788
+-1.9031 WELKE -0.2900
+-1.9031 ZIENS -0.2492
+
+\2-grams:
+-1.2553 <s> BYE 0.0000
+-1.2553 <s> DANKJEWEL 0.0000
+-1.2553 <s> GOEDEMORGEN 0.0000
+-1.2553 <s> HALLO 0.0000
+-1.2553 <s> HOE 0.0000
+-1.2553 <s> TOT 0.0000
+-0.9542 <s> WAT 0.0000
+-1.2553 <s> WELKE 0.0000
+-0.3010 BYE </s> -0.3010
+-0.3010 DANKJEWEL </s> -0.3010
+-0.6021 DATUM </s> -0.3010
+-0.6021 DATUM IS -0.1761
+-0.6021 DE DATUM -0.1761
+-0.6021 DE TIJD 0.0000
+-0.3010 GOEDEMORGEN </s> -0.3010
+-0.3010 HALLO </s> -0.3010
+-0.3010 HET </s> -0.3010
+-0.3010 HOE LAAT 0.0000
+-0.6021 IS DE 0.0000
+-0.6021 IS HET 0.0000
+-0.3010 LAAT IS -0.1761
+-0.3010 TIJD </s> -0.3010
+-0.3010 TOT ZIENS 0.0000
+-0.3010 WAT IS -0.1761
+-0.3010 WELKE DATUM -0.1761
+-0.3010 ZIENS </s> -0.3010
+
+\3-grams:
+-0.3010 <s> BYE </s>
+-0.3010 <s> DANKJEWEL </s>
+-0.3010 <s> GOEDEMORGEN </s>
+-0.3010 <s> HALLO </s>
+-0.3010 <s> HOE LAAT
+-0.3010 <s> TOT ZIENS
+-0.3010 <s> WAT IS
+-0.3010 <s> WELKE DATUM
+-0.3010 DATUM IS HET
+-0.3010 DE DATUM </s>
+-0.3010 DE TIJD </s>
+-0.3010 HOE LAAT IS
+-0.6021 IS DE DATUM
+-0.6021 IS DE TIJD
+-0.3010 IS HET </s>
+-0.3010 LAAT IS HET
+-0.3010 TOT ZIENS </s>
+-0.3010 WAT IS DE
+-0.3010 WELKE DATUM IS
+
+\end\

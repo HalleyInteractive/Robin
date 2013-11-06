@@ -1,0 +1,13 @@
+{
+  "name": "Robin",
+  "version": "0.0.1",
+  "description": "Run a robot with voice recognition, face recognition and more",
+  "main": "Robin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Niels Overwijn",
+  "license": "BSD",
+  "readmeFilename": "README"
+}
