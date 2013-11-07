@@ -8,6 +8,9 @@
   },
   "repository": "",
   "author": "Niels Overwijn",
-  "license": "BSD",
-  "readmeFilename": "README"
+  "readmeFilename": "README",
+  "devDependencies": {
+    "pi-gpio": "0.0.2",
+    "dateformat": "~1.0.6-1.2.3"
+  }
 }
