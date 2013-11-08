@@ -16,4 +16,5 @@ exports.commands =
 	{command:"THANK YOU ROBIN", callback:polite},
 	{command:"THANKS", callback:polite},
 	{command:"THANKS ROBIN", callback:polite},
+	{command:"MANY THANKS", callback:polite}
 ];
