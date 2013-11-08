@@ -28,6 +28,21 @@ for(var plugin in plugins)
 	plugins[plugin].robin = Robin;
 }
 
+
+/** Create a corpus file **/
+var fs = require('fs');
+var stream = fs.createWriteStream("Dictionary/corpus");
+stream.once('open', function(fd)
+{
+	for(var i = 0; i < registeredCommands.length; i++)
+	{
+  		stream.write(registeredCommands[i].command.toUpperCase() + "\n");
+	}
+  stream.end();
+});
+
+/** **/
+
 function runCommand(cmd)
 {
 
