@@ -1,11 +1,9 @@
-#!/usr/bin/env node
+/* globals require */
 
 var ears = require('./RobinEars.js');
 var mouth = require('./RobinMouth.js');
 
-// TODO: Let Robin write all it's registered commands to the corpus file for compiling
-
-ears.cmd = function (cmd) { runCommand(cmd); }
+ears.cmd = function (cmd) { runCommand(cmd); };
 
 var Robin =
 {
@@ -18,7 +16,8 @@ var plugins =
 {
 	polite: require('./plugins/polite'),
 	timedate: require('./plugins/timedate'),
-	repeat: require('./plugins/repeat')
+	repeat: require('./plugins/repeat'),
+	jokes: require('./plugins/jokes')
 };
 
 for(var plugin in plugins)
@@ -32,16 +31,14 @@ for(var plugin in plugins)
 /** Create a corpus file **/
 var fs = require('fs');
 var stream = fs.createWriteStream("Dictionary/corpus");
-stream.once('open', function(fd)
+stream.once('open', function()
 {
 	for(var i = 0; i < registeredCommands.length; i++)
 	{
-  		stream.write(registeredCommands[i].command.toUpperCase() + "\n");
+		stream.write(registeredCommands[i].command.toUpperCase() + "\n");
 	}
-  stream.end();
+	stream.end();
 });
-
-/** **/
 
 function runCommand(cmd)
 {
