@@ -9,6 +9,9 @@
 <s> WHAT DATE IS IT </s>
 <s> WHAT IS THE DATE </s>
 <s> WHICH DATE IS IT </s>
+<s> CAN YOU TELL ME THE TIME </s>
+<s> DO YOU KNOW WHAT TIME IT IS </s>
+<s> DO YOU KNOW THE TIME </s>
 <s> SORRY </s>
 <s> AGAIN </s>
 <s> SORRY WHAT </s>
@@ -18,4 +21,17 @@
 <s> DO YOU KNOW A GOOD ONE </s>
 <s> WHO IS CHUCK NORRIS </s>
 <s> CHUCK NORRIS </s>
+<s> YOU TELL ME A JOKE </s>
 <s> TELL ME A JOKE </s>
+<s> DO TELL ME A JOKE </s>
+<s> DO YOU TELL ME A JOKE </s>
+<s> HI </s>
+<s> HELLO ROBIN </s>
+<s> HELLO </s>
+<s> GOODBYE </s>
+<s> GOODBYE ROBIN </s>
+<s> GOOD EVENING </s>
+<s> GOOD MORNING </s>
+<s> GOOD DAY </s>
+<s> SEE YOU </s>
+<s> BYE </s>
