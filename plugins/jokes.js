@@ -27,5 +27,7 @@ exports.commands =
 	{command:"WHO IS CHUCK NORRIS", callback:joke},
 	{command:"CHUCK NORRIS", callback:joke},
 	{command:"YOU TELL ME A JOKE", callback:joke},
-	{command:"TELL ME A JOKE", callback:joke}
+	{command:"TELL ME A JOKE", callback:joke},
+	{command:"DO TELL ME A JOKE", callback:joke},
+	{command:"DO YOU TELL ME A JOKE", callback:joke}
 ];
