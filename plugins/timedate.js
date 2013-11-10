@@ -22,7 +22,7 @@ exports.commands =
 	{command:"WHAT DATE IS IT", callback:date},
 	{command:"WHAT IS THE DATE", callback:date},
 	{command:"WHICH DATE IS IT", callback:date},
-	{command:"CAN YOU TELL ME THE TIME", callback:date},
-	{command:"DO YOU KNOW WHAT TIME IT IS", callback:date},
-	{command:"DO YOU KNOW THE TIME", callback:date}
+	{command:"CAN YOU TELL ME THE TIME", callback:time},
+	{command:"DO YOU KNOW WHAT TIME IT IS", callback:time},
+	{command:"DO YOU KNOW THE TIME", callback:time}
 ];
