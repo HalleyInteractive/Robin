@@ -5,6 +5,8 @@ var mouth = require('./RobinMouth.js');
 
 ears.cmd = function (cmd) { runCommand(cmd); };
 
+// TODO: Let plugins receive all next input on request.
+
 var Robin =
 {
 	name: "Robin",
@@ -17,7 +19,8 @@ var plugins =
 	polite: require('./plugins/polite'),
 	timedate: require('./plugins/timedate'),
 	repeat: require('./plugins/repeat'),
-	jokes: require('./plugins/jokes')
+	jokes: require('./plugins/jokes'),
+	hello: require('./plugins/hello')
 };
 
 for(var plugin in plugins)
