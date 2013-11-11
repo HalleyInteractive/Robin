@@ -1,7 +1,10 @@
 function repeat(cmd)
 {
 	console.log("Running the repeat callback");
-	exports.robin.lastCommand.callback(exports.robin.lastCommand.command);
+	if(exports.robin.lastCommand.command !== null && exports.robin.lastCommand.command !== undefined)
+	{
+		exports.robin.lastCommand.callback(exports.robin.lastCommand.command);
+	}
 }
 
 exports.commands =
