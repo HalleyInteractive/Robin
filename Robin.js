@@ -9,8 +9,6 @@ ears.extendedcmd = function (cmd) { runExtendedCommand(cmd); };
 ears.robin = config.robin;
 ears.stt_basic_start();
 
-
-
 mouth.robin = config.robin;
 
 // TODO: Check if it's needed to start redis?
@@ -35,12 +33,35 @@ var plugins =
 
 for(var plugin in plugins)
 {
-	if(plugins[plugin].basicCommands !== undefined) { registeredBasicCommands = registeredBasicCommands.concat(plugins[plugin].basicCommands); }
-	if(plugins[plugin].extendedCommands !== undefined) { registeredExtendedCommands = registeredExtendedCommands.concat(plugins[plugin].extendedCommands); }
+	for(var language in plugins[plugin].basicCommands)
+	{
+		if(!registeredBasicCommands[language]){ registeredBasicCommands[language] = new Array(); }
+		registeredBasicCommands[language] = registeredBasicCommands[language].concat(plugins[plugin].basicCommands[language]);
+	}
+
+	for(var language in plugins[plugin].extendedCommands)
+	{
+		if(!registeredExtendedCommands[language]){ registeredExtendedCommands[language] = new Array(); }
+		registeredExtendedCommands[language] = registeredExtendedCommands[language].concat(plugins[plugin].extendedCommands[language]);
+	}
+
 	plugins[plugin].say = mouth.say;
 	plugins[plugin].robin = config.robin;
 	plugins[plugin].ears = ears;
 }
+
+function listenForExtendedCommand(cmd)
+{
+	mouth.say("yes");
+	ears.stt_basic_stop();
+	ears.stt_extended_start();
+}
+
+for(var language in registeredBasicCommands)
+{
+	registeredBasicCommands[language] = registeredBasicCommands[language].concat([{command:config.robin.name.toUpperCase(), callback:listenForExtendedCommand}]);
+}
+
 
 /** Create a corpus file **/
 var fs = require('fs');
@@ -52,9 +73,9 @@ stream.once('open', function()
 		stream.write(words[w] + "\n");
 	}
 
-	for(var i = 0; i < registeredBasicCommands.length; i++)
+	for(var i = 0; i < registeredBasicCommands[config.robin.language].length; i++)
 	{
-		var command = registeredBasicCommands[i].command.replace(/[^A-Za-z0-9_\s]/g, "");
+		var command = registeredBasicCommands[config.robin.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
 		stream.write(command + "\n");
 	}
 
@@ -63,29 +84,29 @@ stream.once('open', function()
 
 function runBasicCommand(cmd)
 {
-	for(var i = 0; i < registeredBasicCommands.length; i++)
+	for(var i = 0; i < registeredBasicCommands[config.robin.language].length; i++)
 	{
-		var match = cmd.match(registeredBasicCommands[i].command);
+		var match = cmd.match(registeredBasicCommands[config.robin.language][i].command);
 		if(match)
 		{
 			console.log("Found a registered command");
-			registeredBasicCommands[i].callback(match);
+			registeredBasicCommands[config.robin.language][i].callback(match);
 		}
 	}
 }
 
 function runExtendedCommand(cmd)
 {
-	for(var i = 0; i < registeredExtendedCommands.length; i++)
+	for(var i = 0; i < registeredExtendedCommands[config.robin.language].length; i++)
 	{
-		var match = cmd.match(registeredExtendedCommands[i].command);
+		var match = cmd.match(registeredExtendedCommands[config.robin.language][i].command);
 		if(match)
 		{
 			console.log("Found a extended registered command");
-			registeredExtendedCommands[i].callback(match);
-			if(registeredExtendedCommands[i].save !== false)
+			registeredExtendedCommands[config.robin.language][i].callback(match);
+			if(registeredExtendedCommands[config.robin.language][i].save !== false)
 			{
-				config.lastCommand = registeredExtendedCommands[i];
+				config.lastCommand = registeredExtendedCommands[config.robin.language][i];
 			}
 		}
 		//TODO: When nothing is found, let down
