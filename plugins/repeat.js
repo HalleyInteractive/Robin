@@ -7,7 +7,7 @@ function repeat(cmd)
 	}
 }
 
-exports.commands =
+exports.extendedCommand =
 [
 	{command:"SORRY", callback:repeat, save: false},
 	{command:"AGAIN", callback:repeat, save: false},
