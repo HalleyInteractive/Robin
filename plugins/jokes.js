@@ -19,7 +19,8 @@ function joke()
 	});
 }
 
-exports.extendedCommands =
+exports.extendedCommands = new Array();
+exports.extendedCommands['en-US'] =
 [
 	{command:"KNOW A JOKE", callback:joke},
 	{command:"KNOW A GOOD ONE", callback:joke},

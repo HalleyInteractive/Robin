@@ -7,7 +7,8 @@ function repeat(cmd)
 	}
 }
 
-exports.basicCommands =
+exports.basicCommands = new Array();
+exports.basicCommands['en-US'] =
 [
 	{command:"SORRY", callback:repeat, save: false},
 	{command:"AGAIN", callback:repeat, save: false},

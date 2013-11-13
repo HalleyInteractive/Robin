@@ -13,8 +13,8 @@ function date(cmd)
 	var now = new Date();
 	exports.say("Today is " + dateFormat(now, "fullDate"));
 }
-
-exports.extendedCommands =
+exports.extendedCommands = new Array();
+exports.extendedCommands['en-US'] =
 [
 	{command:"WHAT TIME IS IT", callback:time},
 	{command:"WHAT IS THE TIME", callback:time},
