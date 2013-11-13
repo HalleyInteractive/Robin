@@ -26,12 +26,10 @@ function goodbye(cmd)
 	}
 }
 
-exports.commands =
+exports.basicCommands =
 [
-	{command:"HELLO ROBIN", callback:hello},
 	{command:"HELLO", callback:hello},
 	{command:"GOODBYE", callback:goodbye},
-	{command:"GOODBYE ROBIN", callback:goodbye},
 	{command:"GOOD EVENING", callback:hello},
 	{command:"GOOD MORNING", callback:hello},
 	{command:"GOOD DAY", callback:hello},
