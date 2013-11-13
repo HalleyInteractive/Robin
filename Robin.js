@@ -3,7 +3,9 @@
 var ears = require('./RobinEars.js');
 var mouth = require('./RobinMouth.js');
 
-ears.cmd = function (cmd) { runCommand(cmd); };
+ears.basiccmd = function (cmd) { runBasicCommand(cmd); };
+ears.extendedcmd = function (cmd) { runExtendedCommand(cmd); };
+ears.stt_basic_start();
 
 // TODO: Let plugins receive all next input on request.
 
@@ -13,49 +15,72 @@ var Robin =
 	lastCommand:{}
 };
 
-var registeredCommands = [];
+var words = [];
+
+var registeredBasicCommands = [];
+var registeredExtendedCommands = [];
 var plugins =
 {
 	polite: require('./plugins/polite'),
 	timedate: require('./plugins/timedate'),
 	repeat: require('./plugins/repeat'),
 	jokes: require('./plugins/jokes'),
-	hello: require('./plugins/hello')
+	hello: require('./plugins/hello'),
+	calculate: require('./plugins/calculate'),
 };
 
 for(var plugin in plugins)
 {
-	registeredCommands = registeredCommands.concat(plugins[plugin].commands);
+	if(plugins[plugin].basicCommands !== undefined) { registeredBasicCommands = registeredBasicCommands.concat(plugins[plugin].basicCommands); }
+	if(plugins[plugin].extendedCommands !== undefined) { registeredExtendedCommands = registeredExtendedCommands.concat(plugins[plugin].extendedCommands); }
 	plugins[plugin].say = mouth.say;
 	plugins[plugin].robin = Robin;
 }
-
 
 /** Create a corpus file **/
 var fs = require('fs');
 var stream = fs.createWriteStream("Dictionary/corpus");
 stream.once('open', function()
 {
-	for(var i = 0; i < registeredCommands.length; i++)
+	for(var w = 0; w < words.length; w++)
 	{
-		stream.write(registeredCommands[i].command.toUpperCase() + "\n");
+		stream.write(words[w] + "\n");
 	}
+
+	for(var i = 0; i < registeredBasicCommands.length; i++)
+	{
+		var command = registeredBasicCommands[i].command.replace(/[^A-Za-z0-9_\s]/g, "");
+		stream.write(command + "\n");
+	}
+
 	stream.end();
 });
 
-function runCommand(cmd)
+function runBasicCommand(cmd)
 {
-
-	for(var i = 0; i < registeredCommands.length; i++)
+	for(var i = 0; i < registeredBasicCommands.length; i++)
 	{
-		if(registeredCommands[i].command === cmd)
+		var match = cmd.match(registeredBasicCommands[i].command);
+		if(match)
 		{
 			console.log("Found a registered command");
-			registeredCommands[i].callback(cmd);
-			if(registeredCommands[i].save !== false)
+			registeredBasicCommands[i].callback(match);
+		}
+	}
+}
+
+function runExtendedCommand(cmd)
+{
+	for(var i = 0; i < registeredExtendedCommands.length; i++)
+	{
+		var match = cmd.match(registeredExtendedCommands[i].command);
+		if(match)
+		{
+			console.log("Found a extended registered command");
+			registeredExtendedCommands[i].callback(match);
+			if(registeredExtendedCommands[i].save !== false)
 			{
-				console.log("Register command in last command");
-				Robin.lastCommand = registeredCommands[i];
+				Robin.lastCommand = registeredExtendedCommands[i];
 			}
 		}
 	}
