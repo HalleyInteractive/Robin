@@ -1,3 +1,4 @@
+var google = require('google-speech-api');
 var spawn = require('child_process').spawn;
 var stt_basic = null;
 var stt_extended = null;
@@ -68,7 +69,7 @@ function stt_extended_start()
 	else if(mode === "off")
 	{
 		mode = "extended";
-		stt_extended = spawn('arecord', ['-f', 'cd', '-t', 'wav', '-d', '5', '-r', '16000' , 'output.wav']);
+		stt_extended = spawn('arecord', ['-f', 'cd', '-t', 'wav', '-d', '7', '-r', '16000' , 'output.wav']);
 		stt_extended.stdout.on('data', function (data)
 		{
 			var output = data.toString("utf-8").match(/[^\r\n]+/g);
@@ -79,7 +80,23 @@ function stt_extended_start()
 			}
 		});
 		stt_extended.stderr.on('data', function (data) { if (printerrors) { console.log('stderr: ' + data); } });
-		stt_extended.on('close', function (code) { if (printexits) { console.log('child process exited with code ' + code); } });
+		stt_extended.on('close', function (code)
+		{
+			console.log('child process exited with code ' + code);
+			if(code === 0)
+			{
+				console.log("See what google makes of it");
+				// TODO: Stop process on time out
+				console.log("Language: "+exports.robin.language);
+				google({lang:exports.robin.language, file: 'output.wav'}, function (err, results)
+				{
+					console.log(results[0].hypotheses[0].utterance);
+					exports.extendedcmd(results[0].hypotheses[0].utterance.toUpperCase());
+					stt_extended_stop();
+					stt_basic_start();
+				});
+			}
+		});
 	}
 }
 
