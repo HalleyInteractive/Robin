@@ -6,12 +6,17 @@ var config = require('./RobinConfig.js');
 
 ears.basiccmd = function (cmd) { runBasicCommand(cmd); };
 ears.extendedcmd = function (cmd) { runExtendedCommand(cmd); };
+ears.robin = config.robin;
 ears.stt_basic_start();
 
+
+
+mouth.robin = config.robin;
+
+// TODO: Check if it's needed to start redis?
 // TODO: Let plugins receive all next input on request.
 // TODO: Make a backend. include tty.js
-
-
+// TODO: Convert written digits to digits
 
 var words = [];
 
@@ -33,7 +38,7 @@ for(var plugin in plugins)
 	if(plugins[plugin].basicCommands !== undefined) { registeredBasicCommands = registeredBasicCommands.concat(plugins[plugin].basicCommands); }
 	if(plugins[plugin].extendedCommands !== undefined) { registeredExtendedCommands = registeredExtendedCommands.concat(plugins[plugin].extendedCommands); }
 	plugins[plugin].say = mouth.say;
-	plugins[plugin].robin = config;
+	plugins[plugin].robin = config.robin;
 	plugins[plugin].ears = ears;
 }
 
@@ -83,5 +88,6 @@ function runExtendedCommand(cmd)
 				config.lastCommand = registeredExtendedCommands[i];
 			}
 		}
+		//TODO: When nothing is found, let down
 	}
 }
