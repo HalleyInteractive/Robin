@@ -6,11 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/NielsOverwijn/Robin.git"
+  },
   "author": "Niels Overwijn",
   "readmeFilename": "README",
   "devDependencies": {
     "pi-gpio": "0.0.2",
-    "dateformat": "~1.0.6-1.2.3"
+    "dateformat": "~1.0.6-1.2.3",
+    "google-speech-api": "~0.2.1",
+    "node-tts-google": "0.0.1"
   }
 }
