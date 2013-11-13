@@ -87,13 +87,28 @@ function stt_extended_start()
 			{
 				console.log("See what google makes of it");
 				// TODO: Stop process on time out
-				console.log("Language: "+exports.robin.language);
 				google({lang:exports.robin.language, file: 'output.wav'}, function (err, results)
 				{
-					console.log(results[0].hypotheses[0].utterance);
-					exports.extendedcmd(results[0].hypotheses[0].utterance.toUpperCase());
-					stt_extended_stop();
-					stt_basic_start();
+					if(results !== undefined && results.length > 0)
+					{
+						if(results[0].hypotheses !== undefined && results[0].hypotheses.length > 0)
+						{
+							console.log(results[0].hypotheses[0].utterance);
+							exports.extendedcmd(results[0].hypotheses[0].utterance.toUpperCase());
+							stt_extended_stop();
+							stt_basic_start();
+						} else
+						{
+							// TODO: Let the user know that nothing is found
+							stt_extended_stop();
+							stt_basic_start();
+						}
+					} else
+					{
+						// TODO: Let the user know that nothing is found
+						stt_extended_stop();
+						stt_basic_start();
+					}
 				});
 			}
 		});
