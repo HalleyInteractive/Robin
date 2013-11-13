@@ -1,5 +1,6 @@
 function runExtendedCommand(cmd)
 {
+	exports.say("yes");
 	exports.ears.stt_basic_stop();
 	exports.ears.stt_extended_start();
 }

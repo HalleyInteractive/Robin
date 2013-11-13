@@ -11,18 +11,18 @@ function hello(cmd)
 function goodbye(cmd)
 {
 	var now = new Date();
-	var answers = ["Tot ziens", "Zie je later", "Tot de volgende keer,    aligator"];
+	var answers = ["See you later", "Bye bye", "See you later, aligator", "Goodbye"];
 	var hour = dateFormat(now, "H");
 
 	if(hour < 12)
 	{
-		exports.say("HAVE A GOOD DAY");
+		exports.say("Have a good day");
 	} else if(hour < 23)
 	{
 		exports.say(answers[Math.floor(Math.random()*answers.length)]);
 	} else
 	{
-		exports.say("SLEEP WELL");
+		exports.say("Sleep well");
 	}
 }
 

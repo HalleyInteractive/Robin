@@ -14,7 +14,7 @@ function date(cmd)
 	exports.say("Today is " + dateFormat(now, "fullDate"));
 }
 
-exports.extendedCommand =
+exports.extendedCommands =
 [
 	{command:"WHAT TIME IS IT", callback:time},
 	{command:"WHAT IS THE TIME", callback:time},
