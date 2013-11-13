@@ -19,7 +19,7 @@ function joke()
 	});
 }
 
-exports.commands =
+exports.extendedCommand =
 [
 	{command:"CAN YOU TELL ME A JOKE", callback:joke},
 	{command:"DO YOU KNOW A JOKE", callback:joke},
