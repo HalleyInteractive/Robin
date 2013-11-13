@@ -1,7 +1,7 @@
 var Robin =
 {
 	name: "Robin",
-	language = "en-US",
+	language: "en-US",
 	lastCommand:{}
 };
 
