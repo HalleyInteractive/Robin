@@ -2,6 +2,7 @@
 
 var ears = require('./RobinEars.js');
 var mouth = require('./RobinMouth.js');
+var config = require('./RobinConfig.js');
 
 ears.basiccmd = function (cmd) { runBasicCommand(cmd); };
 ears.extendedcmd = function (cmd) { runExtendedCommand(cmd); };
@@ -10,11 +11,7 @@ ears.stt_basic_start();
 // TODO: Let plugins receive all next input on request.
 // TODO: Make a backend. include tty.js
 
-var Robin =
-{
-	name: "Robin",
-	lastCommand:{}
-};
+
 
 var words = [];
 
@@ -36,7 +33,7 @@ for(var plugin in plugins)
 	if(plugins[plugin].basicCommands !== undefined) { registeredBasicCommands = registeredBasicCommands.concat(plugins[plugin].basicCommands); }
 	if(plugins[plugin].extendedCommands !== undefined) { registeredExtendedCommands = registeredExtendedCommands.concat(plugins[plugin].extendedCommands); }
 	plugins[plugin].say = mouth.say;
-	plugins[plugin].robin = Robin;
+	plugins[plugin].robin = config;
 	plugins[plugin].ears = ears;
 }
 
@@ -83,7 +80,7 @@ function runExtendedCommand(cmd)
 			registeredExtendedCommands[i].callback(match);
 			if(registeredExtendedCommands[i].save !== false)
 			{
-				Robin.lastCommand = registeredExtendedCommands[i];
+				config.lastCommand = registeredExtendedCommands[i];
 			}
 		}
 	}
