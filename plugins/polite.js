@@ -10,7 +10,7 @@ function polite(cmd)
 	if(rnd === 3) { exports.say("Any time"); }
 }
 
-exports.commands =
+exports.basicCommands =
 [
 	{command:"THANK YOU", callback:polite},
 	{command:"THANK YOU ROBIN", callback:polite},
