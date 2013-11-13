@@ -14,7 +14,7 @@ function stt_basic_start()
 	else if(mode === "off")
 	{
 		mode = "basic";
-		stt_basic = spawn('pocketsphinx_continuous', ['-lm', 'Dictionary/5510.lm', '-dict', 'Dictionary/5510.dic']);
+		stt_basic = spawn('pocketsphinx_continuous', ['-lm', 'Dictionary/Robin.lm', '-dict', 'Dictionary/Robin.dic']);
 		stt_basic.stdout.on('data', function (data)
 		{
 			var output = data.toString("utf-8").match(/[^\r\n]+/g);
