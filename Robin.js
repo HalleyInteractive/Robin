@@ -8,6 +8,7 @@ ears.extendedcmd = function (cmd) { runExtendedCommand(cmd); };
 ears.stt_basic_start();
 
 // TODO: Let plugins receive all next input on request.
+// TODO: Make a backend. include tty.js
 
 var Robin =
 {
@@ -27,6 +28,7 @@ var plugins =
 	jokes: require('./plugins/jokes'),
 	hello: require('./plugins/hello'),
 	calculate: require('./plugins/calculate'),
+	extendedinput: require('./plugins/extendedinput'),
 };
 
 for(var plugin in plugins)
@@ -35,6 +37,7 @@ for(var plugin in plugins)
 	if(plugins[plugin].extendedCommands !== undefined) { registeredExtendedCommands = registeredExtendedCommands.concat(plugins[plugin].extendedCommands); }
 	plugins[plugin].say = mouth.say;
 	plugins[plugin].robin = Robin;
+	plugins[plugin].ears = ears;
 }
 
 /** Create a corpus file **/
