@@ -1,6 +1,6 @@
 var Robin =
 {
-	name: "Robin",
+	name: "James",
 	language: "en-US",
 	lastCommand:{}
 };
