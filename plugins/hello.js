@@ -1,13 +1,15 @@
+/* globals exports, require */
+
 var dateFormat = require('dateformat');
 
-function hello(cmd)
+function hello()
 {
 	var now = new Date();
 	var daytime = dateFormat(now, "H") < 12 ? "Good morning" : dateFormat(now, "H") < 18 ? "Good afternoon" : "Good evening";
 	exports.say(daytime);
 }
 
-function goodbye(cmd)
+function goodbye()
 {
 	var now = new Date();
 	var answers = ["See you later", "Bye bye", "See you later, aligator", "Goodbye"];
@@ -18,14 +20,14 @@ function goodbye(cmd)
 	else { exports.say("Sleep well"); }
 }
 
-function hallo(cmd)
+function hallo()
 {
 	var now = new Date();
 	var daytime = dateFormat(now, "H") < 12 ? "Goede morgen" : dateFormat(now, "H") < 18 ? "Goede middag" : "Goede avond";
 	exports.say(daytime);
 }
 
-function totziens(cmd)
+function totziens()
 {
 	var now = new Date();
 	var answers = ["Zie je later", "Bye bye", "Tot ziens", "Laters"];
@@ -36,7 +38,7 @@ function totziens(cmd)
 	else { exports.say("Slaap lekker"); }
 }
 
-exports.basicCommands = new Array();
+exports.basicCommands = [];
 exports.basicCommands['en-US'] =
 [
 	{command:"HELLO", callback:hello},

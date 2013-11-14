@@ -1,19 +1,21 @@
+/* globals exports, require */
+
 var dateFormat = require('dateformat');
 
-function time(cmd)
+function time()
 {
 	console.log("Running the time callback");
 	var now = new Date();
 	exports.say("The time is " + dateFormat(now, "h:MM") + " and " + dateFormat(now, "ss") + " seconds");
 }
 
-function date(cmd)
+function date()
 {
 	console.log("Running the date callback");
 	var now = new Date();
 	exports.say("Today is " + dateFormat(now, "fullDate"));
 }
-exports.extendedCommands = new Array();
+exports.extendedCommands = [];
 exports.extendedCommands['en-US'] =
 [
 	{command:"WHAT TIME IS IT", callback:time},
@@ -22,7 +24,18 @@ exports.extendedCommands['en-US'] =
 	{command:"WHAT DATE IS IT", callback:date},
 	{command:"WHAT IS THE DATE", callback:date},
 	{command:"WHICH DATE IS IT", callback:date},
-	{command:"CAN YOU TELL ME THE TIME", callback:time},
-	{command:"DO YOU KNOW WHAT TIME IT IS", callback:time},
-	{command:"DO YOU KNOW THE TIME", callback:time}
+	{command:"TELL ME THE TIME", callback:time},
+	{command:"WHAT TIME IT IS", callback:time},
+	{command:"KNOW THE TIME", callback:time}
+];
+
+exports.extendedCommands['nl-NL'] =
+[
+	{command:"HOE LAAT IS HET", callback:time},
+	{command:"WAT IS DE TIJD", callback:time},
+	{command:"HOE LAAT HEB JIJ HET", callback:time},
+	{command:"WEET JIJ DE TIJD", callback:time},
+	{command:"WAT IS DE DATUM", callback:date},
+	{command:"WELKE DATUM IS HET", callback:date},
+	{command:"DE HOEVEELSTE IS HET VANDAAG", callback:date}
 ];

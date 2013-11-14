@@ -1,3 +1,5 @@
+/* globals exports */
+
 function plus(cmd)
 {
 	console.log("Running the PLUS calculate callback");
@@ -59,7 +61,7 @@ function times(cmd)
 
 }
 
-exports.extendedCommands = new Array();
+exports.extendedCommands = [];
 exports.extendedCommands['nl-NL'] =
 [
 	{command:"HOEVEEL IS (\\d+) PLUS (\\d+)", callback:plus},

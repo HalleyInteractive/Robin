@@ -1,3 +1,5 @@
+/* globals exports, require */
+
 function joke()
 {
 	var http = require("http");
@@ -19,7 +21,7 @@ function joke()
 	});
 }
 
-exports.extendedCommands = new Array();
+exports.extendedCommands = [];
 exports.extendedCommands['en-US'] =
 [
 	{command:"KNOW A JOKE", callback:joke},
