@@ -1,3 +1,5 @@
+/* globals exports, require */
+
 var speech = require('node-tts');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
@@ -5,6 +7,7 @@ var tts = null;
 
 exports.say = function (message)
 {
+	// TODO: Check if audio is still playing. If it is, que the new request
 	console.log(exports.robin);
 	speech.retrieve(message, exports.robin.language.toString().substr(0,2), function(text, lang, data)
 	{
