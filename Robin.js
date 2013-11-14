@@ -65,7 +65,7 @@ for(var language in registeredBasicCommands)
 
 /** Create a corpus file **/
 var fs = require('fs');
-var stream = fs.createWriteStream("Dictionary/corpus");
+var stream = fs.createWriteStream("Dictionary/Robin.corpus");
 stream.once('open', function()
 {
 	for(var w = 0; w < words.length; w++)
