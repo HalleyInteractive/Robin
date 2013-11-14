@@ -1,3 +1,5 @@
+/* globals exports */
+
 var Robin =
 {
 	name: "James",

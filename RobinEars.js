@@ -1,3 +1,5 @@
+/* globals exports, require */
+
 var google = require('google-speech-api');
 var spawn = require('child_process').spawn;
 var stt_basic = null;
@@ -131,5 +133,5 @@ exports.stt_basic_stop = stt_basic_stop;
 exports.stt_extended_start = stt_extended_start;
 exports.stt_extended_stop = stt_extended_stop;
 
-exports.basiccmd = function (cmd) { }
-exports.extendedcmd = function (cmd) { }
+exports.basiccmd = function () { };
+exports.extendedcmd = function () { };
