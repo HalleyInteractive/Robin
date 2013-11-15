@@ -20,6 +20,11 @@ function goodbye()
 	else { exports.say("Sleep well"); }
 }
 
+function greet(cmd)
+{
+	exports.say("Hello " + cmd[1] + ", my name is " + exports.robin.name);
+}
+
 function hallo()
 {
 	var now = new Date();
@@ -38,6 +43,12 @@ function totziens()
 	else { exports.say("Slaap lekker"); }
 }
 
+function groet(cmd)
+{
+	exports.say("Hallo " + cmd[1] + ", mijn naam is " + exports.robin.name);
+}
+
+
 exports.basicCommands = [];
 exports.basicCommands['en-US'] =
 [
@@ -48,6 +59,12 @@ exports.basicCommands['en-US'] =
 	{command:"GOOD DAY", callback:hello},
 	{command:"SEE YOU", callback:goodbye}
 ];
+exports.extendedCommands = [];
+exports.extendedCommands['en-US'] =
+[
+	{command:"I AM (\\w+)", callback:greet},
+	{command:"MY NAME IS (\\w+)", callback:greet}
+];
 
 exports.basicCommands['nl-NL'] =
 [
@@ -56,4 +73,9 @@ exports.basicCommands['nl-NL'] =
 	{command:"GOEDE AVOND", callback:hallo},
 	{command:"GOEDE MORGEN", callback:hallo},
 	{command:"HOI", callback:hallo}
+];
+exports.extendedCommands['nl-NL'] =
+[
+	{command:"IK BEN (\\w+)", callback:groet},
+	{command:"MIJN NAAM IS (\\w+)", callback:groet}
 ];
