@@ -27,8 +27,7 @@ var plugins =
 	repeat: require('./plugins/repeat'),
 	jokes: require('./plugins/jokes'),
 	hello: require('./plugins/hello'),
-	calculate: require('./plugins/calculate'),
-	extendedinput: require('./plugins/extendedinput'),
+	calculate: require('./plugins/calculate')
 };
 
 for(var plugin in plugins)
