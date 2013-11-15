@@ -12,7 +12,7 @@ function joke()
 		res.on('data', function (chunk)
 		{
 			var joke = JSON.parse(chunk);
-			//exports.say("Sure");
+			exports.say("Sure");
 			exports.say(joke.value.joke);
 		});
 	}).on('error', function(e)

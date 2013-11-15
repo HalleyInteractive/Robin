@@ -6,15 +6,20 @@ function time()
 {
 	console.log("Running the time callback");
 	var now = new Date();
-	exports.say("The time is " + dateFormat(now, "h:MM") + " and " + dateFormat(now, "ss") + " seconds");
+	if(exports.robin.language === 'nl-NL') {
+		exports.say("Het is nu " + dateFormat(now, "h uur MM minten en ss") + " seconden");
+	} else { exports.say("The time is " + dateFormat(now, "h:MM") + " and " + dateFormat(now, "ss") + " seconds"); }
 }
 
 function date()
 {
 	console.log("Running the date callback");
 	var now = new Date();
-	exports.say("Today is " + dateFormat(now, "fullDate"));
+	if(exports.robin.language === 'nl-NL') {
+		exports.say("Het is vandaag "  + dateFormat(now, "fullDate"));
+	} else { exports.say("Today is " + dateFormat(now, "fullDate")); }
 }
+
 exports.extendedCommands = [];
 exports.extendedCommands['en-US'] =
 [
