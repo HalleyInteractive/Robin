@@ -15,6 +15,7 @@ mouth.robin = config.robin;
 // TODO: Let plugins receive all next input on request.
 // TODO: Make a backend. include tty.js
 // TODO: Convert written digits to digits
+// TODO: Write documentation
 
 var words = [];
 
