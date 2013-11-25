@@ -24,6 +24,7 @@ exports.say = function (message, callback)
             if (err) throw err;
             if(result > 0)
             {
+                console.log("Found previous entry");
                 query.run({connection:exports.brain.connection, useOutdated:true}, function(err, result)
                 {
                     if (err) throw err;
@@ -33,7 +34,7 @@ exports.say = function (message, callback)
                         speak(new Buffer(row.buffer, 'binary'));
                     });
                 });
-            } else { requestGoogleAudio(message); }
+            } else { console.log("Requesting new TTS from Google"); requestGoogleAudio(message); }
         });
 	} else
 	{
@@ -73,16 +74,16 @@ function requestGoogleAudio(message)
         var chunks = 0;
         res.on('data', function(chunk) { chunks++; data.push(chunk); }).on('end', function()
         {
+            console.log("DATA");
             var buffer = Buffer.concat(data);
             if (buffer.length === 0) { console.log("Retrieved empty data!"); }
-            exports.brain.db.table("voice")
-            .insert({text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer})
-            .run({connection:exports.brain.connection, noreply:true}, function(err, result)
+            else
             {
-                if (err) throw err;
-                console.log(JSON.stringify(result, null, 2));
-            });
-            speak(buffer);
+                exports.brain.db.table("voice")
+                .insert({text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer})
+                .run({connection:exports.brain.connection, noreply:true}, function(err, result) { });
+                speak(buffer);
+            }
         });
     });
     req.on('error', function(e) { console.log('problem with request: ' + e.message); error(e); });
