@@ -75,6 +75,10 @@ exports.extendedCommands['en-US'] =
 	{command:"WHAT IS THE SUM OF (\\d+) PLUS (\\d+)", callback:plus},
 	{command:"WHAT IS THE SUM OF (\\d+) MINUS (\d+)", callback:minus},
 	{command:"WHAT IS THE SUM OF (\\d+) DIVIDED BY (\\d+)", callback:divided},
-	{command:"WHAT IS THE SUM OF (\\d+) TIMES (\\d+)", callback:times}
+	{command:"WHAT IS THE SUM OF (\\d+) TIMES (\\d+)", callback:times},
+    {command:"HOW MUCH IS (\\d+) PLUS (\\d+)", callback:plus},
+	{command:"HOW MUCH IS (\\d+) MINUS (\d+)", callback:minus},
+	{command:"HOW MUCH IS (\\d+) DIVIDED BY (\\d+)", callback:divided},
+	{command:"HOW MUCH IS (\\d+) TIMES (\\d+)", callback:times}
 ];
 
