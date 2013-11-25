@@ -1,15 +1,17 @@
 /* globals require */
-
 var ears = require('./RobinEars.js');
 var mouth = require('./RobinMouth.js');
+var brain = require('./RobinBrain.js');
 var config = require('./RobinConfig.js');
 
 ears.basiccmd = function (cmd) { runBasicCommand(cmd); };
 ears.extendedcmd = function (cmd) { runExtendedCommand(cmd); };
 ears.robin = config.robin;
 ears.stt_basic_start();
+ears.brain = brain.brain;
 
 mouth.robin = config.robin;
+mouth.brain = brain.brain;
 
 // TODO: Check if it's needed to start redis?
 // TODO: Let plugins receive all next input on request.
