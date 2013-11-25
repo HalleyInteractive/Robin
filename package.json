@@ -13,9 +13,9 @@
   "author": "Niels Overwijn",
   "readmeFilename": "README",
   "devDependencies": {
-    "pi-gpio": "0.0.2",
     "dateformat": "~1.0.6-1.2.3",
-    "google-speech-api": "~0.2.1",
-    "node-tts-google": "0.0.1"
+    "rethinkdb": "~1.10.0-0",
+    "pi-gpio": "0.0.2",
+    "google-speech-api": "~0.2.1"
   }
 }
