@@ -54,8 +54,9 @@ for(var plugin in plugins)
 
 function listenForExtendedCommand(cmd)
 {
-	mouth.say("yes");
-	ears.stt_basic_stop();
+    var feedback = ["yes", "What's up", "What can I do for you"];
+	mouth.say(feedback[Math.floor(Math.random()*feedback.length)]);
+    ears.stt_basic_stop();
 	ears.stt_extended_start();
 }
 
