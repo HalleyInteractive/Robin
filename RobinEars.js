@@ -1,5 +1,4 @@
 /* globals exports, require */
-
 var google = require('google-speech-api');
 var spawn = require('child_process').spawn;
 var stt_basic = null;
@@ -17,6 +16,7 @@ function stt_basic_start()
 	else if(mode === "off")
 	{
 		mode = "basic";
+        console.log("Start basic hearing");
 		stt_basic = spawn('pocketsphinx_continuous', ['-lm', 'Dictionary/Robin.lm', '-dict', 'Dictionary/Robin.dic']);
 		stt_basic.stdout.on('data', function (data)
 		{
