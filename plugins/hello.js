@@ -23,6 +23,17 @@ function goodbye()
 function greet(cmd)
 {
 	exports.say("Hello " + cmd[1] + ", my name is " + exports.robin.name);
+    exports.say("Are you doing ok today?", function(){
+    exports.requestNextExtendedInput(doingOk);
+    });
+}
+
+function doingOk(cmd)
+{
+    var result = exports.plugins.acknowledge.check(cmd);
+    if (result === 0){ exports.say("I'm sorry to hear that."); } // TODO: Tell joke
+    else if(result === 1){ exports.say("Great"); }
+    else { exports.plugins.disappoint.didNotUnderstand(); }
 }
 
 function hallo()
