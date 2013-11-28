@@ -91,12 +91,11 @@ function stt_extended_start()
 				// TODO: Stop process on time out
 				google({lang:exports.robin.language, file: 'output.wav'}, function (err, results)
 				{
-                    // BUG: When no hypotheses are returned
-					if(results !== undefined && results.length > 0)
+					if(results[0] !== undefined && results.length > 0)
 					{
 						if(results[0].hypotheses !== undefined && results[0].hypotheses.length > 0)
 						{
-							console.log(results[0].hypotheses[0].utterance);
+							console.log("STT Result: " + results[0].hypotheses[0].utterance);
 							exports.extendedcmd(results[0].hypotheses[0].utterance.toUpperCase());
 							stt_extended_stop();
 							stt_basic_start();
