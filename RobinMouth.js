@@ -57,6 +57,7 @@ function speak(buffer)
     });
 }
 
+// TODO: Add option to not cache input
 function requestGoogleAudio(message)
 {
     var ur = url.parse("translate.google.com/translate_tts", true);
