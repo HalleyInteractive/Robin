@@ -23,7 +23,7 @@ var decline = {
     [
         "NO",
         "NOPE",
-        "INCORRECT",
+        "INCORRECT", // Will be matched to correct firstr
         "WRONG"
     ],
     "nl-NL":
@@ -36,8 +36,8 @@ var decline = {
 
 function acknowledge(cmd)
 {
-    for(var i = 0; i < confirm[exports.robin.language].length; i++) { if(cmd.match(confirm[exports.robin.language][i].command)){ return 1; } }
-    for(var i = 0; i < decline[exports.robin.language].length; i++) { if(cmd.match(decline[exports.robin.language][i].command)){ return 0; } }
+    for(var i = 0; i < confirm[exports.robin.language].length; i++) { if(cmd.match(confirm[exports.robin.language][i])){ return 1; } }
+    for(var i = 0; i < decline[exports.robin.language].length; i++) { if(cmd.match(decline[exports.robin.language][i])){ return 0; } }
     return -1;
 }
 
