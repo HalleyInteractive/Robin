@@ -8,13 +8,16 @@ var eyeRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/open
 
 function takeStill()
 {
-    camera.read(function(err, im)
+    return camera.read(function(err, im)
     {
         if(err){ console.log(err); }
-        var now = new Date();
-        im.save('./tmp/camera_still_' + dateFormat(now, "hMMss") + '.png');
+        var filename = './tmp/camera_still_' + dateFormat(new Date(), "hMMss") + '.png';
+        im.save(filename);
+        return filename;
     });
 }
+
+exports.takeStill = takeStill;
 
 faceRecognitionStream.on('data', function(faces, videomatrix)
 {
@@ -51,3 +54,4 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
 
 stream.pipe(faceRecognitionStream);
 stream.read();
+
