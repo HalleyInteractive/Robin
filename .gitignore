@@ -1,4 +1,5 @@
 /node_modules
 /rethinkdb_data
+/tmp
 input.mp3
 output.wav
