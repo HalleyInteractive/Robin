@@ -16,6 +16,7 @@
     "dateformat": "~1.0.6-1.2.3",
     "rethinkdb": "~1.10.0-0",
     "pi-gpio": "0.0.2",
-    "google-speech-api": "~0.2.1"
+    "google-speech-api": "~0.2.1",
+    "opencv": "~0.3.1"
   }
 }
