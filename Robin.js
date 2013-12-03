@@ -2,6 +2,7 @@
 var ears = require('./RobinEars.js');
 var mouth = require('./RobinMouth.js');
 var brain = require('./RobinBrain.js');
+var eyes = require('./RobinEyes.js');
 var config = require('./RobinConfig.js');
 
 ears.basiccmd = runBasicCommand;
@@ -30,7 +31,8 @@ var plugins =
 	hello: require('./plugins/hello'),
 	calculate: require('./plugins/calculate'),
     disappoint: require('./plugins/disappoint'),
-    acknowledge: require('./plugins/acknowledge')
+    acknowledge: require('./plugins/acknowledge'),
+    selfie: require('./plugins/selfie')
 };
 
 for(var plugin in plugins)
@@ -50,6 +52,7 @@ for(var plugin in plugins)
     plugins[plugin].plugins = plugins;
 	plugins[plugin].say = mouth.say;
 	plugins[plugin].ears = ears;
+    plugins[plugin].eyes = eyes;
 	plugins[plugin].robin = config.robin;
     plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
 }
