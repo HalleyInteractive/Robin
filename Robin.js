@@ -5,6 +5,7 @@ var brain = require('./RobinBrain.js');
 var eyes = require('./RobinEyes.js');
 var config = require('./RobinConfig.js');
 
+
 ears.basiccmd = runBasicCommand;
 ears.extendedcmd = runExtendedCommand;
 ears.robin = config.robin;
@@ -14,7 +15,7 @@ ears.brain = brain.brain;
 mouth.robin = config.robin;
 mouth.brain = brain.brain;
 
-// TODO: Make a backend. include tty.js
+// TODO: Make a backend.
 // TODO: Convert written digits to digits
 // TODO: Write documentation
 
