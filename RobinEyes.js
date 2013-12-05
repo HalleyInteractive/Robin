@@ -1,23 +1,11 @@
 var opencv = require('opencv');
 var dateFormat = require('dateformat');
 
-var camera = new opencv.VideoCapture(0);
+var camera = new opencv.VideoCapture(1);
 var stream = camera.toStream();
 var faceRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_frontalface_default.xml');
 //var lowerbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_lowerbody.xml');
 //var upperbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_upperbody.xml');
-
-var numberOfFaces = 0;
-var _numberOfFaces = 0;
-var _numberOfFacesCount = 0;
-
-var numberOfUpperbodies = 0;
-var _numberOfUpperbodies = 0;
-var _numberOfUpperbodiesCount = 0;
-
-var numberOfLowerbodies = 0;
-var _numberOfLowerbodies = 0;
-var _numberOfLowerbodiesCount = 0;
 
 function takeStill()
 {
@@ -34,21 +22,6 @@ exports.takeStill = takeStill;
 
 faceRecognitionStream.on('data', function(faces, videomatrix)
 {
-
-    _numberOfFaces += faces.length;
-    if(++_numberOfFacesCount === 10)
-    {
-        _numberOfFaces = Math.round(_numberOfFaces / _numberOfFacesCount);
-        _numberOfFaces = 0;
-        _numberOfFacesCount = 0;
-
-       if(_numberOfFaces != numberOfFaces)
-       {
-            numberOfFaces = _numberOfFaces;
-           console.log("I see: "+ numberOfFaces + " faces");
-       }
-    }
-
     var sx = 0;
     var sy = 0;
 
@@ -79,38 +52,18 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
     }
     // console.log(faces);
 });
+
 /*
 lowerbodyRecognitionStream.on('data', function(lowerbodies, videomatrix)
 {
-     _numberOfLowerbodies += lowerbodies.length;
-    if(++_numberOfLowerbodiesCount === 10)
-    {
-        _numberOfLowerbodies = Math.round(_numberOfLowerbodies / _numberOfLowerbodiesCount);
-        _numberOfLowerbodies = 0;
-        _numberOfLowerbodiesCount = 0;
-       if(_numberOfLowerbodies != numberOfLowerbodies)
-       {
-            numberOfLowerbodies = _numberOfLowerbodies;
-           console.log("I see: "+ numberOfLowerbodies + " lower bodies");
-       }
-    }
+
 });
 
 upperbodyRecognitionStream.on('data', function(upperbodies, videomatrix)
 {
-     _numberOfUpperbodies += upperbodies.length;
-    if(++_numberOfUpperbodiesCount === 10)
-    {
-        _numberOfUpperbodies = Math.round(_numberOfUpperbodies / _numberOfUpperbodiesCount);
-        _numberOfUpperbodies = 0;
-        _numberOfUpperbodiesCount = 0;
-       if(_numberOfUpperbodies != numberOfUpperbodies)
-       {
-            numberOfUpperbodies = _numberOfUpperbodies;
-           console.log("I see: "+ numberOfUpperbodies + " upper bodies");
-       }
-    }
+
 });
+
 */
 //stream.pipe(lowerbodyRecognitionStream);
 //stream.pipe(upperbodyRecognitionStream);
