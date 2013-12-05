@@ -2,9 +2,6 @@ sudo add-apt-repository ppa:rethinkdb/ppa   && \
 sudo apt-get update                         && \
 sudo apt-get install rethinkdb
 
-# Starting rethinkdb
-# rethinkdb --http-port 8083
-
 sudo apt-get install python-pip
 sudo pip install rethinkdb
 
@@ -13,3 +10,6 @@ sudo pip install rethinkdb
 
 # Restore backup
 rethinkdb restore install/robin_db_dump.tar.gz
+
+cp node-startup/RethinkDb /etc/init.d/
+# chmod +x /etc/init.d/RethinkDb
