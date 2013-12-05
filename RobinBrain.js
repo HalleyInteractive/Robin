@@ -1,5 +1,4 @@
 var spawn = require('child_process').spawn;
-var rdb = null;
 var r = require('rethinkdb');
 var connection = null;
 var host = "localhost";
@@ -9,8 +8,6 @@ var port = 28015;
 // TODO: Connect only when server has started
 function connect()
 {
-    rdb = spawn('rethinkdb', ['--http-port', '8083']);
-    rdb.on('close', function (code) { console.log('RetinkDb process exited with code ' + code); });
     r.connect({host:host, port:port}, function(err, conn)
     {
         if (err) throw err;
