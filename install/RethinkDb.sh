@@ -11,5 +11,5 @@ sudo pip install rethinkdb
 # Restore backup
 rethinkdb restore install/robin_db_dump.tar.gz
 
-cp node-startup/RethinkDb /etc/init.d/
+cp startup-scripts/RethinkDb /etc/init.d/
 # chmod +x /etc/init.d/RethinkDb

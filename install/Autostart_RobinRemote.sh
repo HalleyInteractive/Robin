@@ -1,2 +1,2 @@
-cp node-startup/RobinRemote /etc/init.d/
+cp startup-scripts/RobinRemote /etc/init.d/
 # chmod +x /etc/init.d/RobinRemote
