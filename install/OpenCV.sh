@@ -1,3 +1,5 @@
+sudo apt-get install chmake -y
+
 mkdir opencv-node
 # Clone fresh copy of OpenCV
 git clone https://github.com/Itseez/opencv.git opencv-node
