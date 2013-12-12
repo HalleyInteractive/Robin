@@ -1,7 +1,11 @@
 var opencv = require('opencv');
 var dateFormat = require('dateformat');
 
-var camera = new opencv.VideoCapture(1);
+// TODO: Find a nicer solution to check which camera is active.
+try { var camera = new opencv.VideoCapture(0); }
+catch(err) { try { var camera = new opencv.VideoCapture(1); }
+catch(err) { var camera = new opencv.VideoCapture(2); } }
+
 var stream = camera.toStream();
 var faceRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_frontalface_default.xml');
 //var lowerbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_lowerbody.xml');
