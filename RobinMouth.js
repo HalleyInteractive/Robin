@@ -15,27 +15,12 @@ exports.say = function (message, callback)
 	if(!talking)
 	{
 		talking = true;
-        console.log("Say: "+message);
-        var query = exports.brain.db.table("voice")
-        .filter({text:message, language:exports.robin.language.toString().substr(0,2)})
-        .limit(1);
-        query.count().run({connection:exports.brain.connection, useOutdated:true}, function(err, result)
-        {
-            if (err) throw err;
-            if(result > 0)
-            {
-                console.log("Found previous entry");
-                query.run({connection:exports.brain.connection, useOutdated:true}, function(err, result)
-                {
-                    if (err) throw err;
-                    result.next(function(err, row)
-                    {
-                        if (err) throw err;
-                        speak(new Buffer(row.buffer, 'binary'));
-                    });
-                });
-            } else { console.log("Requesting new TTS from Google"); requestGoogleAudio(message); }
-        });
+		exports.brain.collection.find({text:message, language:exports.robin.language.toString().substr(0,2)}).toArray(function(err, results)
+		{
+			if (err) throw err;
+            if(results.length > 0) { speak(results[0].buffer.buffer); }
+			else { requestGoogleAudio(message); }
+		});
 	} else
 	{
 		console.log("Que message: " + message);
@@ -80,10 +65,8 @@ function requestGoogleAudio(message)
             if (buffer.length === 0) { console.log("Retrieved empty data!"); }
             else
             {
-                exports.brain.db.table("voice")
-                .insert({text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer})
-                .run({connection:exports.brain.connection, noreply:true}, function(err, result) { });
-                speak(buffer);
+                exports.brain.collection.insert({text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer}, function(err, docs) { console.log("Saved TTS"); });
+				speak(buffer);
             }
         });
     });
