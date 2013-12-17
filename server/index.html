@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<script src="../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js"></script>
+		<script src="jquery.js"></script>
+		<script>
+		var socket = io.connect('http://localhost:8092');
+		socket.on('log', function (data)
+		{
+			console.log(data);
+
+		});
+		$(document).ready(function()
+		{
+			$("#basiccmdSubmit").click(function()
+			{
+				console.log("Send basic command: "+$("#basiccmd").val());
+				socket.emit('basiccmd', $("#basiccmd").val().toUpperCase());
+			});
+
+			$("#extendedcmdSubmit").click(function()
+			{
+				console.log("Send extended command: "+$("#extendedcmd").val());
+				socket.emit('extendedcmd', $("#extendedcmd").val().toUpperCase());
+			});
+		});
+		</script>
+	</head>
+	<body>
+
+		<label for="basiccmd">Basic command</label>
+		<input id="basiccmd" type="text" />
+		<button id="basiccmdSubmit">Send</button>
+		<br />
+
+		<label for="extendedcmd">Extended command</label>
+		<input id="extendedcmd" type="text" />
+		<button id="extendedcmdSubmit">Send</button>
+		<br />
+
+	</body>
+</html>
