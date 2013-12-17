@@ -4,6 +4,7 @@ var mouth = require('./RobinMouth.js');
 var brain = require('./RobinBrain.js');
 var eyes = require('./RobinEyes.js');
 var config = require('./RobinConfig.js');
+var server = require('./RobinServer.js');
 
 
 ears.basiccmd = runBasicCommand;
@@ -14,6 +15,9 @@ ears.brain = brain.brain;
 
 mouth.robin = config.robin;
 mouth.brain = brain.brain;
+
+server.basiccmd = runBasicCommand;
+server.extendedcmd = runExtendedCommand;
 
 // TODO: Make a backend.
 // TODO: Convert written digits to digits
@@ -33,7 +37,8 @@ var plugins =
 	calculate: require('./plugins/calculate'),
     disappoint: require('./plugins/disappoint'),
     acknowledge: require('./plugins/acknowledge'),
-    selfie: require('./plugins/selfie')
+    selfie: require('./plugins/selfie'),
+	timer: require('./plugins/timer')
 };
 
 for(var plugin in plugins)
