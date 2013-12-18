@@ -2,7 +2,13 @@
 var ears = require('./RobinEars.js');
 var mouth = require('./RobinMouth.js');
 var brain = require('./RobinBrain.js');
-var eyes = require('./RobinEyes.js');
+
+try { var eyes = require('./RobinEyes.js'); }
+catch(err) {
+	console.log("Could not start Robin Eyes");
+	var eyes = null;
+}
+
 var config = require('./RobinConfig.js');
 var server = require('./RobinServer.js');
 
