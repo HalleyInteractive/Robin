@@ -7,6 +7,7 @@ var timerInterval = undefined;
 var seconds = 0;
 var minutes = 0;
 var hours = 0;
+var timerlength = "";
 
 function timer(cmd)
 {
@@ -28,6 +29,12 @@ function timer(cmd)
 		console.log(seconds + " seconds left");
 		console.log(" --- ");
 
+		timerlength = "";
+		if(hours > 0) { timerlength += hours.toString() + (hours == 1 ? " hour" : " hours"); }
+		if(minutes > 0) { timerlength += minutes.toString() + (minutes == 1 ? " minute" : " minutes"); }
+		if(seconds > 0) { timerlength += seconds.toString() + (seconds == 1 ? " second" : " seconds"); }
+
+		exports.say("Timer is set for " + timerlength);
 
 		timerInterval = setInterval(checkTimer, 1000);
 	} else
@@ -50,6 +57,7 @@ function checkTimer()
 	if(diff.getSeconds() <= 0 && diff.getMinutes() <= 0 && diff.getHours() <= 0)
 	{
 		console.log("Timer done");
+		exports.say(timerlength + " has passed. Timer is done.");
 		clearInterval(timerInterval);
 		timerInterval = undefined;
 	}
