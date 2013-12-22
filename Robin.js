@@ -1,38 +1,36 @@
 /* globals require */
+
+/*
+* Robin.js
+* All Robin components.
+*/
+
+/* Include filesystem */
+var fs = require('fs');
+
+/* RobinEars handles the voice input. */
 var ears = require('./RobinEars.js');
+/* RobinMouth handles speaking. */
 var mouth = require('./RobinMouth.js');
+/* RobinBrain holds the connection to the database */
 var brain = require('./RobinBrain.js');
-
-try { var eyes = require('./RobinEyes.js'); }
-catch(err) {
-	console.log("Could not start Robin Eyes");
-	var eyes = null;
-}
-
+/* RobinEyes controls the camera */
+var eyes = require('./RobinEyes.js');
+/* RobinConfig contains some configureation */
 var config = require('./RobinConfig.js');
+/* RobinServer starts a server that can be accessed from a remote computer */
 var server = require('./RobinServer.js');
 
+/* When set the next extended input will be routed to this function */
+var requestedNextExtendedInput;
 
-ears.basiccmd = runBasicCommand;
-ears.extendedcmd = runExtendedCommand;
-ears.robin = config.robin;
-ears.stt_basic_start();
-ears.brain = brain.brain;
-
-mouth.robin = config.robin;
-mouth.brain = brain.brain;
-
-server.basiccmd = runBasicCommand;
-server.extendedcmd = runExtendedCommand;
-
-// TODO: Make a backend.
-// TODO: Convert written digits to digits
-// TODO: Write documentation
-
-var words = [];
-var requestedNextExtendedInput = undefined;
+/* Holds all he registered basic commands */
 var registeredBasicCommands = [];
+
+/* Holds all the registered extended commands */
 var registeredExtendedCommands = [];
+
+/* A list of all plugins that are included */
 var plugins =
 {
 	polite: require('./plugins/polite'),
@@ -47,17 +45,33 @@ var plugins =
 	timer: require('./plugins/timer')
 };
 
+/* Configure ear variables */
+ears.basiccmd = runBasicCommand;
+ears.extendedcmd = runExtendedCommand;
+ears.robin = config.robin;
+ears.stt_basic_start();
+ears.brain = brain.brain;
+
+/* Configure mouth variables */
+mouth.robin = config.robin;
+mouth.brain = brain.brain;
+
+/* Configure server variables */
+server.basiccmd = runBasicCommand;
+server.extendedcmd = runExtendedCommand;
+
+/* Load plugins */
 for(var plugin in plugins)
 {
 	for(var language in plugins[plugin].basicCommands)
 	{
-		if(!registeredBasicCommands[language]){ registeredBasicCommands[language] = new Array(); }
+		if(!registeredBasicCommands[language]){ registeredBasicCommands[language] = []; }
 		registeredBasicCommands[language] = registeredBasicCommands[language].concat(plugins[plugin].basicCommands[language]);
 	}
 
 	for(var language in plugins[plugin].extendedCommands)
 	{
-		if(!registeredExtendedCommands[language]){ registeredExtendedCommands[language] = new Array(); }
+		if(!registeredExtendedCommands[language]){ registeredExtendedCommands[language] = []; }
 		registeredExtendedCommands[language] = registeredExtendedCommands[language].concat(plugins[plugin].extendedCommands[language]);
 	}
 
@@ -69,38 +83,10 @@ for(var plugin in plugins)
     plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
 }
 
-function requestNextExtendedInput(callback)
-{
-    console.log("Getting ready for next input");
-    requestedNextExtendedInput = callback;
-    ears.stt_basic_stop();
-	ears.stt_extended_start();
-}
-
-function listenForExtendedCommand(cmd)
-{
-    var feedback = ["yes", "What's up", "What can I do for you"];
-	mouth.say(feedback[Math.floor(Math.random()*feedback.length)]);
-    ears.stt_basic_stop();
-	ears.stt_extended_start();
-}
-
-for(var language in registeredBasicCommands)
-{
-	registeredBasicCommands[language] = registeredBasicCommands[language].concat([{command:config.robin.name.toUpperCase(), callback:listenForExtendedCommand}]);
-}
-
-
-/** Create a corpus file **/
-var fs = require('fs');
+/* Create a corpus file **/
 var stream = fs.createWriteStream("Dictionary/Robin.corpus");
 stream.once('open', function()
 {
-	for(var w = 0; w < words.length; w++)
-	{
-		stream.write(words[w] + "\n");
-	}
-
 	for(var i = 0; i < registeredBasicCommands[config.robin.language].length; i++)
 	{
 		var command = registeredBasicCommands[config.robin.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
@@ -110,6 +96,48 @@ stream.once('open', function()
 	stream.end();
 });
 
+/* Add Robins name to the basic commands */
+for(var language in registeredBasicCommands)
+{
+	registeredBasicCommands[language] = registeredBasicCommands[language].concat([{command:config.robin.name.toUpperCase(), callback:listenForExtendedCommand}]);
+}
+
+/**
+* With this method you can directly request the next voice input.
+* The requested input doens't need to be registered and will not be checked for other registered commands.
+*
+* @method requestNextExtendedInput
+* @param {Function} Callback for the next input. Will be called with a cmd parameter.
+*/
+function requestNextExtendedInput(callback)
+{
+    console.log("Getting ready for next input");
+    requestedNextExtendedInput = callback;
+    ears.stt_basic_stop();
+	ears.stt_extended_start();
+}
+
+/**
+* Starts RobinVoice Extended voice input.
+* It's triggered by calling Robins name.
+*
+* @method listenForExtendedCommand
+* @param {Function} cmd
+*/
+function listenForExtendedCommand(cmd)
+{
+    var feedback = ["yes", "What's up", "What can I do for you"];
+	mouth.say(feedback[Math.floor(Math.random()*feedback.length)]);
+    ears.stt_basic_stop();
+	ears.stt_extended_start();
+}
+
+/**
+* Checks if the given string is matching any of the registered basic commands
+*
+* @method runBasicCommand
+* @param {String} cmd
+*/
 function runBasicCommand(cmd)
 {
     var foundMatch = false;
@@ -126,11 +154,17 @@ function runBasicCommand(cmd)
     if(!foundMatch){ plugins.disappoint.didNotUnderstand(); }
 }
 
+/**
+* Checks if the given string is matching any of the registered extended commands
+*
+* @method runExtendedCommand
+* @param {String} cmd
+*/
 function runExtendedCommand(cmd)
 {
     if(requestedNextExtendedInput === null || requestedNextExtendedInput === undefined)
     {
-         var foundMatch = false;
+        var foundMatch = false;
         for(var i = 0; i < registeredExtendedCommands[config.robin.language].length; i++)
         {
             var match = cmd.match(registeredExtendedCommands[config.robin.language][i].command);

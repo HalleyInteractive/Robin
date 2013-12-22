@@ -1,3 +1,5 @@
+/* globals exports, require, __dirname */
+
 var app = require('http').createServer(handler);
 var io = require('socket.io').listen(app);
 var fs = require('fs');
@@ -10,8 +12,7 @@ function handler(request, response)
 {
 
 	var file = __dirname + (request.url == '/' ? '/server/index.html' : '/server/' + request.url);
-	console.log("File: " + file);
-	content_type = mime.lookup(file);
+	var content_type = mime.lookup(file);
     fs.readFile(file, function(error, data)
 	{
         if (error)

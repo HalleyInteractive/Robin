@@ -1,14 +1,39 @@
 /* globals exports, require */
+
+/*
+* RobinEars.js
+* Listens for voice input.
+*/
+
+/*
+* Google Speech API wrapper for node. Is used for the extended voice input.
+* Author: Dennis psirenny
+* Github: https://github.com/psirenny/node-google-speech-api
+*/
 var google = require('google-speech-api');
+
+/* Spawn for the child processes */
 var spawn = require('child_process').spawn;
+
+/* Speech to Text - PocketSphinx process. */
 var stt_basic = null;
+
+/* Speech to Text - ARecord process */
 var stt_extended = null;
+
+/* Log PocketSphinx output to the console */
 var printoutput = true;
+
+/* Log PocketSphinx errors to the console */
 var printerrors = false;
+
+/* Log PocketSphinx process exits to the console */
 var printexits = false;
+
+/* Current mode of RobinEars. Can be off, basic, extended */
 var mode = "off";
 
-// TODO: Read corpus file and compile a new database when this module starts
+/* Starts PocketSphinx for basis hearing */
 function stt_basic_start()
 {
 	if(mode === "basic") { console.log("Could not start basic stt, it's already running."); }
@@ -54,6 +79,7 @@ function stt_basic_start()
 	}
 }
 
+/* Stops basic hearing process */
 function stt_basic_stop()
 {
 	if(mode === "basic")
@@ -64,6 +90,7 @@ function stt_basic_stop()
 	} else { console.log("Basic stt not running."); }
 }
 
+/* Start arecod process for 7 second recording of voice input. This will be send to google for processing */
 function stt_extended_start()
 {
 	if(mode === "extended") { console.log("Could not start extended stt, it's already running."); }
@@ -101,13 +128,13 @@ function stt_extended_start()
 							stt_basic_start();
 						} else
 						{
-							// TODO: Let the user know that nothing is found
+							exports.plugins.disappoint.didNotUnderstand();
 							stt_extended_stop();
 							stt_basic_start();
 						}
 					} else
 					{
-						// TODO: Let the user know that nothing is found
+						exports.plugins.disappoint.didNotUnderstand();
 						stt_extended_stop();
 						stt_basic_start();
 					}
@@ -117,6 +144,7 @@ function stt_extended_start()
 	}
 }
 
+/* Stops the extended voice input */
 function stt_extended_stop()
 {
 	if(mode === "extended")
@@ -127,11 +155,11 @@ function stt_extended_stop()
 	} else { console.log("Extended stt not running."); }
 }
 
+/* Exports */
 exports.stt_mode = mode;
 exports.stt_basic_start = stt_basic_start;
 exports.stt_basic_stop = stt_basic_stop;
 exports.stt_extended_start = stt_extended_start;
 exports.stt_extended_stop = stt_extended_stop;
-
 exports.basiccmd = function () { };
 exports.extendedcmd = function () { };
