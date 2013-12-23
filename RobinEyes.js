@@ -1,4 +1,4 @@
-/* globals exports, require */
+/* globals exports, require, setInterval */
 
 /*
 * Include openCV
@@ -46,6 +46,21 @@ function takeStill()
         return filename;
     });
 }
+
+/*
+* Takes a still image of the current videostream
+* Output is saved to /tmp/camera_output.png.
+*/
+function cameraOutput()
+{
+    camera.read(function(err, im)
+    {
+        if(err){ console.log(err); }
+        var filename = './tmp/camera_output.png';
+        im.save(filename);
+    });
+}
+var cameraOutputInterval = setInterval(cameraOutput, 1000);
 
 /*
 * Handle the face recognition stream.
@@ -111,3 +126,13 @@ stream.read();
 
 /* Export functions */
 exports.takeStill = takeStill;
+
+/*
+var s = new opencv.ImageStream();
+s.on('data', function(matrix, buffer)
+{
+
+});
+
+stream.pipe(s);
+*/
