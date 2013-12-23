@@ -39,7 +39,7 @@ exports.say = function (message, callback)
 		talking = true;
 		exports.brain.collection.find({text:message, language:exports.robin.language.toString().substr(0,2)}).toArray(function(err, results)
 		{
-			if (err) throw err;
+			if (err) { throw err; }
             if(results.length > 0) { speak(results[0].buffer.buffer); }
 			else { requestGoogleAudio(message); }
 		});
