@@ -1,14 +1,12 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<script src="socket-io-min.js"></script>
 		<script src="jquery.js"></script>
 		<script>
 		var socket = io.connect('http://localhost:8092');
-		socket.on('log', function (data)
-		{
-			console.log(data);
-
-		});
+		var facesCanvas;
+		var facesCtx;
 		$(document).ready(function()
 		{
 			$("#basiccmdSubmit").click(function()
@@ -22,8 +20,53 @@
 				console.log("Send extended command: "+$("#extendedcmd").val());
 				socket.emit('extendedcmd', $("#extendedcmd").val().toUpperCase());
 			});
+
+			facesCanvas = document.getElementById("faces");
+			facesCtx = facesCanvas.getContext("2d");
+
+			socket.on('log', function (data)
+			{
+				console.log(data);
+			});
+
+			socket.on('image', function (data)
+			{
+				var image = document.getElementById('camera');
+				image.width = data.width;
+				image.height = data.height;
+				image.src = "data:image/jpeg;base64," + data.image;
+
+				var faces = document.getElementById('faces');
+				faces.width = data.width;
+				faces.height = data.height;
+
+				facesCtx.clearRect(0, 0, data.width, data.height);
+				for(var i = 0; i < data.faces.length; i++)
+				{
+					facesCtx.beginPath();
+					facesCtx.lineWidth = "1";
+					facesCtx.strokeStyle = "#FF0000";
+					facesCtx.rect(data.faces[i].x, data.faces[i].y, data.faces[i].width, data.faces[i].height);
+					facesCtx.stroke();
+				}
+
+			});
 		});
 		</script>
+		<style>
+			#cameraContainer
+			{
+				position:relative;
+			}
+			#faces, #camera
+			{
+				position:absolute;
+				margin:0px;
+				padding:0px;
+				left:0px;
+				top:0px;
+			}
+		</style>
 	</head>
 	<body>
 
@@ -36,6 +79,11 @@
 		<input id="extendedcmd" type="text" />
 		<button id="extendedcmdSubmit">Send</button>
 		<br />
+
+		<div id="cameraContainer">
+			<img id="camera" src="" />
+			<canvas id="faces"></canvas>
+		</div>
 
 	</body>
 </html>

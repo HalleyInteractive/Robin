@@ -51,6 +51,7 @@ ears.extendedcmd = runExtendedCommand;
 ears.robin = config.robin;
 ears.stt_basic_start();
 ears.brain = brain.brain;
+ears.plugins = plugins;
 
 /* Configure mouth variables */
 mouth.robin = config.robin;
@@ -59,6 +60,15 @@ mouth.brain = brain.brain;
 /* Configure server variables */
 server.basiccmd = runBasicCommand;
 server.extendedcmd = runExtendedCommand;
+
+eyes.server = server;
+
+console.defaultLog = console.log;
+console.log = function(log)
+{
+	console.defaultLog(log);
+	server.log(log);
+};
 
 /* Load plugins */
 for(var plugin in plugins)

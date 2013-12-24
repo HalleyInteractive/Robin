@@ -32,6 +32,9 @@ var lowerbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_module
 /* Open upper body recognition cascade file*/
 var upperbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_upperbody.xml');
 
+/* Detected faces in the camera image */
+var detectedFaces = [];
+
 /*
 * Takes a still image of the current videostream
 * Image is saved in tmp folder with the current timestamp
@@ -57,7 +60,8 @@ function cameraOutput()
     {
         if(err){ console.log(err); }
         var filename = './tmp/camera_output.png';
-        im.save(filename);
+        exports.server.emit('image', {width:im.width(), height:im.height(), faces:detectedFaces, image:im.toBuffer().toString('base64')});
+		im.save(filename);
     });
 }
 var cameraOutputInterval = setInterval(cameraOutput, 1000);
@@ -69,6 +73,8 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
 {
     var sx = 0;
     var sy = 0;
+
+	detectedFaces = faces;
 
     if(faces.length > 0)
     {
@@ -126,13 +132,3 @@ stream.read();
 
 /* Export functions */
 exports.takeStill = takeStill;
-
-/*
-var s = new opencv.ImageStream();
-s.on('data', function(matrix, buffer)
-{
-
-});
-
-stream.pipe(s);
-*/

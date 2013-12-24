@@ -20,7 +20,7 @@ var fs = require('fs');
 var mime = require('mime');
 
 /* Silences the output */
-//io.set('log level', 1);
+io.set('log level', 1);
 
 /* Set port number for the server */
 app.listen(8092);
@@ -84,3 +84,23 @@ function extendedcmd(cmd)
 	console.log("Received extended cmd from server: " + cmd);
 	exports.extendedcmd(cmd);
 }
+
+/**
+* Emits the msg to all connected sockets
+*
+* @method log
+* @param {*} msg Message to be logged
+*/
+function log(msg)
+{
+	io.sockets.emit('log', msg);
+}
+
+function emit(func, data)
+{
+	io.sockets.emit(func, data);
+}
+
+/* Exports */
+exports.log = log;
+exports.emit = emit;
