@@ -60,9 +60,12 @@ mouth.brain = brain.brain;
 /* Configure server variables */
 server.basiccmd = runBasicCommand;
 server.extendedcmd = runExtendedCommand;
+server.robin = config.robin;
 
+/* Configure eye variables  */
 eyes.server = server;
 
+/* Route all logs through RobinServer */
 console.defaultLog = console.log;
 console.log = function(log)
 {
