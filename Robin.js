@@ -15,7 +15,7 @@ var mouth = require('./RobinMouth.js');
 /* RobinBrain holds the connection to the database */
 var brain = require('./RobinBrain.js');
 /* RobinEyes controls the camera */
-var eyes = require('./RobinEyes.js');
+// var eyes = require('./RobinEyes.js');
 /* RobinConfig contains some configureation */
 var config = require('./RobinConfig.js');
 /* RobinServer starts a server that can be accessed from a remote computer */
@@ -42,7 +42,8 @@ var plugins =
     disappoint: require('./plugins/disappoint'),
     acknowledge: require('./plugins/acknowledge'),
     selfie: require('./plugins/selfie'),
-	timer: require('./plugins/timer')
+	timer: require('./plugins/timer'),
+	info: require('./plugins/info')
 };
 
 /* Configure ear variables */
@@ -63,7 +64,7 @@ server.extendedcmd = runExtendedCommand;
 server.robin = config.robin;
 
 /* Configure eye variables  */
-eyes.server = server;
+// eyes.server = server;
 
 /* Route all logs through RobinServer */
 console.defaultLog = console.log;
@@ -91,7 +92,7 @@ for(var plugin in plugins)
     plugins[plugin].plugins = plugins;
 	plugins[plugin].say = mouth.say;
 	plugins[plugin].ears = ears;
-    plugins[plugin].eyes = eyes;
+    // plugins[plugin].eyes = eyes;
 	plugins[plugin].robin = config.robin;
     plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
 }
