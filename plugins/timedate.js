@@ -7,8 +7,8 @@ function time()
 	console.log("Running the time callback");
 	var now = new Date();
 	if(exports.robin.language === 'nl-NL') {
-		exports.say("Het is nu " + dateFormat(now, "h uur MM minten en ss") + " seconden");
-	} else { exports.say("The time is " + dateFormat(now, "h:MM") + " and " + dateFormat(now, "ss") + " seconds"); }
+		exports.say("Het is nu " + dateFormat(now, "h uur MM minten en ss") + " seconden", null, false);
+	} else { exports.say("The time is " + dateFormat(now, "h:MM") + " and " + dateFormat(now, "ss") + " seconds", null, false); }
 }
 
 function date()
@@ -16,8 +16,8 @@ function date()
 	console.log("Running the date callback");
 	var now = new Date();
 	if(exports.robin.language === 'nl-NL') {
-		exports.say("Het is vandaag "  + dateFormat(now, "fullDate"));
-	} else { exports.say("Today is " + dateFormat(now, "fullDate")); }
+		exports.say("Het is vandaag "  + dateFormat(now, "fullDate"), null, false);
+	} else { exports.say("Today is " + dateFormat(now, "fullDate"), null, false); }
 }
 
 exports.extendedCommands = [];

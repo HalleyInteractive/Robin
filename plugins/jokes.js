@@ -13,7 +13,7 @@ function joke()
 		{
 			var joke = JSON.parse(chunk);
 			exports.say("Sure");
-			exports.say(joke.value.joke);
+			exports.say(joke.value.joke, null, false);
 		});
 	}).on('error', function(e)
 	{

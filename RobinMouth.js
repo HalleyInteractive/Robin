@@ -24,16 +24,21 @@ var que = [];
 /* Function to be called after the message has been played */
 var _callback = null;
 
+/* States if the audio clip should be cached to the database */
+var _cache = true;
+
 /**
 * Converts message to a spoken text
 *
 * @method say
 * @param {String} message Text to be spoken
 * @param {Function} callback Function to be called after the text has been spoken.
+* @param {Boolean} if set to false the audio clip will not be saved to the database
 */
-exports.say = function (message, callback)
+exports.say = function (message, callback, cache)
 {
     _callback = callback !== null && callback !== undefined ? callback : function(){};
+	_cache = cache === false ? false : true;
 	if(!talking)
 	{
 		talking = true;
@@ -46,7 +51,7 @@ exports.say = function (message, callback)
 	} else
 	{
 		console.log("Que message: " + message);
-		que.push({message:message, callback:callback});
+		que.push({message:message, callback:callback, cache:cache});
 	}
 };
 
@@ -100,7 +105,7 @@ function requestGoogleAudio(message)
             if (buffer.length === 0) { console.log("Retrieved empty data!"); }
             else
             {
-                exports.brain.collection.insert({text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer}, function() { console.log("Saved TTS"); });
+                if(_cache){ exports.brain.collection.insert({text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer}, function() { console.log("Saved TTS"); }); }
 				speak(buffer);
             }
         });
@@ -126,6 +131,6 @@ function doneTalking(callback)
 		console.log("Que not empty: ");
 		var m = que.shift();
 		console.log(m);
-		exports.say(m.message, m.callback);
+		exports.say(m.message, m.callback, m.cache);
 	}
 }
