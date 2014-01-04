@@ -1,18 +1,20 @@
-sudo apt-get install chmake -y
+sudo apt-get install cmake -y
 
-mkdir opencv-node
-# Clone fresh copy of OpenCV
-git clone https://github.com/Itseez/opencv.git opencv-node
+sudo apt-get update
+sudo apt-get install build-essential
+sudo apt-get install libavformat-dev
+sudo apt-get install x264 v4l-utils ffmpeg
+sudo apt-get install libcv2.3 libcvaux2.3 libhighgui2.3 python-opencv opencv-doc libcv-dev libcvaux-dev libhighgui-dev
 
-# Prepare build and install dirs
-mkdir opencv-node-build
-mkdir opencv-node-bin
-cd opencv-node-build
+wget http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.7/opencv-2.4.7.tar.gz
+tar -xzvf opencv-2.4.7.tar.gz
+cd opencv-2.4.7
 
-# Configure OpenCV
-cmake ../opencv-node -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=../opencv-node-bin
+mkdir build
+cd build
+cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D WITH_OPENGL=ON ..
 
-# Build and install OpenCV libs
-make install
+make
+sudo make install
 
-# sudo modprobe uvcvideo
+sudo modprobe uvcvideo
