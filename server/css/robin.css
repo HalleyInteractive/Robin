@@ -1,0 +1,12 @@
+#cameraContainer
+{
+    position:relative;
+}
+#faces, #camera
+{
+    position:absolute;
+    margin:0px;
+    padding:0px;
+    left:0px;
+    top:0px;
+}

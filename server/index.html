@@ -1,89 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<script src="socket-io-min.js"></script>
-		<script src="jquery.js"></script>
-		<script>
-		var socket = io.connect('http://localhost:8092');
-		var facesCanvas;
-		var facesCtx;
-		$(document).ready(function()
-		{
-			$("#basiccmdSubmit").click(function()
-			{
-				console.log("Send basic command: "+$("#basiccmd").val());
-				socket.emit('basiccmd', $("#basiccmd").val().toUpperCase());
-			});
-
-			$("#extendedcmdSubmit").click(function()
-			{
-				console.log("Send extended command: "+$("#extendedcmd").val());
-				socket.emit('extendedcmd', $("#extendedcmd").val().toUpperCase());
-			});
-
-			facesCanvas = document.getElementById("faces");
-			facesCtx = facesCanvas.getContext("2d");
-
-			socket.on('log', function (data)
-			{
-				console.log(data);
-			});
-
-			socket.on('image', function (data)
-			{
-				var image = document.getElementById('camera');
-				image.width = data.width;
-				image.height = data.height;
-				image.src = "data:image/jpeg;base64," + data.image;
-
-				var faces = document.getElementById('faces');
-				faces.width = data.width;
-				faces.height = data.height;
-
-				facesCtx.clearRect(0, 0, data.width, data.height);
-				for(var i = 0; i < data.faces.length; i++)
-				{
-					facesCtx.beginPath();
-					facesCtx.lineWidth = "1";
-					facesCtx.strokeStyle = "#FF0000";
-					facesCtx.rect(data.faces[i].x, data.faces[i].y, data.faces[i].width, data.faces[i].height);
-					facesCtx.stroke();
-				}
-
-			});
-		});
-		</script>
-		<style>
-			#cameraContainer
-			{
-				position:relative;
-			}
-			#faces, #camera
-			{
-				position:absolute;
-				margin:0px;
-				padding:0px;
-				left:0px;
-				top:0px;
-			}
-		</style>
+		<script src="js/socket-io-min.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/robin.js"></script>
+		<link href="css/robin.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/bootstrap-theme.min.css" rel="stylesheet">
 	</head>
 	<body>
+		<div class="container">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<div id="robin-name"><h1>{{settings.name}}</h1></div>
+					<dl id="robin-settings" class="dl-horizontal">
+						<dt>Version</dt>
+						<dd>{{settings.version}}</dd>
+						<dt>Language</dt>
+						<dd>{{settings.language}}</dd>
+					</dl>
+					<div id="robin-eyes" class="pull-right">
+						<div id="cameraContainer">
+							<img id="camera" src="" />
+							<canvas id="faces"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-2 column">
 
-		<label for="basiccmd">Basic command</label>
-		<input id="basiccmd" type="text" />
-		<button id="basiccmdSubmit">Send</button>
-		<br />
+				</div>
+				<div class="col-md-6 column">
+					<label for="basiccmd">Basic command</label>
+					<input id="basiccmd" type="text" placeholder="Basic command" />
+					<button id="basiccmdSubmit">Send</button>
+					<br />
 
-		<label for="extendedcmd">Extended command</label>
-		<input id="extendedcmd" type="text" />
-		<button id="extendedcmdSubmit">Send</button>
-		<br />
+					<label for="extendedcmd">Extended command</label>
+					<input id="extendedcmd" type="text" placeholder="Extended command" />
+					<button id="extendedcmdSubmit">Send</button>
+					<br />
+				</div>
+				<div class="col-md-4 column">
 
-		<div id="cameraContainer">
-			<img id="camera" src="" />
-			<canvas id="faces"></canvas>
+				</div>
+			</div>
 		</div>
-
 	</body>
 </html>
