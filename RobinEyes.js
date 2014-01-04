@@ -16,9 +16,9 @@ var opencv = require('opencv');
 var dateFormat = require('dateformat');
 
 /* Set up the videocapture */
-try { var camera = new opencv.VideoCapture(3); }
-catch(err) { try { var camera = new opencv.VideoCapture(4); }
-catch(err) { var camera = new opencv.VideoCapture(5); } }
+try { var camera = new opencv.VideoCapture(0); }
+catch(err) { try { var camera = new opencv.VideoCapture(1); }
+catch(err) { var camera = new opencv.VideoCapture(2); } }
 
 /* Set up the videostream */
 var stream = camera.toStream();
@@ -27,10 +27,10 @@ var stream = camera.toStream();
 var faceRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_frontalface_default.xml');
 
 /* Open lower body recognition cascade file*/
-var lowerbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_lowerbody.xml');
+// var lowerbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_lowerbody.xml');
 
 /* Open upper body recognition cascade file*/
-var upperbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_upperbody.xml');
+// var upperbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_upperbody.xml');
 
 /* Detected faces in the camera image */
 var detectedFaces = [];
@@ -64,7 +64,7 @@ function cameraOutput()
 		im.save(filename);
     });
 }
-var cameraOutputInterval = setInterval(cameraOutput, 1000);
+var cameraOutputInterval = setInterval(cameraOutput, 5000);
 
 /*
 * Handle the face recognition stream.
@@ -107,26 +107,26 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
 /*
 * Handle the lower body recognition stream.
 */
-lowerbodyRecognitionStream.on('data', function(lowerbodies, videomatrix)
-{
+// lowerbodyRecognitionStream.on('data', function(lowerbodies, videomatrix)
+// {
 	// console.log("I see " + lowerbodies.length + " lower bodies");
 	// Look up
-});
+// });
 
 /*
 * Handle the upper body recognition stream.
 */
-upperbodyRecognitionStream.on('data', function(upperbodies, videomatrix)
-{
+// upperbodyRecognitionStream.on('data', function(upperbodies, videomatrix)
+// {
 	// console.log("I see " + upperbodies.length + " upper bodies");
 	// Look up
-});
+// });
 
 /*
 * Pipe video stream through recognition handlers
 */
-stream.pipe(lowerbodyRecognitionStream);
-stream.pipe(upperbodyRecognitionStream);
+// stream.pipe(lowerbodyRecognitionStream);
+// stream.pipe(upperbodyRecognitionStream);
 stream.pipe(faceRecognitionStream);
 stream.read();
 
