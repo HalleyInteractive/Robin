@@ -2,7 +2,6 @@ function didNotUnderstand()
 {
     var response = [
         "Sorry, I did not get that",
-        "Sorry, what?",
         "I did not understand that",
         "That sounds like chinese"
     ];
