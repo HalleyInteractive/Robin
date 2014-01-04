@@ -19,11 +19,14 @@ var fs = require('fs');
 */
 var mime = require('mime');
 
+
+var handlebars = require('handlebars');
+
 /* Silences the output */
 io.set('log level', 1);
 
 /* Set port number for the server */
-app.listen(8092);
+app.listen(3141);
 
 /**
 * Handler for all the requests that are made to the server
@@ -45,8 +48,19 @@ function handler(request, response)
             return response.end('Error loading ' + file);
         }
         response.setHeader('Content-Type', content_type);
-		response.writeHead(200);
-		response.end(data);
+        response.writeHead(200);
+
+        if(content_type === 'text/html')
+        {
+            var source = { settings : exports.robin };
+            var pageBuilder = handlebars.compile(data.toString('utf-8'));
+            var pageText = pageBuilder(source);
+            response.write(pageText);
+            response.end();
+        } else
+        {
+            response.end(data);
+        }
     });
 }
 
