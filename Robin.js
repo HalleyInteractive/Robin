@@ -179,6 +179,7 @@ function runExtendedCommand(cmd)
     if(requestedNextExtendedInput === null || requestedNextExtendedInput === undefined)
     {
         var foundMatch = false;
+		cmd = convertToDigits(cmd);
         for(var i = 0; i < registeredExtendedCommands[config.robin.language].length; i++)
         {
             var match = cmd.match(registeredExtendedCommands[config.robin.language][i].command);
@@ -199,4 +200,31 @@ function runExtendedCommand(cmd)
         requestedNextExtendedInput(cmd);
         requestedNextExtendedInput = null;
     }
+}
+
+function convertToDigits(input)
+{
+	var digits =
+	[
+		{text:"one", number:1},
+		{text:"two", number:2},
+		{text:"three", number:3},
+		{text:"four", number:4},
+		{text:"five", number:5},
+		{text:"six", number:6},
+		{text:"seven", number:7},
+		{text:"eight", number:8},
+		{text:"nine", number:9},
+		{text:"zero", number:0},
+		{text:"null", number:0}
+	];
+
+	for(var i = 0; i < digits.length; i++)
+	{
+		var reg = new RegExp(digits[i].text, "gi");
+		input = input.replace(reg, digits[i].number);
+	}
+
+	return input;
+
 }
