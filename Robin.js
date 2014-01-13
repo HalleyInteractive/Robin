@@ -125,7 +125,6 @@ for(var language in registeredBasicCommands)
 */
 function requestNextExtendedInput(callback)
 {
-    console.log("Getting ready for next input");
     requestedNextExtendedInput = callback;
     ears.stt_basic_stop();
 	ears.stt_extended_start();

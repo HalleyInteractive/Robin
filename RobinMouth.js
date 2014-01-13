@@ -100,7 +100,6 @@ function requestGoogleAudio(message)
         var chunks = 0;
         res.on('data', function(chunk) { chunks++; data.push(chunk); }).on('end', function()
         {
-            console.log("DATA");
             var buffer = Buffer.concat(data);
             if (buffer.length === 0) { console.log("Retrieved empty data!"); }
             else

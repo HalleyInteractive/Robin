@@ -111,10 +111,8 @@ function stt_extended_start()
 		stt_extended.stderr.on('data', function (data) { if (printerrors) { console.log('stderr: ' + data); } });
 		stt_extended.on('close', function (code)
 		{
-			console.log('child process exited with code ' + code);
 			if(code === 0)
 			{
-				console.log("See what google makes of it");
 				// TODO: Stop process on time out
 				google({lang:exports.robin.language, file: 'output.wav'}, function (err, results)
 				{
