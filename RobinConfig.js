@@ -9,7 +9,7 @@
 */
 var Robin =
 {
-	name: "James",
+	name: "Lisa",
 	language: "en-US",
 	version: '0.0.1',
 	lastCommand:{}
