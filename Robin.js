@@ -1,4 +1,4 @@
-/* globals require */
+/* globals require, __dirname */
 
 /*
 * Robin.js
@@ -30,21 +30,16 @@ var registeredBasicCommands = [];
 /* Holds all the registered extended commands */
 var registeredExtendedCommands = [];
 
-/* A list of all plugins that are included */
-var plugins =
-{
-	polite: require('./plugins/polite'),
-	timedate: require('./plugins/timedate'),
-	repeat: require('./plugins/repeat'),
-	jokes: require('./plugins/jokes'),
-	hello: require('./plugins/hello'),
-	calculate: require('./plugins/calculate'),
-    disappoint: require('./plugins/disappoint'),
-    acknowledge: require('./plugins/acknowledge'),
-    selfie: require('./plugins/selfie'),
-	timer: require('./plugins/timer'),
-	info: require('./plugins/info')
-};
+/* A list with the included plugins. Here you can access the plugins */
+var plugins = {};
+
+/** A list of all the information on the plugins.
+* @param {String} pluginlist.name
+* @param {String} pluginlist.description
+* @param {String} pluginlist.path
+* @param {String} pluginlist.version
+*/
+var pluginlist = {};
 
 /* Configure ear variables */
 ears.basiccmd = runBasicCommand;
@@ -74,46 +69,66 @@ console.log = function(log)
 	server.log(log);
 };
 
-/* Load plugins */
-for(var plugin in plugins)
+
+fs.readFile(__dirname + '/plugins/plugins.json', 'utf8', function (err, data)
 {
-	for(var language in plugins[plugin].basicCommands)
+	if (err) { console.log('Error: ' + err); return; }
+	pluginlist = JSON.parse(data);
+	for(var plugin in pluginlist)
 	{
-		if(!registeredBasicCommands[language]){ registeredBasicCommands[language] = []; }
-		registeredBasicCommands[language] = registeredBasicCommands[language].concat(plugins[plugin].basicCommands[language]);
+		plugins[plugin] = require(pluginlist[plugin].path);
 	}
-
-	for(var language in plugins[plugin].extendedCommands)
-	{
-		if(!registeredExtendedCommands[language]){ registeredExtendedCommands[language] = []; }
-		registeredExtendedCommands[language] = registeredExtendedCommands[language].concat(plugins[plugin].extendedCommands[language]);
-	}
-
-    plugins[plugin].plugins = plugins;
-	plugins[plugin].say = mouth.say;
-	plugins[plugin].ears = ears;
-    // plugins[plugin].eyes = eyes;
-	plugins[plugin].robin = config.robin;
-    plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
-}
-
-/* Create a corpus file **/
-var stream = fs.createWriteStream("Dictionary/Robin.corpus");
-stream.once('open', function()
-{
-	for(var i = 0; i < registeredBasicCommands[config.robin.language].length; i++)
-	{
-		var command = registeredBasicCommands[config.robin.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
-		stream.write(command + "\n");
-	}
-
-	stream.end();
+	registerCommands();
 });
 
-/* Add Robins name to the basic commands */
-for(var language in registeredBasicCommands)
+
+/**
+* Adds all the commands listed in the plugins to the registered commands list.
+* @method registerCommands
+*/
+function registerCommands()
 {
-	registeredBasicCommands[language] = registeredBasicCommands[language].concat([{command:config.robin.name.toUpperCase(), callback:listenForExtendedCommand}]);
+	for(var plugin in plugins)
+	{
+		var language;
+		for(language in plugins[plugin].basicCommands)
+		{
+			if(!registeredBasicCommands[language]){ registeredBasicCommands[language] = []; }
+			registeredBasicCommands[language] = registeredBasicCommands[language].concat(plugins[plugin].basicCommands[language]);
+		}
+
+		for(language in plugins[plugin].extendedCommands)
+		{
+			if(!registeredExtendedCommands[language]){ registeredExtendedCommands[language] = []; }
+			registeredExtendedCommands[language] = registeredExtendedCommands[language].concat(plugins[plugin].extendedCommands[language]);
+		}
+
+		plugins[plugin].plugins = plugins;
+		plugins[plugin].say = mouth.say;
+		plugins[plugin].ears = ears;
+		// plugins[plugin].eyes = eyes;
+		plugins[plugin].robin = config.robin;
+		plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
+	}
+
+	/* Add Robins name to the basic commands */
+	for(var lang in registeredBasicCommands)
+	{
+		registeredBasicCommands[lang] = registeredBasicCommands[lang].concat([{command:config.robin.name.toUpperCase(), callback:listenForExtendedCommand}]);
+	}
+
+	/* Create a corpus file **/
+	var stream = fs.createWriteStream("Dictionary/Robin.corpus");
+	stream.once('open', function()
+	{
+		for(var i = 0; i < registeredBasicCommands[config.robin.language].length; i++)
+		{
+			var command = registeredBasicCommands[config.robin.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
+			stream.write(command + "\n");
+		}
+
+		stream.end();
+	});
 }
 
 /**
