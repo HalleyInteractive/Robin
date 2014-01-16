@@ -69,7 +69,7 @@ console.log = function(log)
 	server.log(log);
 };
 
-
+/* Reads plugins json file and loads the plugins to plugins variable */
 fs.readFile(__dirname + '/plugins/plugins.json', 'utf8', function (err, data)
 {
 	if (err) { console.log('Error: ' + err); return; }
@@ -216,6 +216,12 @@ function runExtendedCommand(cmd)
     }
 }
 
+/**
+* Converts all digits 1,2,3... to written digits one,two,three...
+*
+* @method convertToDigits
+* @param {String} input
+*/
 function convertToDigits(input)
 {
 	var digits =
