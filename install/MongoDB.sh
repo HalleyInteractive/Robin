@@ -49,7 +49,7 @@
 # scons -c
 
 # Install the needed packages on Raspian:
-sudo apt-get install git-core build-essential scons libpcre++-dev xulrunner-dev libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
+sudo apt-get install git-core build-essential scons libpcre++-dev xulrunner-dev libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev -y
 
 # Checkout this repo:
 git clone git://github.com/RickP/mongopi.git
