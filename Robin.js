@@ -1,4 +1,4 @@
-/* globals require, __dirname */
+/* globals require, __dirname, process */
 
 /*
 * Robin.js
@@ -15,7 +15,8 @@ var mouth = require('./RobinMouth.js');
 /* RobinBrain holds the connection to the database */
 var brain = require('./RobinBrain.js');
 /* RobinEyes controls the camera */
-// var eyes = require('./RobinEyes.js');
+var eyes = require('./RobinEyes.js');
+
 /* RobinConfig contains some configureation */
 var config = require('./RobinConfig.js');
 /* RobinServer starts a server that can be accessed from a remote computer */
@@ -59,7 +60,7 @@ server.extendedcmd = runExtendedCommand;
 server.robin = config.robin;
 
 /* Configure eye variables  */
-// eyes.server = server;
+eyes.server = server;
 
 /* Route all logs through RobinServer */
 console.defaultLog = console.log;
@@ -106,7 +107,7 @@ function registerCommands()
 		plugins[plugin].plugins = plugins;
 		plugins[plugin].say = mouth.say;
 		plugins[plugin].ears = ears;
-		// plugins[plugin].eyes = eyes;
+		plugins[plugin].eyes = eyes;
 		plugins[plugin].robin = config.robin;
 		plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
 	}
@@ -248,3 +249,27 @@ function convertToDigits(input)
 	return input;
 
 }
+
+
+process.stdin.resume(); // So the program will not close instantly
+process.on('exit', function ()
+{
+	console.log("Clean up before exit");
+	eyes.exit();
+    brain.exit();
+	ears.stt_basic_stop();
+	ears.stt_extended_stop();
+});
+
+// Catches ctrl+c event
+process.on('SIGINT', function ()
+{
+    process.exit();
+});
+
+//catches uncaught exceptions
+process.on('uncaughtException',function(e)
+{
+    console.log(e.stack);
+    process.exit();
+});

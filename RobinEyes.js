@@ -132,3 +132,10 @@ stream.read();
 
 /* Export functions */
 exports.takeStill = takeStill;
+exports.exit = function()
+{
+	/* Clean up open connection */
+	faceRecognitionStream = null;
+	stream = null;
+	camera = null;
+};
