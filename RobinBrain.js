@@ -5,20 +5,11 @@
 * Sets up the connection to the MongoDB
 */
 
-/* MongoClient */
-var MongoClient = require('mongodb').MongoClient;
-MongoClient.connect('mongodb://127.0.0.1:27017/robin', function(err, db)
-{
-	if(err) { throw err; }
-	exports.brain.db = db;
-	exports.brain.collection = db.collection('voice');
-	console.log("Connected to the brain");
-});
-
-/* Module exports */
+var arango = require('arango');
+var db = arango.Connection("http://127.0.0.1:8529",{_name:"Robin"});
 exports.brain = {};
+exports.brain.db = db;
 exports.exit = function()
 {
-	/* Clean up open connection */
-	exports.brain.db.close();
+
 };

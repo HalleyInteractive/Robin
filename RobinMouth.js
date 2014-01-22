@@ -42,11 +42,15 @@ exports.say = function (message, callback, cache)
 	if(!talking)
 	{
 		talking = true;
-		exports.brain.collection.find({text:message, language:exports.robin.language.toString().substr(0,2)}).toArray(function(err, results)
+		exports.brain.db.query.exec("FOR v in Voice FILTER v.text == '"+message+"' && v.language == '"+exports.robin.language.toString().substr(0,2)+"' LIMIT 1 RETURN v.buffer", function(err, ret)
 		{
-			if (err) { throw err; }
-            if(results.length > 0) { speak(results[0].buffer.buffer); }
-			else { requestGoogleAudio(message); }
+			if(err || ret.result.length === 0)
+			{
+				requestGoogleAudio(message);
+			} else
+			{
+				speak(new Buffer(ret.result[0]));
+			}
 		});
 	} else
 	{
@@ -71,7 +75,7 @@ function speak(buffer)
         {
             tts = spawn('mplayer', ["input.mp3"]);
             tts.on('error', function() { console.log("Error playing audio"); });
-            tts.on('close', function (code) { console.log('child process exited with code ' + code); doneTalking(_callback); });
+            tts.on('close', function (/*code*/) { /* console.log('child process exited with code ' + code); */ doneTalking(_callback); });
         }
     });
 }
@@ -104,7 +108,16 @@ function requestGoogleAudio(message)
             if (buffer.length === 0) { console.log("Retrieved empty data!"); }
             else
             {
-                if(_cache){ exports.brain.collection.insert({text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer}, function() { console.log("Saved TTS"); }); }
+				if(_cache)
+				{
+					exports.brain.db.document.create('Voice', {text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer}).then(function(res)
+					{
+						console.log("Created database entry: %j", res);
+					},function(err)
+					{
+						console.log("Error creating database entry: %j", err);
+					});
+				}
 				speak(buffer);
             }
         });
