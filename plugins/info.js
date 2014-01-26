@@ -18,7 +18,19 @@ function getIpAdress()
 					var tmpArr = details.address.split(".");
 					for(var i = 0; i < tmpArr.length; i++)
 					{
-						if(i !== 0) { exports.say("dot"); }
+						if(i !== 0)
+						{
+							switch(global.robin.language)
+							{
+							case "en-US":
+							default:
+								exports.say("dot");
+							break;
+							case "nl-NL":
+								exports.say("punt");
+							break;
+							}
+						}
 						exports.say(tmpArr[i]);
 					}
 				}
@@ -30,23 +42,63 @@ function getIpAdress()
 
 function getVersion()
 {
-	exports.say("I am at version: ");
+	switch(global.robin.language)
+	{
+	case "en-US":
+	default:
+		exports.say("I am at version: ");
+	break;
+	case "nl-NL":
+		exports.say("Ik draai op versie: ");
+	break;
+	}
 	var tmpArr = global.robin.version.split(".");
 	for(var i = 0; i < tmpArr.length; i++)
 	{
-		if(i !== 0) { exports.say("dot"); }
+		if(i !== 0)
+		{
+			switch(global.robin.language)
+			{
+			case "en-US":
+			default:
+				exports.say("dot");
+			break;
+			case "nl-NL":
+				exports.say("punt");
+			break;
+			}
+		}
 		exports.say(tmpArr[i]);
 	}
 }
 
 function getName()
 {
-	exports.say("My name is " + global.robin.name);
+
+	switch(global.robin.language)
+	{
+	case "en-US":
+	default:
+		exports.say("My name is " + global.robin.name);
+	break;
+	case "nl-NL":
+		exports.say("Mijn naam is " + global.robin.name);
+	break;
+	}
 }
 
 function getLanguage()
 {
-	exports.say("My current language is " + global.robin.language);
+	switch(global.robin.language)
+	{
+	case "en-US":
+	default:
+		exports.say("My current language is " + global.robin.language);
+	break;
+	case "nl-NL":
+		exports.say("Mijn huidige taal is " + global.robin.language);
+	break;
+	}
 }
 
 exports.extendedCommands = [];
@@ -56,4 +108,15 @@ exports.extendedCommands['en-US'] =
 	{command:"YOUR VERSION", callback:getVersion},
 	{command:"YOUR NAME", callback:getName},
 	{command:"YOUR LANGUAGE", callback:getLanguage}
+];
+exports.extendedCommands['nl-NL'] =
+[
+	{command:"JE IP ADRES", callback:getIpAdress},
+	{command:"JOUW IP ADRES", callback:getIpAdress},
+	{command:"JE VERSIE", callback:getVersion},
+	{command:"JOUW VERSIE", callback:getVersion},
+	{command:"JE NAAM", callback:getName},
+	{command:"JOUW NAAM", callback:getName},
+	{command:"JE TAAL", callback:getLanguage},
+	{command:"JOUW TAAL", callback:getLanguage}
 ];
