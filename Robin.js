@@ -15,7 +15,7 @@ var mouth = require('./RobinMouth.js');
 /* RobinBrain holds the connection to the database */
 var brain = require('./RobinBrain.js');
 /* RobinEyes controls the camera */
-//var eyes = require('./RobinEyes.js');
+var eyes = require('./RobinEyes.js');
 
 /* RobinConfig contains some configureation */
 var config = require('./RobinConfig.js');
@@ -61,7 +61,7 @@ config.brain = brain.brain;
 config.init();
 
 /* Configure eye variables  */
-//eyes.server = server;
+eyes.server = server;
 
 /* Route all logs through RobinServer */
 console.defaultLog = console.log;
@@ -108,7 +108,7 @@ function registerCommands()
 		plugins[plugin].plugins = plugins;
 		plugins[plugin].say = mouth.say;
 		plugins[plugin].ears = ears;
-		//plugins[plugin].eyes = eyes;
+		plugins[plugin].eyes = eyes;
 		plugins[plugin].robin = global.robin;
 		plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
 	}
@@ -256,7 +256,7 @@ process.stdin.resume(); // So the program will not close instantly
 process.on('exit', function ()
 {
 	console.log("Clean up before exit");
-	//eyes.exit();
+	eyes.exit();
     brain.exit();
 	ears.stt_basic_stop();
 	ears.stt_extended_stop();
