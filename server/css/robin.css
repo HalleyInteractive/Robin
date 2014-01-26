@@ -6,11 +6,6 @@ html, body
 	height:100%;
 }
 
-body
-{
-	background-image:url('../img/background.jpg');
-	background-size:cover;
-}
 /*
 #cameraContainer
 {
