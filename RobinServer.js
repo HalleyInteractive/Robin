@@ -52,7 +52,7 @@ function handler(request, response)
 
         if(content_type === 'text/html')
         {
-            var source = { settings : exports.robin };
+            var source = { settings : global.robin };
             var pageBuilder = handlebars.compile(data.toString('utf-8'));
             var pageText = pageBuilder(source);
             response.write(pageText);

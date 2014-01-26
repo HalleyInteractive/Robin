@@ -3,7 +3,7 @@
 function plus(cmd)
 {
 	console.log("Running the PLUS calculate callback");
-	switch(exports.robin.language)
+	switch(global.robin.language)
 	{
 	case "en-US":
 	default:
@@ -18,7 +18,7 @@ function plus(cmd)
 function minus(cmd)
 {
 	console.log("Running the MINUS calculate callback");
-	switch(exports.robin.language)
+	switch(global.robin.language)
 	{
 	case "en-US":
 	default:
@@ -33,7 +33,7 @@ function minus(cmd)
 function divided(cmd)
 {
 	console.log("Running the DIVIDED calculate callback");
-	switch(exports.robin.language)
+	switch(global.robin.language)
 	{
 	case "en-US":
 	default:
@@ -48,7 +48,7 @@ function divided(cmd)
 function times(cmd)
 {
 	console.log("Running the TIMES calculate callback");
-	switch(exports.robin.language)
+	switch(global.robin.language)
 	{
 	case "en-US":
 	default:

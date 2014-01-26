@@ -42,7 +42,7 @@ exports.say = function (message, callback, cache)
 	if(!talking)
 	{
 		talking = true;
-		exports.brain.db.query.exec("FOR v in Voice FILTER v.text == '"+message+"' && v.language == '"+exports.robin.language.toString().substr(0,2)+"' LIMIT 1 RETURN v.buffer", function(err, ret)
+		exports.brain.db.query.exec("FOR v in Voice FILTER v.text == '"+message+"' && v.language == '"+global.robin.language.toString().substr(0,2)+"' LIMIT 1 RETURN v.buffer", function(err, ret)
 		{
 			if(err || ret.result.length === 0)
 			{
@@ -90,7 +90,7 @@ function speak(buffer)
 function requestGoogleAudio(message)
 {
     var ur = url.parse("translate.google.com/translate_tts", true);
-    ur.query = { 'tl': exports.robin.language.toString().substr(0,2), 'q': message };
+    ur.query = { 'tl': global.robin.language.toString().substr(0,2), 'q': message };
     var formated = url.parse(url.format(ur), true);
     console.log(formated.path);
     var options = {
@@ -110,7 +110,7 @@ function requestGoogleAudio(message)
             {
 				if(_cache)
 				{
-					exports.brain.db.document.create('Voice', {text:message, language:exports.robin.language.toString().substr(0,2), buffer:buffer}).then(function(res)
+					exports.brain.db.document.create('Voice', {text:message, language:global.robin.language.toString().substr(0,2), buffer:buffer}).then(function(res)
 					{
 						console.log("Created database entry: %j", res);
 					},function(err)

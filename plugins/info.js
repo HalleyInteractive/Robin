@@ -30,7 +30,7 @@ function getIpAdress()
 function getVersion()
 {
 	exports.say("I am at version: ");
-	var tmpArr = exports.robin.version.split(".");
+	var tmpArr = global.robin.version.split(".");
 	for(var i = 0; i < tmpArr.length; i++)
 	{
 		if(i !== 0) { exports.say("dot"); }
@@ -40,12 +40,12 @@ function getVersion()
 
 function getName()
 {
-	exports.say("My name is " + exports.robin.name);
+	exports.say("My name is " + global.robin.name);
 }
 
 function getLanguage()
 {
-	exports.say("My current language is " + exports.robin.language);
+	exports.say("My current language is " + global.robin.language);
 }
 
 exports.extendedCommands = [];

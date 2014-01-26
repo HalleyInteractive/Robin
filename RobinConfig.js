@@ -1,4 +1,4 @@
-/* globals exports */
+/* globals exports, global */
 
 /**
 * Contains the settings for Robin
@@ -15,5 +15,28 @@ var Robin =
 	lastCommand:{}
 };
 
-/* Export Robin to robin */
-exports.robin = Robin;
+function init()
+{
+	exports.brain.db.query.exec("FOR s in Settings LIMIT 1 RETURN s", function(err, ret)
+	{
+		if(err || ret.result.length === 0)
+		{
+			exports.brain.db.document.create('Settings', Robin).then(function(res)
+			{
+				console.log("Created database config entry: %j", res);
+			},function(err)
+			{
+				console.log("Error creating database config entry: %j", err);
+			});
+		} else
+		{
+			global.robin = ret.result[0];
+		}
+	});
+}
+
+/* Export init function */
+exports.init = init;
+
+/* Global Robin to robin */
+global.robin = Robin;

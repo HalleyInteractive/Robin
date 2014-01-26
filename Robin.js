@@ -45,19 +45,20 @@ var pluginlist = {};
 /* Configure ear variables */
 ears.basiccmd = runBasicCommand;
 ears.extendedcmd = runExtendedCommand;
-ears.robin = config.robin;
 ears.stt_basic_start();
 ears.brain = brain.brain;
 ears.plugins = plugins;
 
 /* Configure mouth variables */
-mouth.robin = config.robin;
 mouth.brain = brain.brain;
 
 /* Configure server variables */
 server.basiccmd = runBasicCommand;
 server.extendedcmd = runExtendedCommand;
-server.robin = config.robin;
+
+/* Configure config variables */
+config.brain = brain.brain;
+config.init();
 
 /* Configure eye variables  */
 //eyes.server = server;
@@ -108,23 +109,23 @@ function registerCommands()
 		plugins[plugin].say = mouth.say;
 		plugins[plugin].ears = ears;
 		//plugins[plugin].eyes = eyes;
-		plugins[plugin].robin = config.robin;
+		plugins[plugin].robin = global.robin;
 		plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
 	}
 
 	/* Add Robins name to the basic commands */
 	for(var lang in registeredBasicCommands)
 	{
-		registeredBasicCommands[lang] = registeredBasicCommands[lang].concat([{command:config.robin.name.toUpperCase(), callback:listenForExtendedCommand}]);
+		registeredBasicCommands[lang] = registeredBasicCommands[lang].concat([{command:global.robin.name.toUpperCase(), callback:listenForExtendedCommand}]);
 	}
 
 	/* Create a corpus file **/
 	var stream = fs.createWriteStream("Dictionary/Robin.corpus");
 	stream.once('open', function()
 	{
-		for(var i = 0; i < registeredBasicCommands[config.robin.language].length; i++)
+		for(var i = 0; i < registeredBasicCommands[global.robin.language].length; i++)
 		{
-			var command = registeredBasicCommands[config.robin.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
+			var command = registeredBasicCommands[global.robin.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
 			stream.write(command + "\n");
 		}
 
@@ -170,14 +171,14 @@ function listenForExtendedCommand(cmd)
 function runBasicCommand(cmd)
 {
     var foundMatch = false;
-	for(var i = 0; i < registeredBasicCommands[config.robin.language].length; i++)
+	for(var i = 0; i < registeredBasicCommands[global.robin.language].length; i++)
 	{
-		var match = cmd.match(registeredBasicCommands[config.robin.language][i].command);
+		var match = cmd.match(registeredBasicCommands[global.robin.language][i].command);
 		if(match)
 		{
 			console.log("Found a registered command");
             foundMatch = true;
-			registeredBasicCommands[config.robin.language][i].callback(match);
+			registeredBasicCommands[global.robin.language][i].callback(match);
 		}
 	}
     if(!foundMatch){ plugins.disappoint.didNotUnderstand(); }
@@ -195,17 +196,17 @@ function runExtendedCommand(cmd)
     {
         var foundMatch = false;
 		cmd = convertToDigits(cmd);
-        for(var i = 0; i < registeredExtendedCommands[config.robin.language].length; i++)
+        for(var i = 0; i < registeredExtendedCommands[global.robin.language].length; i++)
         {
-            var match = cmd.match(registeredExtendedCommands[config.robin.language][i].command);
+            var match = cmd.match(registeredExtendedCommands[global.robin.language][i].command);
             if(match)
             {
                 console.log("Found a extended registered command");
                 foundMatch = true;
-                registeredExtendedCommands[config.robin.language][i].callback(match);
-                if(registeredExtendedCommands[config.robin.language][i].save !== false)
+                registeredExtendedCommands[global.robin.language][i].callback(match);
+                if(registeredExtendedCommands[global.robin.language][i].save !== false)
                 {
-                    config.lastCommand = registeredExtendedCommands[config.robin.language][i];
+                    config.lastCommand = registeredExtendedCommands[global.robin.language][i];
                 }
             }
         }

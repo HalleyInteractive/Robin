@@ -114,7 +114,7 @@ function stt_extended_start()
 			if(code === 0)
 			{
 				// TODO: Stop process on time out
-				google({lang:exports.robin.language, file: 'output.wav'}, function (err, results)
+				google({lang:global.robin.language, file: 'output.wav'}, function (err, results)
 				{
 					if(results[0] !== undefined && results.length > 0)
 					{

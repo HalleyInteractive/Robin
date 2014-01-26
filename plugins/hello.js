@@ -22,7 +22,7 @@ function goodbye()
 
 function greet(cmd)
 {
-	exports.say("Hello " + cmd[1] + ", my name is " + exports.robin.name);
+	exports.say("Hello " + cmd[1] + ", my name is " + global.robin.name);
     exports.say("Are you doing ok today?", function(){
     exports.requestNextExtendedInput(doingOk);
     });
@@ -56,7 +56,7 @@ function totziens()
 
 function groet(cmd)
 {
-	exports.say("Hallo " + cmd[1] + ", mijn naam is " + exports.robin.name);
+	exports.say("Hallo " + cmd[1] + ", mijn naam is " + global.robin.name);
 }
 
 
