@@ -1,4 +1,4 @@
-/* globals exports, require */
+/* globals exports, require, global */
 
 var dateFormat = require('dateformat');
 
@@ -23,8 +23,8 @@ function goodbye()
 function greet(cmd)
 {
 	exports.say("Hello " + cmd[1] + ", my name is " + global.robin.name);
-    exports.say("Are you doing ok today?", function(){
-    exports.requestNextExtendedInput(doingOk);
+    exports.say("Are you doing ok today?", function() {
+		exports.requestNextExtendedInput(doingOk);
     });
 }
 

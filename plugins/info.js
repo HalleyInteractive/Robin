@@ -1,4 +1,5 @@
-var os=require('os');
+/* globals exports, require, global */
+var os = require('os');
 
 function getIpAdress()
 {
