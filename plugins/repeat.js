@@ -1,4 +1,4 @@
-/* globals exports */
+/* globals exports, global */
 
 function repeat()
 {
