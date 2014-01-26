@@ -1,3 +1,5 @@
+/* globals exports, global */
+
 var confirm = {
     "en-US":
     [
@@ -32,12 +34,12 @@ var decline = {
         "NOPE",
         "FOUT"
     ]
-}
+};
 
 function acknowledge(cmd)
 {
-    for(var i = 0; i < confirm[global.robin.language].length; i++) { if(cmd.match(confirm[global.robin.language][i])){ return 1; } }
-    for(var i = 0; i < decline[global.robin.language].length; i++) { if(cmd.match(decline[global.robin.language][i])){ return 0; } }
+    for(var c = 0; c < confirm[global.robin.language].length; c++) { if(cmd.match(confirm[global.robin.language][c])){ return 1; } }
+    for(var d = 0; d < decline[global.robin.language].length; d++) { if(cmd.match(decline[global.robin.language][d])){ return 0; } }
     return -1;
 }
 
