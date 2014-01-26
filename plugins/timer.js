@@ -34,12 +34,31 @@ function timer(cmd)
 		if(minutes > 0) { timerlength += minutes.toString() + (minutes == 1 ? " minute" : " minutes"); }
 		if(seconds > 0) { timerlength += seconds.toString() + (seconds == 1 ? " second" : " seconds"); }
 
-		exports.say("Timer is set for " + timerlength);
+		switch(global.robin.language)
+		{
+		case "en-US":
+		default:
+			exports.say("Timer is set for " + timerlength);
+		break;
+		case "nl-NL":
+			exports.say("Wekker is gezet voor over " + timerlength);
+		break;
+		}
 
 		timerInterval = setInterval(checkTimer, 1000);
 	} else
 	{
-		exports.say("Timer is already running, cancel the timer first");
+		switch(global.robin.language)
+		{
+		case "en-US":
+		default:
+			exports.say("Timer is already running, cancel the timer first");
+		break;
+		case "nl-NL":
+			exports.say("Er loopt al een wekker, annuleer deze eerst");
+		break;
+		}
+
 	}
 }
 
@@ -57,7 +76,15 @@ function checkTimer()
 	if(diff.getSeconds() <= 0 && diff.getMinutes() <= 0 && diff.getHours() <= 0)
 	{
 		console.log("Timer done");
-		exports.say(timerlength + " has passed. Timer is done.");
+		switch(global.robin.language)
+		{
+		case "en-US":
+		default:
+			exports.say(timerlength + " has passed. Timer is done.");
+		break;
+		case "nl-NL":
+			exports.say(timerlength + " is voorbij. De wekker is klaar.");
+		break;
 		clearInterval(timerInterval);
 		timerInterval = undefined;
 	}
@@ -83,8 +110,21 @@ function timeLeft()
 		endTime.getMinutes() - now.getMinutes() /* Minutes */,
 		endTime.getSeconds() - now.getSeconds() /* Seconds */);
 
-	exports.say("There is " + diff.getHours() + " hours " + diff.getMinutes() + " minutes and " + diff.getSeconds() + " seconds left on the timer");
 
+	switch(global.robin.language)
+	{
+	case "en-US":
+	default:
+		exports.say("There is " + diff.getHours() + " hours ");
+		exports.say(diff.getMinutes() + " minutes");
+		exports.say("and " + diff.getSeconds() + " seconds left on the timer");
+	break;
+	case "nl-NL":
+		exports.say("Er is " + diff.getHours() + " uur ");
+		exports.say(diff.getMinutes() + " minuten");
+		exports.say("en " + diff.getSeconds() + " seconden over op de wekker");
+	break;
+	}
 }
 
 function addToTimer(property, value)
@@ -118,7 +158,17 @@ function stopTimer()
 {
 	clearInterval(timerInterval);
 	timerInterval = undefined;
-	exports.say("Timer canceled");
+
+	switch(global.robin.language)
+	{
+	case "en-US":
+	default:
+		exports.say("Timer canceled");
+	break;
+	case "nl-NL":
+		exports.say("Wekker geannuleerd");
+	break;
+	}
 }
 
 exports.extendedCommands = [];
@@ -130,5 +180,15 @@ exports.extendedCommands['en-US'] =
 	{command:"CANCEL TIMER", callback:stopTimer},
 	{command:"TIME LEFT ON THE TIMER", callback:timeLeft},
 	{command:"TIME IS THERE LEFT ON THE TIMER", callback:timeLeft},
-	{command:"TIME IS LEFT ON THE TIMER", callback:timeLeft},
+	{command:"TIME IS LEFT ON THE TIMER", callback:timeLeft}
+];
+exports.extendedCommands['nl-NL'] =
+[
+	{command:"WEKKER VOOR OVER (\\d+) (MINUTEN|SECONDEN|UREN|MINUUT|SECONDE|UUR)$", callback:timer},
+	{command:"TIMER FOR (\\d+) (MINUTEN|SECONDEN|UREN|MINUUT|SECONDE|UUR) EN (\\d+) (MINUTEN|SECONDEN|UREN|MINUUT|SECONDE|UUR)", callback:timer},
+	{command:"STOP WEKKER", callback:stopTimer},
+	{command:"ANNULEER WEKKEr", callback:stopTimer},
+	{command:"TIJD OVER OP DE WEKKER", callback:timeLeft},
+	{command:"TIJD IS ER OVER OP DE WEKKER", callback:timeLeft},
+	{command:"WEKKER AFLOOFT", callback:timeLeft}
 ];
