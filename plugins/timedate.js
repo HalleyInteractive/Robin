@@ -1,4 +1,4 @@
-/* globals exports, require */
+/* globals exports, require, global */
 
 var dateFormat = require('dateformat');
 
