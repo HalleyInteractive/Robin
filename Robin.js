@@ -1,4 +1,4 @@
-/* globals require, __dirname, process */
+/* globals require, __dirname, process, global */
 
 /*
 * Robin.js
