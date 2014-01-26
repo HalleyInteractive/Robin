@@ -3,7 +3,7 @@
 		"name": "Acknowledge",
 		"description": "",
 		"path": "./plugins/acknowledge",
-		"version": "1.0.1"
+		"version": "1.0.2"
 	},
 	"calculate": {
 		"name": "Calculate",
@@ -15,7 +15,7 @@
 		"name": "Disappoint",
 		"description": "",
 		"path": "./plugins/disappoint",
-		"version": "1.0.0"
+		"version": "1.0.2"
 	},
 	"hello": {
 		"name": "Hello",
@@ -27,7 +27,7 @@
 		"name": "Info",
 		"description": "",
 		"path": "./plugins/info",
-		"version": "1.0.1"
+		"version": "1.0.2"
 	},
 	"jokes": {
 		"name": "Jokes",
@@ -45,13 +45,13 @@
 		"name": "Repeat",
 		"description": "",
 		"path": "./plugins/repeat",
-		"version": "1.0.1"
+		"version": "1.0.2"
 	},
 	"selfie": {
 		"name": "Selfie",
 		"description": "",
 		"path": "./plugins/selfie",
-		"version": "1.0.0"
+		"version": "1.0.1"
 	},
 	"timedate": {
 		"name": "Timedate",
@@ -63,6 +63,6 @@
 		"name": "Timer",
 		"description": "",
 		"path": "./plugins/timer",
-		"version": "1.0.0"
+		"version": "1.0.1"
 	}
 }
