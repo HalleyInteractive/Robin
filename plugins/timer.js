@@ -1,8 +1,8 @@
-/* globals exports */
+/* globals exports, clearInterval, setInterval */
 
 var startTime;
 var endTime;
-var timerInterval = undefined;
+var timerInterval;
 
 var seconds = 0;
 var minutes = 0;
@@ -94,23 +94,23 @@ function addToTimer(property, value)
 
 	switch(property)
 	{
-		case "SECONDS":
-		case "SECOND":
-			endTime.setSeconds(endTime.getSeconds() + value);
-			seconds += value;
-			break;
-		case "MINUTES":
-		case "MINUTE":
-			endTime.setMinutes(endTime.getMinutes() + value);
-			minutes += value;
-			break;
-		case "HOURS":
-		case "HOUR":
-			endTime.setHours(endTime.getHours() + value);
-			hours += value;
-			break;
-		default:
-			break;
+	case "SECONDS":
+	case "SECOND":
+		endTime.setSeconds(endTime.getSeconds() + value);
+		seconds += value;
+		break;
+	case "MINUTES":
+	case "MINUTE":
+		endTime.setMinutes(endTime.getMinutes() + value);
+		minutes += value;
+		break;
+	case "HOURS":
+	case "HOUR":
+		endTime.setHours(endTime.getHours() + value);
+		hours += value;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -128,7 +128,7 @@ exports.extendedCommands['en-US'] =
 	{command:"TIMER FOR (\\d+) (MINUTES|SECONDS|HOURS|MINUTE|SECOND|HOUR) AND (\\d+) (MINUTES|SECONDS|HOURS|MINUTE|SECOND|HOUR)", callback:timer},
 	{command:"STOP TIMER", callback:stopTimer},
 	{command:"CANCEL TIMER", callback:stopTimer},
-	{command:"TIME LEFT ON THE TIMER", callback:timer},
-	{command:"TIME IS THERE LEFT ON THE TIMER", callback:timer},
-	{command:"TIME IS LEFT ON THE TIMER", callback:timer},
+	{command:"TIME LEFT ON THE TIMER", callback:timeLeft},
+	{command:"TIME IS THERE LEFT ON THE TIMER", callback:timeLeft},
+	{command:"TIME IS LEFT ON THE TIMER", callback:timeLeft},
 ];
