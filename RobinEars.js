@@ -42,7 +42,7 @@ function stt_basic_start()
 	{
 		mode = "basic";
         console.log("Start basic hearing");
-		stt_basic = spawn('pocketsphinx_continuous', ['-lm', 'Dictionary/Robin.lm', '-dict', 'Dictionary/Robin.dic','plughw:'+global.robin.audiodevice]);
+		stt_basic = spawn('pocketsphinx_continuous', ['-lm', 'Dictionary/Robin.lm', '-dict', 'Dictionary/Robin.dic', '-adcdev', 'plughw:'+global.robin.audiodevice]);
 		stt_basic.stdout.on('data', function (data)
 		{
 			var output = data.toString("utf-8").match(/[^\r\n]+/g);
