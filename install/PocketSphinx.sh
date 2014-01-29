@@ -8,7 +8,9 @@ sudo apt-get install alsa-utils -y
 sudo apt-get install bison -y
 sudo apt-get install libasound2-dev -y
 
-# sudo apt-get install gstreamer0.10-pocketsphinx
+sudo mv /usr/lib/arm-linux-gnueabihf/pulseaudio/libpulsecommon-2.0.so /usr/lib/arm-linux-gnueabihf/pulseaudio/libpulsecommon-2.0.so.bak
+
+sudo apt-get install gstreamer0.10-pocketsphinx
 
 wget http://sourceforge.net/projects/cmusphinx/files/sphinxbase/0.8/sphinxbase-0.8.tar.gz
 gzip -d sphinxbase-0.8.tar.gz
