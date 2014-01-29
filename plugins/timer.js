@@ -85,6 +85,7 @@ function checkTimer()
 		case "nl-NL":
 			exports.say(timerlength + " is voorbij. De wekker is klaar.");
 		break;
+		}
 		clearInterval(timerInterval);
 		timerInterval = undefined;
 	}
