@@ -12,7 +12,8 @@ var Robin =
 	name: "Lisa",
 	language: "en-US",
 	version: '0.0.1',
-	lastCommand:{}
+	lastCommand:{},
+	audiodevice:'1'
 };
 
 function init()
