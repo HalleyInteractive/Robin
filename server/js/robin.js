@@ -51,4 +51,6 @@ $(document).ready(function()
         }
 
     });
+
+	$(".navbar-brand").popover({html:true, trigger:'hover'});
 });
