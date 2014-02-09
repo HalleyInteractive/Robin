@@ -55,6 +55,7 @@ mouth.brain = brain.brain;
 /* Configure server variables */
 server.basiccmd = runBasicCommand;
 server.extendedcmd = runExtendedCommand;
+server.eyes = eyes;
 
 /* Configure config variables */
 config.brain = brain.brain;
@@ -90,17 +91,20 @@ fs.readFile(__dirname + '/plugins/plugins.json', 'utf8', function (err, data)
 */
 function registerCommands()
 {
+	var languages = [];
 	for(var plugin in plugins)
 	{
 		var language;
 		for(language in plugins[plugin].basicCommands)
 		{
+			languages.push(language);
 			if(!registeredBasicCommands[language]){ registeredBasicCommands[language] = []; }
 			registeredBasicCommands[language] = registeredBasicCommands[language].concat(plugins[plugin].basicCommands[language]);
 		}
 
 		for(language in plugins[plugin].extendedCommands)
 		{
+			languages.push(language);
 			if(!registeredExtendedCommands[language]){ registeredExtendedCommands[language] = []; }
 			registeredExtendedCommands[language] = registeredExtendedCommands[language].concat(plugins[plugin].extendedCommands[language]);
 		}
@@ -112,6 +116,18 @@ function registerCommands()
 		plugins[plugin].robin = global.robin;
 		plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
 	}
+
+	global.languages = languages.concat();
+    for(var i = 0; i < global.languages.length; ++i)
+	{
+        for(var j=i+1; j<global.languages.length; ++j)
+		{
+            if(global.languages[i] === global.languages[j])
+			{
+                global.languages.splice(j--, 1);
+			}
+        }
+    }
 
 	/* Add Robins name to the basic commands */
 	for(var lang in registeredBasicCommands)

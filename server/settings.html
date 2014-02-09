@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<script src="js/socket-io-min.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/robin.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootstrap-editable.min.js"></script>
+		<link href="css/robin.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/bootstrap-theme.min.css" rel="stylesheet">
+		<link href="css/fontastic.css" rel="stylesheet">
+		<link href="css/bootstrap-editable.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<header class="navbar navbar-static-top bs-docs-nav" role="banner">
+						<div class="container">
+							<div class="navbar-header">
+								<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+								<div class="navbar-brand" data-container="body" data-toggle="popover" data-placement="bottom" data-title="{{settings.name}} info" data-content="<dl id='robin-settings' class='dl-horizontal'><dt>Version</dt><dd>{{settings.version}}</dd><dt>Language</dt><dd>{{settings.language}}</dd></dl>">{{settings.name}}</div>
+							</div>
+							<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+								<ul class="nav navbar-nav">
+									<li class="active">
+										<a href="index.html"><span class="icon icon-dashboard"></span>Dashboard</a>
+									</li>
+									<li>
+										<a href="settings.html"><span class="icon icon-settings"></span>Settings</a>
+									</li>
+									<li>
+										<a href="plugins.html"><span class="icon icon-plugins"></span>Plugins</a>
+									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li><a href="http://www.github.com/HalleyInteractive"><span class="icon icon-github"></span>Github</a></li>
+									<li><a href="http://www.halleyinteractive.com"><span class="icon icon-halleyinteractive"></span>Halley Interactive</a></li>
+									<li><a href="links.html"><span class="icon icon-halleyinteractive"></span>Links</a></li>
+								</ul>
+							</nav>
+						</div>
+					</header>
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-2 column">
+
+				</div>
+				<div class="col-md-6 column">
+					<table class="table table-striped">
+						<thead>
+							<th>Setting</th>
+							<th>Value</th>
+						</thead>
+						<tbody>
+								<tr>
+									<td>Name</td>
+									<td><a href="#" id="name" data-type="text" data-title="Name">{{settings.name}}</a></td>
+								</tr>
+								<tr>
+									<td>Audio Device</td>
+									<td><a href="#" id="audiodevice" data-type="text" data-title="Audio Device">{{settings.audiodevice}}</a></td>
+								</tr>
+								<tr>
+									<td>Language</td>
+									<td><a href="#" id="language" data-type="select" data-title="Language">{{settings.language}}</a></td>
+								</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-4 column">
+
+				</div>
+			</div>
+		</div>
+		<script>
+			$(function()
+			{
+				var editableSettings = {
+					url: 'http://' + window.location.hostname + ':8529/_db/Robin/_api/document/{{settings._id}}',
+					pk: '{{settings._key}}',
+					ajaxOptions: {
+						type: 'put',
+						dataType: 'json'
+					},
+					params: getSettings,
+					success: function()
+					{
+						socket.emit('reload_settings', "");
+					}
+				}
+				$('#name').editable(editableSettings);
+				$('#audiodevice').editable(editableSettings);
+
+				editableSettings.source = [
+				{{#each languages}}
+				 {value:'{{this}}', text:'{{this}}'},
+				{{/each}}
+				];
+				$('#language').editable(editableSettings);
+			});
+
+			function getSettings(changedparam)
+			{
+				var settings =
+				{
+					_id:'{{settings._id}}',
+					_key:{{settings._key}},
+					_rev:{{settings._rev}},
+					audiodevice:'{{settings.audiodevice}}',
+					language:'{{settings.language}}',
+					lastCommand:{},
+					name:'{{settings.name}}',
+					version:'{{settings.version}}'
+				}
+				settings[changedparam.name] = changedparam.value;
+				return JSON.stringify(settings);
+			}
+		</script>
+	</body>
+</html>

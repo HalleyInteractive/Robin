@@ -13,3 +13,9 @@ exports.exit = function()
 {
 
 };
+
+global.reloadSettings = function()
+{
+	console.log("Settings changed, reload");
+	global.config.init();
+}

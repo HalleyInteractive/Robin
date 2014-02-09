@@ -1,4 +1,4 @@
-/* globals exports, require, __dirname */
+/* globals exports, require, __dirname, global, eyes */
 
 /* Setup server */
 var app = require('http').createServer(handler);
@@ -8,6 +8,17 @@ var app = require('http').createServer(handler);
 * Github: https://github.com/learnboost/socket.io
 */
 var io = require('socket.io').listen(app);
+
+/* VIDEO STREAM TEST */
+var ss = require('socket.io-stream');
+io.on('connection', function(socket)
+{
+	ss(socket).on('sd', function(stream)
+	{
+		stream.pipe(eyes.stream.read());
+	});
+});
+/* END VIDEO STREAM TEST */
 
 /* Include file system utils */
 var fs = require('fs');
@@ -52,7 +63,7 @@ function handler(request, response)
 
         if(content_type === 'text/html')
         {
-            var source = { settings : global.robin };
+            var source = { settings : global.robin, languages:global.languages };
             var pageBuilder = handlebars.compile(data.toString('utf-8'));
             var pageText = pageBuilder(source);
             response.write(pageText);
@@ -73,6 +84,7 @@ io.sockets.on('connection', function (socket)
 {
 	socket.on('basiccmd', basiccmd);
 	socket.on('extendedcmd', extendedcmd);
+	socket.on('reload_settings', global.reloadSettings);
 });
 
 /**

@@ -36,8 +36,11 @@ function init()
 	});
 }
 
+global.config = {};
+
 /* Export init function */
 exports.init = init;
+global.config.init = init;
 
 /* Global Robin to robin */
 global.robin = Robin;
