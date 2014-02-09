@@ -17,6 +17,7 @@ $(document).ready(function()
         socket.emit('extendedcmd', $("#extendedcmd").val().toUpperCase());
     });
 
+	/*
     facesCanvas = document.getElementById("faces");
     facesCtx = facesCanvas.getContext("2d");
 
@@ -51,6 +52,6 @@ $(document).ready(function()
         }
 
     });
-
+	*/
 	$(".navbar-brand").popover({html:true, trigger:'hover'});
 });

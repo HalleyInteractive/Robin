@@ -24,7 +24,7 @@ catch(err) { var camera = new opencv.VideoCapture(2); } }
 var stream = camera.toStream();
 
 /* Open face recognition cascade file*/
-var faceRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_frontalface_default.xml');
+var faceRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_profileface.xml');
 
 /* Open lower body recognition cascade file*/
 // var lowerbodyRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/opencv/data/haarcascade_lowerbody.xml');
@@ -54,17 +54,19 @@ function takeStill()
 * Takes a still image of the current videostream
 * Output is saved to /tmp/camera_output.png.
 */
+/*
 function cameraOutput()
 {
-    camera.read(function(err, im)
-    {
-        if(err){ console.log(err); }
-        var filename = './tmp/camera_output.png';
-        exports.server.emit('image', {width:im.width(), height:im.height(), faces:detectedFaces, image:im.toBuffer().toString('base64')});
+	camera.read(function(err, im)
+	{
+		if(err){ console.log(err); }
+		var filename = './tmp/camera_output.png';
+		exports.server.emit('image', {width:im.width(), height:im.height(), faces:detectedFaces, image:im.toBuffer().toString('base64')});
 		im.save(filename);
-    });
+	});
 }
-var cameraOutputInterval = setInterval(cameraOutput, 5000);
+*/
+// var cameraOutputInterval = setInterval(cameraOutput, 1000);
 
 /*
 * Handle the face recognition stream.
@@ -127,11 +129,12 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
 */
 // stream.pipe(lowerbodyRecognitionStream);
 // stream.pipe(upperbodyRecognitionStream);
-stream.pipe(faceRecognitionStream);
-stream.read();
+// stream.pipe(faceRecognitionStream);
+// stream.read();
 
 /* Export functions */
 exports.takeStill = takeStill;
+exports.stream = stream;
 exports.exit = function()
 {
 	/* Clean up open connection */
