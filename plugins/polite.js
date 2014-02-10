@@ -5,10 +5,10 @@ function politeEnglish()
 	console.log("Running the polite callback");
 
 	var rnd = Math.floor(Math.random() * 4);
-	if(rnd === 0) { exports.say("You are welcome"); }
-	if(rnd === 1) { exports.say("No problemo");	}
-	if(rnd === 2) { exports.say("Sure thing"); }
-	if(rnd === 3) { exports.say("Any time"); }
+	if(rnd === 0) { global.robin.mouth.say("You are welcome"); }
+	if(rnd === 1) { global.robin.mouth.say("No problemo");	}
+	if(rnd === 2) { global.robin.mouth.say("Sure thing"); }
+	if(rnd === 3) { global.robin.mouth.say("Any time"); }
 }
 
 function politeDutch()
@@ -16,10 +16,10 @@ function politeDutch()
 	console.log("Running the polite callback");
 
 	var rnd = Math.floor(Math.random() * 4);
-	if(rnd === 0) { exports.say("Graag gedaan"); }
-	if(rnd === 1) { exports.say("Geen probleem");	}
-	if(rnd === 2) { exports.say("Tuurlijk"); }
-	if(rnd === 3) { exports.say("Voor jou altijd"); }
+	if(rnd === 0) { global.robin.mouth.say("Graag gedaan"); }
+	if(rnd === 1) { global.robin.mouth.say("Geen probleem");	}
+	if(rnd === 2) { global.robin.mouth.say("Tuurlijk"); }
+	if(rnd === 3) { global.robin.mouth.say("Voor jou altijd"); }
 }
 
 exports.basicCommands = [];

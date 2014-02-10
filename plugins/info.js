@@ -14,24 +14,24 @@ function getIpAdress()
 				if(dev !== 'lo')
 				{
 					// console.log(dev+(alias?':'+alias:''), details.address);
-					// exports.say(details.address);
+					// global.robin.mouth.say(details.address);
 					var tmpArr = details.address.split(".");
 					for(var i = 0; i < tmpArr.length; i++)
 					{
 						if(i !== 0)
 						{
-							switch(global.robin.language)
+							switch(global.robin.settings.language)
 							{
 							case "en-US":
 							default:
-								exports.say("dot");
+								global.robin.mouth.say("dot");
 							break;
 							case "nl-NL":
-								exports.say("punt");
+								global.robin.mouth.say("punt");
 							break;
 							}
 						}
-						exports.say(tmpArr[i]);
+						global.robin.mouth.say(tmpArr[i]);
 					}
 				}
 				++alias;
@@ -42,61 +42,61 @@ function getIpAdress()
 
 function getVersion()
 {
-	switch(global.robin.language)
+	switch(global.robin.settings.language)
 	{
 	case "en-US":
 	default:
-		exports.say("I am at version: ");
+		global.robin.mouth.say("I am at version: ");
 	break;
 	case "nl-NL":
-		exports.say("Ik draai op versie: ");
+		global.robin.mouth.say("Ik draai op versie: ");
 	break;
 	}
-	var tmpArr = global.robin.version.split(".");
+	var tmpArr = global.robin.settings.version.split(".");
 	for(var i = 0; i < tmpArr.length; i++)
 	{
 		if(i !== 0)
 		{
-			switch(global.robin.language)
+			switch(global.robin.settings.language)
 			{
 			case "en-US":
 			default:
-				exports.say("dot");
+				global.robin.mouth.say("dot");
 			break;
 			case "nl-NL":
-				exports.say("punt");
+				global.robin.mouth.say("punt");
 			break;
 			}
 		}
-		exports.say(tmpArr[i]);
+		global.robin.mouth.say(tmpArr[i]);
 	}
 }
 
 function getName()
 {
 
-	switch(global.robin.language)
+	switch(global.robin.settings.language)
 	{
 	case "en-US":
 	default:
-		exports.say("My name is " + global.robin.name);
+		global.robin.mouth.say("My name is " + global.robin.settings.name);
 	break;
 	case "nl-NL":
-		exports.say("Mijn naam is " + global.robin.name);
+		global.robin.mouth.say("Mijn naam is " + global.robin.settings.name);
 	break;
 	}
 }
 
 function getLanguage()
 {
-	switch(global.robin.language)
+	switch(global.robin.settings.language)
 	{
 	case "en-US":
 	default:
-		exports.say("My current language is " + global.robin.language);
+		global.robin.mouth.say("My current language is " + global.robin.settings.language);
 	break;
 	case "nl-NL":
-		exports.say("Mijn huidige taal is " + global.robin.language);
+		global.robin.mouth.say("Mijn huidige taal is " + global.robin.settings.language);
 	break;
 	}
 }

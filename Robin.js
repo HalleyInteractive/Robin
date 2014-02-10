@@ -5,20 +5,38 @@
 * All Robin components.
 */
 
+global.robin = {};
+
+global.robin.requestNextExtendedInput = requestNextExtendedInput;
+global.robin.runBasicCommand = runBasicCommand;
+global.robin.runExtendedCommand = runExtendedCommand;
+
+/* A list with the included plugins. Here you can access the plugins */
+global.robin.plugins = {};
+
+/** A list of all the information on the plugins.
+* @param {String} pluginlist.name
+* @param {String} pluginlist.description
+* @param {String} pluginlist.path
+* @param {String} pluginlist.version
+*/
+global.robin.pluginlist = {};
+
 /* Include filesystem */
 var fs = require('fs');
 
 /* RobinEars handles the voice input. */
 var ears = require('./RobinEars.js');
+
 /* RobinMouth handles speaking. */
 var mouth = require('./RobinMouth.js');
+
 /* RobinBrain holds the connection to the database */
 var brain = require('./RobinBrain.js');
-/* RobinEyes controls the camera */
-var eyes = require('./RobinEyes.js');
 
-/* RobinConfig contains some configureation */
-var config = require('./RobinConfig.js');
+/* RobinEyes controls the camera */
+//var eyes = require('./RobinEyes.js');
+
 /* RobinServer starts a server that can be accessed from a remote computer */
 var server = require('./RobinServer.js');
 
@@ -31,58 +49,49 @@ var registeredBasicCommands = [];
 /* Holds all the registered extended commands */
 var registeredExtendedCommands = [];
 
-/* A list with the included plugins. Here you can access the plugins */
-var plugins = {};
 
-/** A list of all the information on the plugins.
-* @param {String} pluginlist.name
-* @param {String} pluginlist.description
-* @param {String} pluginlist.path
-* @param {String} pluginlist.version
-*/
-var pluginlist = {};
+brain.init(function()
+{
+	console.log("Brain started");
+	console.log(global.robin.settings);
 
-/* Configure ear variables */
-ears.basiccmd = runBasicCommand;
-ears.extendedcmd = runExtendedCommand;
-ears.stt_basic_start();
-ears.brain = brain.brain;
-ears.plugins = plugins;
+	ears.init(function()
+	{
+		console.log("Ears started");
+	}, function(){ console.log("Error starting ears"); });
 
-/* Configure mouth variables */
-mouth.brain = brain.brain;
+	routeLogsToServer();
+	loadPlugins();
 
-/* Configure server variables */
-server.basiccmd = runBasicCommand;
-server.extendedcmd = runExtendedCommand;
-server.eyes = eyes;
+}, function(){ console.log("Error starting brain"); });
 
-/* Configure config variables */
-config.brain = brain.brain;
-config.init();
 
-/* Configure eye variables  */
-eyes.server = server;
 
 /* Route all logs through RobinServer */
-console.defaultLog = console.log;
-console.log = function(log)
+function routeLogsToServer()
 {
-	console.defaultLog(log);
-	server.log(log);
-};
+	console.defaultLog = console.log;
+	console.log = function(log)
+	{
+		console.defaultLog(log);
+		global.robin.server.log(log);
+	};
+}
 
 /* Reads plugins json file and loads the plugins to plugins variable */
-fs.readFile(__dirname + '/plugins/plugins.json', 'utf8', function (err, data)
+function loadPlugins()
 {
-	if (err) { console.log('Error: ' + err); return; }
-	pluginlist = JSON.parse(data);
-	for(var plugin in pluginlist)
+	fs.readFile(__dirname + '/plugins/plugins.json', 'utf8', function (err, data)
 	{
-		plugins[plugin] = require(pluginlist[plugin].path);
-	}
-	registerCommands();
-});
+		if (err) { console.log('Error: ' + err); return; }
+		global.robin.pluginlist = JSON.parse(data);
+		for(var plugin in global.robin.pluginlist)
+		{
+			global.robin.plugins[plugin] = require(global.robin.pluginlist[plugin].path);
+		}
+		registerCommands();
+	});
+}
 
 
 /**
@@ -92,39 +101,32 @@ fs.readFile(__dirname + '/plugins/plugins.json', 'utf8', function (err, data)
 function registerCommands()
 {
 	var languages = [];
-	for(var plugin in plugins)
+	for(var plugin in global.robin.plugins)
 	{
 		var language;
-		for(language in plugins[plugin].basicCommands)
+		for(language in global.robin.plugins[plugin].basicCommands)
 		{
 			languages.push(language);
 			if(!registeredBasicCommands[language]){ registeredBasicCommands[language] = []; }
-			registeredBasicCommands[language] = registeredBasicCommands[language].concat(plugins[plugin].basicCommands[language]);
+			registeredBasicCommands[language] = registeredBasicCommands[language].concat(global.robin.plugins[plugin].basicCommands[language]);
 		}
 
-		for(language in plugins[plugin].extendedCommands)
+		for(language in global.robin.plugins[plugin].extendedCommands)
 		{
 			languages.push(language);
 			if(!registeredExtendedCommands[language]){ registeredExtendedCommands[language] = []; }
-			registeredExtendedCommands[language] = registeredExtendedCommands[language].concat(plugins[plugin].extendedCommands[language]);
+			registeredExtendedCommands[language] = registeredExtendedCommands[language].concat(global.robin.plugins[plugin].extendedCommands[language]);
 		}
-
-		plugins[plugin].plugins = plugins;
-		plugins[plugin].say = mouth.say;
-		plugins[plugin].ears = ears;
-		plugins[plugin].eyes = eyes;
-		plugins[plugin].robin = global.robin;
-		plugins[plugin].requestNextExtendedInput = requestNextExtendedInput;
 	}
 
-	global.languages = languages.concat();
-    for(var i = 0; i < global.languages.length; ++i)
+	global.robin.languages = languages.concat();
+    for(var i = 0; i < global.robin.languages.length; ++i)
 	{
-        for(var j=i+1; j<global.languages.length; ++j)
+        for(var j=i+1; j<global.robin.languages.length; ++j)
 		{
-            if(global.languages[i] === global.languages[j])
+            if(global.robin.languages[i] === global.robin.languages[j])
 			{
-                global.languages.splice(j--, 1);
+                global.robin.languages.splice(j--, 1);
 			}
         }
     }
@@ -132,16 +134,16 @@ function registerCommands()
 	/* Add Robins name to the basic commands */
 	for(var lang in registeredBasicCommands)
 	{
-		registeredBasicCommands[lang] = registeredBasicCommands[lang].concat([{command:global.robin.name.toUpperCase(), callback:listenForExtendedCommand}]);
+		registeredBasicCommands[lang] = registeredBasicCommands[lang].concat([{command:global.robin.settings.name.toUpperCase(), callback:listenForExtendedCommand}]);
 	}
 
 	/* Create a corpus file **/
 	var stream = fs.createWriteStream("Dictionary/Robin.corpus");
 	stream.once('open', function()
 	{
-		for(var i = 0; i < registeredBasicCommands[global.robin.language].length; i++)
+		for(var i = 0; i < registeredBasicCommands[global.robin.settings.language].length; i++)
 		{
-			var command = registeredBasicCommands[global.robin.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
+			var command = registeredBasicCommands[global.robin.settings.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
 			stream.write(command + "\n");
 		}
 
@@ -159,8 +161,8 @@ function registerCommands()
 function requestNextExtendedInput(callback)
 {
     requestedNextExtendedInput = callback;
-    ears.stt_basic_stop();
-	ears.stt_extended_start();
+    global.robin.ears.stt_basic_stop();
+	global.robgin.ears.stt_extended_start();
 }
 
 /**
@@ -173,9 +175,9 @@ function requestNextExtendedInput(callback)
 function listenForExtendedCommand(cmd)
 {
     var feedback = ["yes", "What's up", "What can I do for you"];
-	mouth.say(feedback[Math.floor(Math.random()*feedback.length)]);
-    ears.stt_basic_stop();
-	ears.stt_extended_start();
+	global.robin.mouth.say(feedback[Math.floor(Math.random()*feedback.length)]);
+    global.robin.ears.stt_basic_stop();
+	global.robin.ears.stt_extended_start();
 }
 
 /**
@@ -187,17 +189,17 @@ function listenForExtendedCommand(cmd)
 function runBasicCommand(cmd)
 {
     var foundMatch = false;
-	for(var i = 0; i < registeredBasicCommands[global.robin.language].length; i++)
+	for(var i = 0; i < registeredBasicCommands[global.robin.settings.language].length; i++)
 	{
-		var match = cmd.match(registeredBasicCommands[global.robin.language][i].command);
+		var match = cmd.match(registeredBasicCommands[global.robin.settings.language][i].command);
 		if(match)
 		{
 			console.log("Found a registered command");
             foundMatch = true;
-			registeredBasicCommands[global.robin.language][i].callback(match);
+			registeredBasicCommands[global.robin.settings.language][i].callback(match);
 		}
 	}
-    if(!foundMatch){ plugins.disappoint.didNotUnderstand(); }
+    if(!foundMatch){ global.robin.plugins.disappoint.didNotUnderstand(); }
 }
 
 /**
@@ -212,21 +214,21 @@ function runExtendedCommand(cmd)
     {
         var foundMatch = false;
 		cmd = convertToDigits(cmd);
-        for(var i = 0; i < registeredExtendedCommands[global.robin.language].length; i++)
+        for(var i = 0; i < registeredExtendedCommands[global.robin.settings.language].length; i++)
         {
-            var match = cmd.match(registeredExtendedCommands[global.robin.language][i].command);
+            var match = cmd.match(registeredExtendedCommands[global.robin.settings.language][i].command);
             if(match)
             {
                 console.log("Found a extended registered command");
                 foundMatch = true;
-                registeredExtendedCommands[global.robin.language][i].callback(match);
-                if(registeredExtendedCommands[global.robin.language][i].save !== false)
+                registeredExtendedCommands[global.robin.settings.language][i].callback(match);
+                if(registeredExtendedCommands[global.robin.settings.language][i].save !== false)
                 {
-                    config.lastCommand = registeredExtendedCommands[global.robin.language][i];
+                    global.robin.brain.lastCommand = registeredExtendedCommands[global.robin.settings.language][i];
                 }
             }
         }
-        if(!foundMatch){ plugins.disappoint.didNotUnderstand(); }
+        if(!foundMatch){ global.robin.plugins.disappoint.didNotUnderstand(); }
 	} else
     {
         requestedNextExtendedInput(cmd);
@@ -272,10 +274,10 @@ process.stdin.resume(); // So the program will not close instantly
 process.on('exit', function ()
 {
 	console.log("Clean up before exit");
-	eyes.exit();
-    brain.exit();
-	ears.stt_basic_stop();
-	ears.stt_extended_stop();
+	try { eyes.exit(); } catch(error){}
+    try { brain.exit(); } catch(error){}
+	try { global.robin.ears.stt_basic_stop(); } catch(error){}
+	try { global.robin.ears.stt_extended_stop(); } catch(error){}
 });
 
 // Catches ctrl+c event

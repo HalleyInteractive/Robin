@@ -1,7 +1,7 @@
 function didNotUnderstand()
 {
 	var response = [];
-	switch(global.robin.language)
+	switch(global.robin.settings.language)
 	{
 	case "en-US":
 	default:
@@ -21,7 +21,7 @@ function didNotUnderstand()
 	}
 
 
-    exports.say(response[Math.floor(Math.random()*response.length)]);
+    global.robin.mouth.say(response[Math.floor(Math.random()*response.length)]);
 }
 
 exports.didNotUnderstand = didNotUnderstand;

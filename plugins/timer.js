@@ -34,28 +34,28 @@ function timer(cmd)
 		if(minutes > 0) { timerlength += minutes.toString() + (minutes == 1 ? " minute" : " minutes"); }
 		if(seconds > 0) { timerlength += seconds.toString() + (seconds == 1 ? " second" : " seconds"); }
 
-		switch(global.robin.language)
+		switch(global.robin.settings.language)
 		{
 		case "en-US":
 		default:
-			exports.say("Timer is set for " + timerlength);
+			global.robin.mouth.say("Timer is set for " + timerlength);
 		break;
 		case "nl-NL":
-			exports.say("Wekker is gezet voor over " + timerlength);
+			global.robin.mouth.say("Wekker is gezet voor over " + timerlength);
 		break;
 		}
 
 		timerInterval = setInterval(checkTimer, 1000);
 	} else
 	{
-		switch(global.robin.language)
+		switch(global.robin.settings.language)
 		{
 		case "en-US":
 		default:
-			exports.say("Timer is already running, cancel the timer first");
+			global.robin.mouth.say("Timer is already running, cancel the timer first");
 		break;
 		case "nl-NL":
-			exports.say("Er loopt al een wekker, annuleer deze eerst");
+			global.robin.mouth.say("Er loopt al een wekker, annuleer deze eerst");
 		break;
 		}
 
@@ -76,14 +76,14 @@ function checkTimer()
 	if(diff.getSeconds() <= 0 && diff.getMinutes() <= 0 && diff.getHours() <= 0)
 	{
 		console.log("Timer done");
-		switch(global.robin.language)
+		switch(global.robin.settings.language)
 		{
 		case "en-US":
 		default:
-			exports.say(timerlength + " has passed. Timer is done.");
+			global.robin.mouth.say(timerlength + " has passed. Timer is done.");
 		break;
 		case "nl-NL":
-			exports.say(timerlength + " is voorbij. De wekker is klaar.");
+			global.robin.mouth.say(timerlength + " is voorbij. De wekker is klaar.");
 		break;
 		}
 		clearInterval(timerInterval);
@@ -112,18 +112,18 @@ function timeLeft()
 		endTime.getSeconds() - now.getSeconds() /* Seconds */);
 
 
-	switch(global.robin.language)
+	switch(global.robin.settings.language)
 	{
 	case "en-US":
 	default:
-		exports.say("There is " + diff.getHours() + " hours ");
-		exports.say(diff.getMinutes() + " minutes");
-		exports.say("and " + diff.getSeconds() + " seconds left on the timer");
+		global.robin.mouth.say("There is " + diff.getHours() + " hours ");
+		global.robin.mouth.say(diff.getMinutes() + " minutes");
+		global.robin.mouth.say("and " + diff.getSeconds() + " seconds left on the timer");
 	break;
 	case "nl-NL":
-		exports.say("Er is " + diff.getHours() + " uur ");
-		exports.say(diff.getMinutes() + " minuten");
-		exports.say("en " + diff.getSeconds() + " seconden over op de wekker");
+		global.robin.mouth.say("Er is " + diff.getHours() + " uur ");
+		global.robin.mouth.say(diff.getMinutes() + " minuten");
+		global.robin.mouth.say("en " + diff.getSeconds() + " seconden over op de wekker");
 	break;
 	}
 }
@@ -160,14 +160,14 @@ function stopTimer()
 	clearInterval(timerInterval);
 	timerInterval = undefined;
 
-	switch(global.robin.language)
+	switch(global.robin.settings.language)
 	{
 	case "en-US":
 	default:
-		exports.say("Timer canceled");
+		global.robin.mouth.say("Timer canceled");
 	break;
 	case "nl-NL":
-		exports.say("Wekker geannuleerd");
+		global.robin.mouth.say("Wekker geannuleerd");
 	break;
 	}
 }

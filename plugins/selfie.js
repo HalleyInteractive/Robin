@@ -5,14 +5,14 @@ var countdown = 0;
 function selfie()
 {
 	console.log("Running the selfie callback");
-	switch(global.robin.language)
+	switch(global.robin.settings.language)
 	{
 	case "en-US":
 	default:
-		exports.say("Taking selfie in 3");
+		global.robin.mouth.say("Taking selfie in 3");
 	break;
 	case "nl-NL":
-		exports.say("Neem een selfie in 3");
+		global.robin.mouth.say("Neem een selfie in 3");
 	break;
 	}
     countdown = 3;
@@ -21,8 +21,8 @@ function selfie()
 
 function selfieCountdownHandler()
 {
-    if(--countdown === 0) { exports.eyes.takeStill(); }
-    else { exports.say(countdown); setTimeout(selfieCountdownHandler, 1000); }
+    if(--countdown === 0) { global.robin.eyes.takeStill(); }
+    else { global.robin.mouth.say(countdown); setTimeout(selfieCountdownHandler, 1000); }
 }
 
 exports.extendedCommands = [];

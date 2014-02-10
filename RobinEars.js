@@ -25,10 +25,10 @@ var stt_extended = null;
 var printoutput = true;
 
 /* Log PocketSphinx errors to the console */
-var printerrors = false;
+var printerrors = true;
 
 /* Log PocketSphinx process exits to the console */
-var printexits = false;
+var printexits = true;
 
 /* Current mode of RobinEars. Can be off, basic, extended */
 var mode = "off";
@@ -42,7 +42,7 @@ function stt_basic_start()
 	{
 		mode = "basic";
         console.log("Start basic hearing");
-		stt_basic = spawn('pocketsphinx_continuous', ['-lm', 'Dictionary/Robin.lm', '-dict', 'Dictionary/Robin.dic', '-adcdev', 'plughw:'+global.robin.audiodevice]);
+		stt_basic = spawn('pocketsphinx_continuous', ['-lm', 'Dictionary/Robin.lm', '-dict', 'Dictionary/Robin.dic', '-adcdev', 'plughw:'+global.robin.settings.audiodevice]);
 		stt_basic.stdout.on('data', function (data)
 		{
 			var output = data.toString("utf-8").match(/[^\r\n]+/g);
@@ -53,6 +53,13 @@ function stt_basic_start()
 				{
 					// READY
 					if (printoutput) { console.log("Ready"); }
+					if (inited === false && initCallback !== null)
+					{
+						initCallback();
+						inited = true;
+						initCallback = null;
+						initErrorCallback = null;
+					}
 				} else if(outputLine.substring(0, 9)=== "Listening")
 				{
 					// LISTENING
@@ -65,7 +72,7 @@ function stt_basic_start()
 				{
 					// COMMAND
 					if (printoutput) { console.log("CMD: " + outputLine.substring(11)); }
-					exports.basiccmd(outputLine.substring(11));
+					global.robin.runBasicCommand(outputLine.substring(11));
 				} else
 				{
 					// OTHER
@@ -114,25 +121,25 @@ function stt_extended_start()
 			if(code === 0)
 			{
 				// TODO: Stop process on time out
-				google({lang:global.robin.language, file: 'output.wav'}, function (err, results)
+				google({lang:global.robin.settings.language, file: 'output.wav'}, function (err, results)
 				{
 					if(results[0] !== undefined && results.length > 0)
 					{
 						if(results[0].hypotheses !== undefined && results[0].hypotheses.length > 0)
 						{
 							console.log("STT Result: " + results[0].hypotheses[0].utterance);
-							exports.extendedcmd(results[0].hypotheses[0].utterance.toUpperCase());
+							global.robin.runExtendedCommand(results[0].hypotheses[0].utterance.toUpperCase());
 							stt_extended_stop();
 							stt_basic_start();
 						} else
 						{
-							exports.plugins.disappoint.didNotUnderstand();
+							global.robin.plugins.disappoint.didNotUnderstand();
 							stt_extended_stop();
 							stt_basic_start();
 						}
 					} else
 					{
-						exports.plugins.disappoint.didNotUnderstand();
+						global.robin.plugins.disappoint.didNotUnderstand();
 						stt_extended_stop();
 						stt_basic_start();
 					}
@@ -153,11 +160,28 @@ function stt_extended_stop()
 	} else { console.log("Extended stt not running."); }
 }
 
+var inited = false;
+var initCallback = null;
+var initErrorCallback = null;
+function init(successCallback, errorCallback)
+{
+	initCallback = successCallback;
+	initErrorCallback = errorCallback;
+	try
+	{
+		stt_basic_start();
+	} catch(error)
+	{
+		errorCallback();
+	}
+}
+
 /* Exports */
-exports.stt_mode = mode;
-exports.stt_basic_start = stt_basic_start;
-exports.stt_basic_stop = stt_basic_stop;
-exports.stt_extended_start = stt_extended_start;
-exports.stt_extended_stop = stt_extended_stop;
-exports.basiccmd = function () { };
-exports.extendedcmd = function () { };
+global.robin.ears = {};
+
+exports.init = init;
+global.robin.ears.stt_mode = mode;
+global.robin.ears.stt_basic_start = stt_basic_start;
+global.robin.ears.stt_basic_stop = stt_basic_stop;
+global.robin.ears.stt_extended_start = stt_extended_start;
+global.robin.ears.stt_extended_stop = stt_extended_stop;

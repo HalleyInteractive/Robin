@@ -3,66 +3,66 @@
 		"name": "Acknowledge",
 		"description": "",
 		"path": "./plugins/acknowledge",
-		"version": "1.0.2"
+		"version": "1.0.3"
 	},
 	"calculate": {
 		"name": "Calculate",
 		"description": "",
 		"path": "./plugins/calculate",
-		"version": "1.0.1"
+		"version": "1.0.2"
 	},
 	"disappoint": {
 		"name": "Disappoint",
 		"description": "",
 		"path": "./plugins/disappoint",
-		"version": "1.0.2"
+		"version": "1.0.3"
 	},
 	"hello": {
 		"name": "Hello",
 		"description": "",
 		"path": "./plugins/hello",
-		"version": "1.0.1"
+		"version": "1.0.2"
 	},
 	"info": {
 		"name": "Info",
 		"description": "",
 		"path": "./plugins/info",
-		"version": "1.0.2"
+		"version": "1.0.3"
 	},
 	"jokes": {
 		"name": "Jokes",
 		"description": "",
 		"path": "./plugins/jokes",
-		"version": "1.0.0"
+		"version": "1.0.1"
 	},
 	"polite": {
 		"name": "Polite",
 		"description": "Repliesonthankyou",
 		"path": "./plugins/polite",
-		"version": "1.0.0"
+		"version": "1.0.1"
 	},
 	"repeat": {
 		"name": "Repeat",
 		"description": "",
 		"path": "./plugins/repeat",
-		"version": "1.0.2"
+		"version": "1.0.3"
 	},
 	"selfie": {
 		"name": "Selfie",
 		"description": "",
 		"path": "./plugins/selfie",
-		"version": "1.0.1"
+		"version": "1.0.2"
 	},
 	"timedate": {
 		"name": "Timedate",
 		"description": "",
 		"path": "./plugins/timedate",
-		"version": "1.0.1"
+		"version": "1.0.2"
 	},
 	"timer": {
 		"name": "Timer",
 		"description": "",
 		"path": "./plugins/timer",
-		"version": "1.0.1"
+		"version": "1.0.2"
 	}
 }

@@ -63,7 +63,7 @@ function handler(request, response)
 
         if(content_type === 'text/html')
         {
-            var source = { settings : global.robin, languages:global.languages };
+            var source = { settings : global.robin.settings, languages:global.robin.languages };
             var pageBuilder = handlebars.compile(data.toString('utf-8'));
             var pageText = pageBuilder(source);
             response.write(pageText);
@@ -84,7 +84,7 @@ io.sockets.on('connection', function (socket)
 {
 	socket.on('basiccmd', basiccmd);
 	socket.on('extendedcmd', extendedcmd);
-	socket.on('reload_settings', global.reloadSettings);
+	socket.on('reload_settings', global.robin.brain.reloadSettings);
 });
 
 /**
@@ -96,7 +96,7 @@ io.sockets.on('connection', function (socket)
 function basiccmd(cmd)
 {
 	console.log("Received basic cmd from server: " + cmd);
-	exports.basiccmd(cmd);
+	global.robin.runBasicCommand(cmd);
 }
 
 /**
@@ -108,7 +108,7 @@ function basiccmd(cmd)
 function extendedcmd(cmd)
 {
 	console.log("Received extended cmd from server: " + cmd);
-	exports.extendedcmd(cmd);
+	global.robin.runExtendedCommand(cmd);
 }
 
 /**
@@ -128,5 +128,6 @@ function emit(func, data)
 }
 
 /* Exports */
-exports.log = log;
-exports.emit = emit;
+global.robin.server = {};
+global.robin.server.log = log;
+global.robin.server.emit = emit;

@@ -35,14 +35,14 @@ var _cache = true;
 * @param {Function} callback Function to be called after the text has been spoken.
 * @param {Boolean} if set to false the audio clip will not be saved to the database
 */
-exports.say = function (message, callback, cache)
+function say(message, callback, cache)
 {
     _callback = callback !== null && callback !== undefined ? callback : function(){};
 	_cache = cache === false ? false : true;
 	if(!talking)
 	{
 		talking = true;
-		exports.brain.db.query.exec("FOR v in Voice FILTER v.text == '"+message+"' && v.language == '"+global.robin.language.toString().substr(0,2)+"' LIMIT 1 RETURN v.buffer", function(err, ret)
+		global.robin.brain.db.query.exec("FOR v in Voice FILTER v.text == '"+message+"' && v.language == '"+global.robin.settings.language.toString().substr(0,2)+"' LIMIT 1 RETURN v.buffer", function(err, ret)
 		{
 			if(err || ret.result.length === 0)
 			{
@@ -90,7 +90,7 @@ function speak(buffer)
 function requestGoogleAudio(message)
 {
     var ur = url.parse("translate.google.com/translate_tts", true);
-    ur.query = { 'tl': global.robin.language.toString().substr(0,2), 'q': message };
+    ur.query = { 'tl': global.robin.settings.language.toString().substr(0,2), 'q': message };
     var formated = url.parse(url.format(ur), true);
     console.log(formated.path);
     var options = {
@@ -110,7 +110,7 @@ function requestGoogleAudio(message)
             {
 				if(_cache)
 				{
-					exports.brain.db.document.create('Voice', {text:message, language:global.robin.language.toString().substr(0,2), buffer:buffer}).then(function(res)
+					global.robin.brain.db.document.create('Voice', {text:message, language:global.robin.settings.language.toString().substr(0,2), buffer:buffer}).then(function(res)
 					{
 						console.log("Created database entry: %j", res);
 					},function(err)
@@ -143,6 +143,9 @@ function doneTalking(callback)
 		console.log("Que not empty: ");
 		var m = que.shift();
 		console.log(m);
-		exports.say(m.message, m.callback, m.cache);
+		global.robin.mouth.say(m.message, m.callback, m.cache);
 	}
 }
+
+global.robin.mouth = {};
+global.robin.mouth.say = say;

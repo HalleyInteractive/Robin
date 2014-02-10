@@ -3,9 +3,9 @@
 function repeat()
 {
 	console.log("Running the repeat callback");
-	if(global.robin.lastCommand.command !== null && global.robin.lastCommand.command !== undefined)
+	if(global.robin.settings.lastCommand.command !== null && global.robin.settings.lastCommand.command !== undefined)
 	{
-		global.robin.lastCommand.callback(global.robin.lastCommand.command);
+		global.robin.settings.lastCommand.callback(global.robin.settings.lastCommand.command);
 	}
 }
 

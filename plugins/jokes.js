@@ -12,8 +12,8 @@ function joke()
 		res.on('data', function (chunk)
 		{
 			var joke = JSON.parse(chunk);
-			exports.say("Sure");
-			exports.say(joke.value.joke, null, false);
+			global.robin.mouth.say("Sure");
+			global.robin.mouth.say(joke.value.joke, null, false);
 		});
 	}).on('error', function(e)
 	{
@@ -28,4 +28,5 @@ exports.extendedCommands['en-US'] =
 	{command:"KNOW A GOOD ONE", callback:joke},
 	{command:"CHUCK NORRIS", callback:joke},
 	{command:"TELL ME A JOKE", callback:joke},
+	{command:"TELL A JOKE", callback:joke}
 ];

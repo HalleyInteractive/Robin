@@ -133,8 +133,10 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
 // stream.read();
 
 /* Export functions */
-exports.takeStill = takeStill;
-exports.stream = stream;
+global.robin.eyes = {};
+global.robin.eyes.takeStill = takeStill;
+global.robin.eyes.stream = stream;
+
 exports.exit = function()
 {
 	/* Clean up open connection */

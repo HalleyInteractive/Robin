@@ -6,7 +6,7 @@ function hello()
 {
 	var now = new Date();
 	var daytime = dateFormat(now, "H") < 12 ? "Good morning" : dateFormat(now, "H") < 18 ? "Good afternoon" : "Good evening";
-	exports.say(daytime);
+	global.robin.mouth.say(daytime);
 }
 
 function goodbye()
@@ -15,15 +15,15 @@ function goodbye()
 	var answers = ["See you later", "Bye bye", "See you later, aligator", "Goodbye"];
 	var hour = dateFormat(now, "H");
 
-	if(hour < 12) { exports.say("Have a good day"); }
-	else if(hour < 23) { exports.say(answers[Math.floor(Math.random()*answers.length)]); }
-	else { exports.say("Sleep well"); }
+	if(hour < 12) { global.robin.mouth.say("Have a good day"); }
+	else if(hour < 23) { global.robin.mouth.say(answers[Math.floor(Math.random()*answers.length)]); }
+	else { global.robin.mouth.say("Sleep well"); }
 }
 
 function greet(cmd)
 {
-	exports.say("Hello " + cmd[1] + ", my name is " + global.robin.name);
-    exports.say("Are you doing ok today?", function() {
+	global.robin.mouth.say("Hello " + cmd[1] + ", my name is " + global.robin.settings.name);
+    global.robin.mouth.say("Are you doing ok today?", function() {
 		exports.requestNextExtendedInput(doingOk);
     });
 }
@@ -31,8 +31,8 @@ function greet(cmd)
 function doingOk(cmd)
 {
     var result = exports.plugins.acknowledge.check(cmd);
-    if (result === 0){ exports.say("I'm sorry to hear that."); } // TODO: Tell joke
-    else if(result === 1){ exports.say("Great"); }
+    if (result === 0){ global.robin.mouth.say("I'm sorry to hear that."); } // TODO: Tell joke
+    else if(result === 1){ global.robin.mouth.say("Great"); }
     else { exports.plugins.disappoint.didNotUnderstand(); }
 }
 
@@ -40,7 +40,7 @@ function hallo()
 {
 	var now = new Date();
 	var daytime = dateFormat(now, "H") < 12 ? "Goede morgen" : dateFormat(now, "H") < 18 ? "Goede middag" : "Goede avond";
-	exports.say(daytime);
+	global.robin.mouth.say(daytime);
 }
 
 function totziens()
@@ -49,14 +49,14 @@ function totziens()
 	var answers = ["Zie je later", "Bye bye", "Tot ziens", "Laters"];
 	var hour = dateFormat(now, "H");
 
-	if(hour < 12) { exports.say("Fijne dag"); }
-	else if(hour < 23) { exports.say(answers[Math.floor(Math.random()*answers.length)]); }
-	else { exports.say("Slaap lekker"); }
+	if(hour < 12) { global.robin.mouth.say("Fijne dag"); }
+	else if(hour < 23) { global.robin.mouth.say(answers[Math.floor(Math.random()*answers.length)]); }
+	else { global.robin.mouth.say("Slaap lekker"); }
 }
 
 function groet(cmd)
 {
-	exports.say("Hallo " + cmd[1] + ", mijn naam is " + global.robin.name);
+	global.robin.mouth.say("Hallo " + cmd[1] + ", mijn naam is " + global.robin.settings.name);
 }
 
 

@@ -81,7 +81,8 @@ function right()
 	});
 }
 
-exports.forward = forward;
-exports.backward = backward;
-exports.left = left;
-exports.right = right;
+global.robin.legs = {};
+global.robin.legs.forward = forward;
+global.robin.legs.backward = backward;
+global.robin.legs.left = left;
+global.robin.legs.right = right;
