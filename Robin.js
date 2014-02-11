@@ -5,20 +5,35 @@
 * All Robin components.
 */
 
+/* Create global robin variable */
 global.robin = {};
 
+/**
+* Assign global robin functions
+*
+* @global
+* @param {Function} robin.requestNextExtendedInput
+* @param {Function} robin.runBasicCommand
+* @param {Function} robin.runExtendedCommand
+*/
 global.robin.requestNextExtendedInput = requestNextExtendedInput;
 global.robin.runBasicCommand = runBasicCommand;
 global.robin.runExtendedCommand = runExtendedCommand;
 
-/* A list with the included plugins. Here you can access the plugins */
+/**
+* A list with the included plugins.
+* Here you can access the plugins
+*
+* @global
+* @param {Object} robin.plugins
+*/
 global.robin.plugins = {};
 
 /** A list of all the information on the plugins.
-* @param {String} pluginlist.name
-* @param {String} pluginlist.description
-* @param {String} pluginlist.path
-* @param {String} pluginlist.version
+* @param {String} robin.pluginlist.name
+* @param {String} robin.pluginlist.description
+* @param {String} robin.pluginlist.path
+* @param {String} robin.pluginlist.version
 */
 global.robin.pluginlist = {};
 
@@ -49,7 +64,10 @@ var registeredBasicCommands = [];
 /* Holds all the registered extended commands */
 var registeredExtendedCommands = [];
 
-
+/*
+* Call init on the brain
+* Load plugins after settings are loaded
+*/
 brain.init(function()
 {
 	console.log("Brain started");
@@ -67,7 +85,9 @@ brain.init(function()
 
 
 
-/* Route all logs through RobinServer */
+/**
+* Route all logs through RobinServer
+*/
 function routeLogsToServer()
 {
 	console.defaultLog = console.log;
@@ -78,7 +98,9 @@ function routeLogsToServer()
 	};
 }
 
-/* Reads plugins json file and loads the plugins to plugins variable */
+/**
+* Reads plugins json file and loads the plugins to plugins variable
+*/
 function loadPlugins()
 {
 	fs.readFile(__dirname + '/plugins/plugins.json', 'utf8', function (err, data)
@@ -155,6 +177,7 @@ function registerCommands()
 * With this method you can directly request the next voice input.
 * The requested input doens't need to be registered and will not be checked for other registered commands.
 *
+* @global
 * @method requestNextExtendedInput
 * @param {Function} Callback for the next input. Will be called with a cmd parameter.
 */
@@ -183,6 +206,7 @@ function listenForExtendedCommand(cmd)
 /**
 * Checks if the given string is matching any of the registered basic commands
 *
+* @global
 * @method runBasicCommand
 * @param {String} cmd
 */
@@ -205,6 +229,7 @@ function runBasicCommand(cmd)
 /**
 * Checks if the given string is matching any of the registered extended commands
 *
+* @global
 * @method runExtendedCommand
 * @param {String} cmd
 */
@@ -269,7 +294,9 @@ function convertToDigits(input)
 
 }
 
-
+/*
+* Catch exits and do stuff before exiting robin
+*/
 process.stdin.resume(); // So the program will not close instantly
 process.on('exit', function ()
 {
