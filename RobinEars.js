@@ -30,10 +30,27 @@ var printerrors = true;
 /* Log PocketSphinx process exits to the console */
 var printexits = true;
 
-/* Current mode of RobinEars. Can be off, basic, extended */
+/*
+* Current mode of RobinEars. Can be off, basic, extended
+* @global
+*/
 var mode = "off";
 
-/* Starts PocketSphinx for basis hearing */
+/* Is set true by the first time the basic hearing is started */
+var inited = false;
+
+/* Callback function for the init function */
+var initCallback = null;
+
+/* Callback in case somthing goes wrong when the init function is called */
+var initErrorCallback = null;
+
+/**
+* Starts PocketSphinx for basis hearing
+*
+* @global
+* @method stt_basic_start
+*/
 function stt_basic_start()
 {
 	if(mode === "basic") { console.log("Could not start basic stt, it's already running."); }
@@ -86,7 +103,12 @@ function stt_basic_start()
 	}
 }
 
-/* Stops basic hearing process */
+/**
+* Stops basic hearing process
+*
+* @global
+* @method stt_basic_stop
+*/
 function stt_basic_stop()
 {
 	if(mode === "basic")
@@ -97,7 +119,12 @@ function stt_basic_stop()
 	} else { console.log("Basic stt not running."); }
 }
 
-/* Start arecod process for 7 second recording of voice input. This will be send to google for processing */
+/**
+* Start arecod process for 7 second recording of voice input. This will be send to google for processing
+*
+* @global
+* @method stt_extended_start
+*/
 function stt_extended_start()
 {
 	if(mode === "extended") { console.log("Could not start extended stt, it's already running."); }
@@ -149,7 +176,12 @@ function stt_extended_start()
 	}
 }
 
-/* Stops the extended voice input */
+/**
+* Stops the extended voice input
+*
+* @global
+* @method stt_extended_stop
+*/
 function stt_extended_stop()
 {
 	if(mode === "extended")
@@ -160,9 +192,13 @@ function stt_extended_stop()
 	} else { console.log("Extended stt not running."); }
 }
 
-var inited = false;
-var initCallback = null;
-var initErrorCallback = null;
+/**
+* Inits the ears and starts basic listening
+*
+* @method log
+* @param {Function} successCallback Function callback when init succeeds
+* @param {Function} errorCallback Function callback when init fails
+*/
 function init(successCallback, errorCallback)
 {
 	initCallback = successCallback;
@@ -177,9 +213,10 @@ function init(successCallback, errorCallback)
 }
 
 /* Exports */
-global.robin.ears = {};
-
 exports.init = init;
+
+/* Globals */
+global.robin.ears = {};
 global.robin.ears.stt_mode = mode;
 global.robin.ears.stt_basic_start = stt_basic_start;
 global.robin.ears.stt_basic_stop = stt_basic_stop;

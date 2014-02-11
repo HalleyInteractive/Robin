@@ -30,6 +30,7 @@ var _cache = true;
 /**
 * Converts message to a spoken text
 *
+* @global
 * @method say
 * @param {String} message Text to be spoken
 * @param {Function} callback Function to be called after the text has been spoken.
@@ -147,5 +148,6 @@ function doneTalking(callback)
 	}
 }
 
+/* Globals */
 global.robin.mouth = {};
 global.robin.mouth.say = say;

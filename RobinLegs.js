@@ -81,6 +81,7 @@ function right()
 	});
 }
 
+/* Globals */
 global.robin.legs = {};
 global.robin.legs.forward = forward;
 global.robin.legs.backward = backward;

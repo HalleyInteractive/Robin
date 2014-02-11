@@ -35,9 +35,12 @@ var faceRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/ope
 /* Detected faces in the camera image */
 var detectedFaces = [];
 
-/*
+/**
 * Takes a still image of the current videostream
 * Image is saved in tmp folder with the current timestamp
+*
+* @global
+* @method takeStill
 */
 function takeStill()
 {
@@ -132,11 +135,7 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
 // stream.pipe(faceRecognitionStream);
 // stream.read();
 
-/* Export functions */
-global.robin.eyes = {};
-global.robin.eyes.takeStill = takeStill;
-global.robin.eyes.stream = stream;
-
+/* Exports */
 exports.exit = function()
 {
 	/* Clean up open connection */
@@ -144,3 +143,10 @@ exports.exit = function()
 	stream = null;
 	camera = null;
 };
+
+/* Globals */
+global.robin.eyes = {};
+global.robin.eyes.takeStill = takeStill;
+global.robin.eyes.stream = stream;
+
+

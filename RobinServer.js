@@ -15,7 +15,7 @@ io.on('connection', function(socket)
 {
 	ss(socket).on('sd', function(stream)
 	{
-		stream.pipe(eyes.stream.read());
+		// stream.pipe(eyes.stream.read());
 	});
 });
 /* END VIDEO STREAM TEST */
@@ -30,7 +30,11 @@ var fs = require('fs');
 */
 var mime = require('mime');
 
-
+/*
+* Handlebars provides the power necessary to let you build semantic templates effectively with no frustration
+* Author: Yehuda Katz
+* Github: https://github.com/wycats/handlebars.js.git
+*/
 var handlebars = require('handlebars');
 
 /* Silences the output */
@@ -114,6 +118,7 @@ function extendedcmd(cmd)
 /**
 * Emits the msg to all connected sockets
 *
+* @global
 * @method log
 * @param {*} msg Message to be logged
 */
@@ -122,12 +127,21 @@ function log(msg)
 	io.sockets.emit('log', msg);
 }
 
+/*
+* Emits a functioncall to the sockit
+* This function is used to set globally
+*
+* @global
+* @method emit
+* @param {String} func Function to be called
+* @param {String} data Data to be added as param to the called function
+*/
 function emit(func, data)
 {
 	io.sockets.emit(func, data);
 }
 
-/* Exports */
+/* Globals */
 global.robin.server = {};
 global.robin.server.log = log;
 global.robin.server.emit = emit;

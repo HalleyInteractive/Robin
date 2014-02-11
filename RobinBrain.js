@@ -5,13 +5,22 @@
 * Sets up the connection to the MongoDB
 */
 
-
-
+/*
+* ArangoDB javascript client
+* Author: Kaerus
+* Github: https://github.com/kaerus-component/arango
+*/
 var arango = require('arango');
+
+/*
+* Connect to the local database named Robin
+* @global
+*/
 var db = arango.Connection("http://127.0.0.1:8529",{_name:"Robin"});
 
 /**
 * Contains the settings for Robin
+* @global
 * @param String name Name that Robin should listen to
 * @param String language Language is used to convert text to speech and speech recognition
 * @param String Version of Robin
@@ -26,6 +35,10 @@ var Robin =
 	audiodevice:'1'
 };
 
+/**
+* Executes the initial query for the settings.
+* On first start it will create this entry in the database
+*/
 function init(successCallback, errorCallback)
 {
 	db.query.exec("FOR s in Settings LIMIT 1 RETURN s", function(err, ret)
@@ -34,11 +47,11 @@ function init(successCallback, errorCallback)
 		{
 			db.document.create('Settings', Robin).then(function(res)
 			{
-				console.log("Created database config entry: %j", res);
+				console.log("Created initial database settings entry");
 				if(successCallback !== null) { successCallback(); }
 			},function(err)
 			{
-				console.log("Error creating database config entry: %j", err);
+				console.log("Error creating initial database settings entry");
 				if(errorCallback !== null) { errorCallback(); }
 			});
 		} else
@@ -49,26 +62,28 @@ function init(successCallback, errorCallback)
 	});
 }
 
-global.robin.brain = {};
-
-/* Make init function available */
-exports.init = init;
-
-/* Make db variable available */
-global.robin.brain.db = db;
-
-/* Make settings available */
-global.robin.settings = Robin;
-
-/* Make reload settings function available */
-global.robin.brain.reloadSettings = function()
+/**
+* Does a query to reload the settings from the database
+*
+* @global
+* @method reloadSettings
+*/
+function reloadSettings()
 {
 	console.log("Settings changed, reload");
 	init();
-};
+}
 
-/* Export exit function */
+
+/* Exports */
+exports.init = init;
 exports.exit = function()
 {
 	// TODO: Need to close the connection?
 };
+
+/* Globals */
+global.robin.brain = {};
+global.robin.brain.db = db;
+global.robin.settings = Robin;
+global.robin.brain.reloadSettings = reloadSettings;
