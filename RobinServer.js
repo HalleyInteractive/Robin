@@ -89,6 +89,7 @@ io.sockets.on('connection', function (socket)
 	socket.on('basiccmd', basiccmd);
 	socket.on('extendedcmd', extendedcmd);
 	socket.on('reload_settings', global.robin.brain.reloadSettings);
+	socket.on('restart_module', restartModule);
 });
 
 /**
@@ -113,6 +114,24 @@ function extendedcmd(cmd)
 {
 	console.log("Received extended cmd from server: " + cmd);
 	global.robin.runExtendedCommand(cmd);
+}
+
+/*
+* Restarts a module of Robin
+*
+* @method restartModule
+* @param {String} module What module should be restarted. Available: ears
+*/
+function restartModule(module)
+{
+	switch(module)
+	{
+		case "ears":
+			global.robin.restartRobinEars();
+			break;
+		default:
+			break;
+	}
 }
 
 /**

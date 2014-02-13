@@ -294,6 +294,27 @@ function convertToDigits(input)
 
 }
 
+/**
+* Restarts the Robin Ears module. Restart can be triggered via the server module.
+*
+* @global
+* @method restartRobinEars
+*/
+function restartRobinEars()
+{
+	console.log("Restarting Robin Ears");
+	global.robin.ears.stt_basic_stop();
+	global.robin.ears.stt_extended_stop();
+	ears = null;
+	ears = require('./RobinEars.js');
+	ears.init(function()
+	{
+		console.log("Ears started");
+	}, function(){ console.log("Error starting ears"); });
+}
+
+global.robin.restartRobinEars = restartRobinEars;
+
 /*
 * Catch exits and do stuff before exiting robin
 */

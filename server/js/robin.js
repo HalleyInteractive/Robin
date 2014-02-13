@@ -17,6 +17,11 @@ $(document).ready(function()
         socket.emit('extendedcmd', $("#extendedcmd").val().toUpperCase());
     });
 
+	$("#restart-ears").click(function()
+    {
+        socket.emit('restart_module', 'ears');
+    });
+
 	/*
     facesCanvas = document.getElementById("faces");
     facesCtx = facesCanvas.getContext("2d");
