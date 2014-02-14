@@ -64,10 +64,12 @@ In your plugin you can use the following features from Robin
 
 ###### Database
 Connaction to ArangoDB Database
+
 *global.robin.brain.db*
 
 ###### Settings
 Contains the settings for Robin
+
 *global.robin.settings*
 * **global.robin.settings.name** Name that Robin should listen to
 * **global.robin.settings.language** Language used for TTS and Speechrecognition
@@ -77,27 +79,35 @@ Contains the settings for Robin
 
 ###### Reload Settings
 This will reload settings from the database.
+
 *global.robin.brain.reloadSettings*
 
 ###### Start/Stop speech to text basic
 Starts/Stops listening for basic commands
+
 *global.robin.ears.stt_basic_start*
+
 *global.robin.ears.stt_basic_stop*
 
 ###### Start/Stop speech to text extended
 Starts/Stops listening for extended commands
+
 *global.robin.ears.stt_extended_start*
+
 *global.robin.ears.stt_extended_stop*
 
 ###### Save still image from the camera output
 The image is saved to the tmp folder
+
 *global.robin.eyes.takeStill*
 
 ###### Camera stream
 This is the node-openvc camera stream
+
 *global.robin.eyes.stream*
 
 ###### Say
 The text passed to this funtion will be spoken by Robin.
 When Robin is already speaking it will be queued
+
 *global.robin.mouth.say*
