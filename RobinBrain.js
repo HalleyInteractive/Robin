@@ -23,8 +23,9 @@ var db = arango.Connection("http://127.0.0.1:8529",{_name:"Robin"});
 * @global
 * @param String name Name that Robin should listen to
 * @param String language Language is used to convert text to speech and speech recognition
-* @param String Version of Robin
+* @param String version Version of Robin
 * @param Object lastCommand last command is saved here for reuse.
+* @param String audiodevice Id of the audiorecording device
 */
 var Robin =
 {
