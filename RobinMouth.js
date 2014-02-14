@@ -58,7 +58,7 @@ function say(message, callback, cache)
 		console.log("Que message: " + message);
 		que.push({message:message, callback:callback, cache:cache});
 	}
-};
+}
 
 /**
 * Converts a binary audio buffer to a mp3 for playback.
@@ -69,12 +69,12 @@ function say(message, callback, cache)
 */
 function speak(buffer)
 {
-    fs.writeFile("input.mp3", buffer, function(err)
+    fs.writeFile("tmp/input.mp3", buffer, function(err)
     {
         if (err){ console.log("Error saving voice input to the disk: " + err); doneTalking(_callback); }
         else
         {
-            tts = spawn('mplayer', ["input.mp3"]);
+            tts = spawn('mplayer', ["tmp/input.mp3"]);
             tts.on('error', function() { console.log("Error playing audio"); });
             tts.on('close', function (/*code*/) { /* console.log('child process exited with code ' + code); */ doneTalking(_callback); });
         }

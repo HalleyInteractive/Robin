@@ -132,7 +132,7 @@ function stt_extended_start()
 	else if(mode === "off")
 	{
 		mode = "extended";
-		stt_extended = spawn('arecord', ['-f', 'cd', '-t', 'wav', '-d', '7', '-r', '16000' , 'output.wav']);
+		stt_extended = spawn('arecord', ['-f', 'cd', '-t', 'wav', '-d', '7', '-r', '16000' , 'tmp/output.wav']);
 		stt_extended.stdout.on('data', function (data)
 		{
 			var output = data.toString("utf-8").match(/[^\r\n]+/g);
@@ -148,7 +148,7 @@ function stt_extended_start()
 			if(code === 0)
 			{
 				// TODO: Stop process on time out
-				google({lang:global.robin.settings.language, file: 'output.wav'}, function (err, results)
+				google({lang:global.robin.settings.language, file: 'tmp/output.wav'}, function (err, results)
 				{
 					if(results[0] !== undefined && results.length > 0)
 					{
