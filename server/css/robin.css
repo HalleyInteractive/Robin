@@ -28,3 +28,25 @@ html, body
 {
 	margin-right: 7px;
 }
+
+#console .log-item
+{
+	background-color: #EEE;
+	width:100%;
+	border:1px solid #CCC;
+	padding: 10px;
+	margin-bottom:5px;
+}
+
+#console .log-item:before
+{
+	content: "d";
+	font-family: "halley-interactive-robin";
+	display: block;
+	width: 30px;
+	height: 20px;
+	float: left;
+	font-size: 22px;
+	line-height: 20px;
+	color: #A7A4A4;
+}

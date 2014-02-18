@@ -3,6 +3,8 @@
 var socket = io.connect('http://localhost:3141');
 var facesCanvas;
 var facesCtx;
+var customConsole;
+
 $(document).ready(function()
 {
     $("#basiccmdSubmit").click(function()
@@ -26,15 +28,18 @@ $(document).ready(function()
     {
         socket.emit('restart_module', 'eyes');
     });
+	customConsole = new divConsole();
+	socket.on('log', function (data)
+    {
+        console.log(data);
+		customConsole.log(data);
+    });
 
 	/*
     facesCanvas = document.getElementById("faces");
     facesCtx = facesCanvas.getContext("2d");
 
-    socket.on('log', function (data)
-    {
-        console.log(data);
-    });
+
 
     socket.on('image', function (data)
     {
@@ -65,3 +70,25 @@ $(document).ready(function()
 	*/
 	$(".navbar-brand").popover({html:true, trigger:'hover'});
 });
+
+
+function divConsole()
+{
+	this.scope = this;
+	this.element = $("#console");
+	this.logQuery = [];
+
+
+	this.log = function(data)
+	{
+		console.log(this.scope.element);
+		this.scope.logQuery.push("<div class='log-item'>" + data + "</div>");
+		if(this.scope.logQuery.length > 10) { this.scope.logQuery.shift(); }
+		this.scope.element.empty();
+		for(var i = 0; i < this.scope.logQuery.length; i++)
+		{
+			this.scope.element.prepend(this.scope.logQuery[i]);
+		}
+	};
+
+}
