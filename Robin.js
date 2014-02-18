@@ -50,7 +50,7 @@ var mouth = require('./RobinMouth.js');
 var brain = require('./RobinBrain.js');
 
 /* RobinEyes controls the camera */
-//var eyes = require('./RobinEyes.js');
+var eyes = require('./RobinEyes.js');
 
 /* RobinServer starts a server that can be accessed from a remote computer */
 var server = require('./RobinServer.js');
@@ -295,7 +295,8 @@ function convertToDigits(input)
 }
 
 /**
-* Restarts the Robin Ears module. Restart can be triggered via the server module.
+* Restarts the Robin Ears module.
+* Restart can be triggered via the server module.
 *
 * @global
 * @method restartRobinEars
@@ -314,6 +315,22 @@ function restartRobinEars()
 }
 
 global.robin.restartRobinEars = restartRobinEars;
+
+/**
+* Restarts the Robin Eyes module.
+* Restart can be triggered via the server module.
+*
+* @global
+* @method restartRobinEyes
+*/
+function restartRobinEyes()
+{
+	console.log("Restarting Robin Eyes");
+	eyes = null;
+	eyes = require('./RobinEyes.js');
+}
+
+global.robin.restartRobinEyes = restartRobinEyes;
 
 /*
 * Catch exits and do stuff before exiting robin

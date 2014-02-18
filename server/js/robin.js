@@ -22,6 +22,11 @@ $(document).ready(function()
         socket.emit('restart_module', 'ears');
     });
 
+	$("#restart-eyes").click(function()
+    {
+        socket.emit('restart_module', 'eyes');
+    });
+
 	/*
     facesCanvas = document.getElementById("faces");
     facesCtx = facesCanvas.getContext("2d");

@@ -129,6 +129,9 @@ function restartModule(module)
 		case "ears":
 			global.robin.restartRobinEars();
 			break;
+		case "eyes":
+			global.robin.restartRobinEyes();
+			break;
 		default:
 			break;
 	}
