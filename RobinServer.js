@@ -30,18 +30,25 @@ var fs = require('fs');
 */
 var mime = require('mime');
 
-/*
-* Handlebars provides the power necessary to let you build semantic templates effectively with no frustration
-* Author: Yehuda Katz
-* Github: https://github.com/wycats/handlebars.js.git
-*/
-var handlebars = require('handlebars');
-
 /* Silences the output */
 io.set('log level', 1);
 
 /* Set port number for the server */
 app.listen(3141);
+
+/*
+* Jade template engine
+* Author: TJ Holowaychuk
+* Github: https://github.com/visionmedia/jade
+*/
+var jade = require('jade');
+
+/*
+* JavaScript/NodeJS Merge is a tool to merge multiple objects into one object, with the possibility of create a new object cloned.
+* Author: Yeikos
+* Github: https://github.com/yeikos/js.merge
+*/
+var merge = require('merge');
 
 /**
 * Handler for all the requests that are made to the server
@@ -53,8 +60,10 @@ app.listen(3141);
 function handler(request, response)
 {
 
-	var file = __dirname + (request.url == '/' ? '/server/index.html' : '/server/' + request.url);
+	var file = __dirname + (request.url == '/' ? '/server/index.html' : '/server' + request.url);
 	var content_type = mime.lookup(file);
+
+	file = file.substr(-5,5) === ".html" ? file.replace(".html", ".jade") : file;
     fs.readFile(file, function(error, data)
 	{
         if (error)
@@ -68,9 +77,9 @@ function handler(request, response)
         if(content_type === 'text/html')
         {
             var source = { settings : global.robin.settings, languages:global.robin.languages };
-            var pageBuilder = handlebars.compile(data.toString('utf-8'));
-            var pageText = pageBuilder(source);
-            response.write(pageText);
+			var options = {filename:'server' + request.url, basedir:'server', compiledebug:false, pretty: true};
+			var html = jade.render(data.toString('utf-8'), merge(options, source));
+            response.write(html);
             response.end();
         } else
         {

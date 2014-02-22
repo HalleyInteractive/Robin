@@ -1,0 +1,32 @@
+div.row.clearfix
+	div.col-md-12.column
+		header.navbar.navbar-static-top.bs-docs-nav(role="banner")
+			div.container
+				div.navbar-header
+					button.navbar-toggle(type="button" data-toggle="collapse" data-target=".bs-navbar-collapse")
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					div.navbar-brand(data-container="body" data-toggle="popover" data-placement="bottom" data-title="#{settings.name} info" data-content="<dl id='robin-settings' class='dl-horizontal'><dt>Version</dt><dd>#{settings.version}</dd><dt>Language</dt><dd>#{settings.language}</dd></dl>") #{settings.name}
+				nav.collapse.navbar-collapse.bs-navbar-collapse(role="navigation")
+					ul.nav.navbar-nav
+						li.active
+							a(href="index.html")
+								span.icon.icon-dashboard Dashboard
+						li
+							a(href="settings.html")
+								span.icon.icon-settings Settings
+						li
+							a(href="plugins.html")
+								span.icon.icon-plugins Plugins
+					ul.nav.navbar-nav.navbar-right
+						li
+							a(href="http://www.github.com/HalleyInteractive")
+								span.icon.icon-github Github
+						li
+							a(href="http://www.halleyinteractive.com")
+								span.icon.icon-halleyinteractive Halley Interactive
+						li
+							a(href="links.html")
+								span.icon.icon-halleyinteractive Links

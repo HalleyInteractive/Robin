@@ -1,0 +1,70 @@
+doctype html
+html(lang="en")
+	head
+		include includes/head
+		link(href="css/bootstrap-editable.css" rel="stylesheet")
+		script(src="js/bootstrap-editable.min.js")
+	body
+		div.container
+			include includes/header
+			div.row clearfix
+				div.col-md-2.column
+					include includes/leftcolumn
+
+				div.col-md-6.column
+
+					table.table.table-striped
+						thead
+							th Setting
+							th Value
+						tbody
+							tr
+								td Name
+								td
+									a#name(href="#" data-type="text" data-title="Name") #{settings.name}
+							tr
+								td Audio Device
+								td
+									a#audiodevice(href="#" data-type="text" data-title="Audio Device") #{settings.audiodevice}
+							tr
+								td Language
+								td
+									a#language(href="#" data-type="select" data-title="Language") #{settings.language}
+
+				div.col-md-4.column
+					include includes/rightcolumn
+
+		script.
+			$(function()
+			{
+				var editableSettings =
+				{
+					url: 'http://' + window.location.hostname + ':8529/_db/Robin/_api/document/#{settings._id}',
+					pk: '#{settings._key}',
+					ajaxOptions: { type: 'put', dataType: 'json' },
+					params: getSettings,
+					success: function() { socket.emit('reload_settings', ''); }
+				}
+				$('#name').editable(editableSettings);
+				$('#audiodevice').editable(editableSettings);
+
+				var languages = "#{languages}";
+				editableSettings.source = languages.split(",");
+				$('#language').editable(editableSettings);
+			});
+			function getSettings(changedparam)
+			{
+				var settings =
+				{
+					_id:'#{settings._id}',
+					_key:#{settings._key},
+					_rev:#{settings._rev},
+					audiodevice:'#{settings.audiodevice}',
+					language:'#{settings.language}',
+					lastCommand:{},
+					name:'#{settings.name}',
+					version:'#{settings.version}'
+				}
+				settings[changedparam.name] = changedparam.value;
+				return JSON.stringify(settings);
+			}
