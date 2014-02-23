@@ -96,7 +96,6 @@ function handler(request, response)
 io.sockets.on('connection', function (socket)
 {
 	global.robin.server.connections++;
-	console.log("Server connection added. Current connections: " + global.robin.server.connections);
 	if(global.robin.server.connections === 1){ global.robin.eyes.startCameraOutput(); }
 	socket.on('basiccmd', basiccmd);
 	socket.on('extendedcmd', extendedcmd);
@@ -105,7 +104,6 @@ io.sockets.on('connection', function (socket)
 	socket.on('disconnect', function()
 	{
 		global.robin.server.connections--;
-		console.log("Server connection ended. Current connections: " + global.robin.server.connections);
 		if(global.robin.server.connections === 0){ global.robin.eyes.stopCameraOutput(); }
 	});
 });

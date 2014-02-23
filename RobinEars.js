@@ -25,10 +25,10 @@ var stt_extended = null;
 var printoutput = true;
 
 /* Log PocketSphinx errors to the console */
-var printerrors = true;
+var printerrors = false;
 
 /* Log PocketSphinx process exits to the console */
-var printexits = true;
+var printexits = false;
 
 /*
 * Current mode of RobinEars. Can be off, basic, extended
@@ -99,7 +99,7 @@ function stt_basic_start()
 		});
 
 		stt_basic.stderr.on('data', function (data) { if (printerrors) { console.log('stderr: ' + data); } });
-		stt_basic.on('close', function (code) { if (printexits) { console.log('child process exited with code ' + code); } });
+		stt_basic.on('close', function (code) { if (printexits || code === 255) { console.log('child process exited with code ' + code); } });
 	}
 }
 
