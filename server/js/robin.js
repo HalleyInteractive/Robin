@@ -35,15 +35,12 @@ $(document).ready(function()
 		customConsole.log(data);
     });
 
-	/*
+
     facesCanvas = document.getElementById("faces");
     facesCtx = facesCanvas.getContext("2d");
 
-
-
     socket.on('image', function (data)
     {
-
 		data.width /= 4;
 		data.height /= 4;
 
@@ -52,7 +49,7 @@ $(document).ready(function()
         image.height = data.height;
         image.src = "data:image/jpeg;base64," + data.image;
 
-        var faces = document.getElementById('faces');
+		var faces = document.getElementById('faces');
         faces.width = data.width;
         faces.height = data.height;
 
@@ -67,8 +64,13 @@ $(document).ready(function()
         }
 
     });
-	*/
+
 	$(".navbar-brand").popover({html:true, trigger:'hover'});
+
+	window.onbeforeunload = function()
+	{
+		socket.disconnect();
+	};
 });
 
 

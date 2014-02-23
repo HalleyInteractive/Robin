@@ -95,10 +95,19 @@ function handler(request, response)
 */
 io.sockets.on('connection', function (socket)
 {
+	global.robin.server.connections++;
+	console.log("Server connection added. Current connections: " + global.robin.server.connections);
+	if(global.robin.server.connections === 1){ global.robin.eyes.startCameraOutput(); }
 	socket.on('basiccmd', basiccmd);
 	socket.on('extendedcmd', extendedcmd);
 	socket.on('reload_settings', global.robin.brain.reloadSettings);
 	socket.on('restart_module', restartModule);
+	socket.on('disconnect', function()
+	{
+		global.robin.server.connections--;
+		console.log("Server connection ended. Current connections: " + global.robin.server.connections);
+		if(global.robin.server.connections === 0){ global.robin.eyes.stopCameraOutput(); }
+	});
 });
 
 /**
@@ -176,3 +185,4 @@ function emit(func, data)
 global.robin.server = {};
 global.robin.server.log = log;
 global.robin.server.emit = emit;
+global.robin.server.connections = 0;

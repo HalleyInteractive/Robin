@@ -57,19 +57,28 @@ function takeStill()
 * Takes a still image of the current videostream
 * Output is saved to /tmp/camera_output.png.
 */
-/*
 function cameraOutput()
 {
 	camera.read(function(err, im)
 	{
 		if(err){ console.log(err); }
 		var filename = './tmp/camera_output.png';
-		exports.server.emit('image', {width:im.width(), height:im.height(), faces:detectedFaces, image:im.toBuffer().toString('base64')});
+		global.robin.server.emit('image', {width:im.width(), height:im.height(), faces:detectedFaces, image:im.toBuffer().toString('base64')});
 		im.save(filename);
 	});
 }
-*/
-// var cameraOutputInterval = setInterval(cameraOutput, 1000);
+
+var cameraOutputInterval = 0;
+
+function startCameraOutput()
+{
+	cameraOutputInterval = setInterval(cameraOutput, 500);
+}
+
+function stopCameraOutput()
+{
+	clearInterval(cameraOutputInterval);
+}
 
 /*
 * Handle the face recognition stream.
@@ -103,8 +112,8 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
         if(sx < 0) { movestring = "x: right"; } else if(sx > 0) { movestring = "x: left"; } else { movestring = "x: still"; }
         if(sy < 0) { movestring += " y: down"; } else if(sy > 0) { movestring += " y: up"; } else { movestring += " y: still"; }
 
-        // console.log("Shift x: " + sx + " y: " + sy);
-        // console.log(movestring);
+        //console.log("Shift x: " + sx + " y: " + sy);
+        console.log(movestring);
     }
     // console.log(faces);
 });
@@ -133,7 +142,7 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
 // stream.pipe(lowerbodyRecognitionStream);
 // stream.pipe(upperbodyRecognitionStream);
 // stream.pipe(faceRecognitionStream);
-// stream.read();
+stream.read();
 
 /* Exports */
 exports.exit = function()
@@ -148,5 +157,7 @@ exports.exit = function()
 global.robin.eyes = {};
 global.robin.eyes.takeStill = takeStill;
 global.robin.eyes.stream = stream;
+global.robin.eyes.startCameraOutput = startCameraOutput;
+global.robin.eyes.stopCameraOutput = stopCameraOutput;
 
 
