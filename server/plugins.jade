@@ -5,13 +5,25 @@ html(lang="en")
 	body
 		div.container
 			include includes/header
-			div.row clearfix
+			div.row.clearfix
 				div.col-md-2.column
 					include includes/leftcolumn
 
 				div.col-md-6.column
 
-					div Plugins go here
+					div#plugins
+						h2 List of installed plugins
+						br
+						each val, key in plugins
+							div.plugin.panel.panel-info
+								div.panel-heading
+									h3.panel-title #{val.name}
+								div.panel-body
+									span.label.label-success.pull-right V: #{val.version}
+									em #{val.description}
+								div.panel-footer
+									em.path.pull-right #{val.path}
+
 
 				div.col-md-4.column
 					include includes/rightcolumn

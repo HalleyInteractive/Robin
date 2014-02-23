@@ -76,7 +76,7 @@ function handler(request, response)
 
         if(content_type === 'text/html')
         {
-            var source = { settings : global.robin.settings, languages:global.robin.languages };
+            var source = { settings : global.robin.settings, languages:global.robin.languages, plugins:global.robin.pluginlist };
 			var options = {filename:'server' + request.url, basedir:'server', compiledebug:false, pretty: true};
 			var html = jade.render(data.toString('utf-8'), merge(options, source));
             response.write(html);

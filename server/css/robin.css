@@ -50,3 +50,7 @@ html, body
 	line-height: 20px;
 	color: #A7A4A4;
 }
+
+.panel-body .label { font-size:10px; }
+.panel-footer { overflow:hidden; }
+.panel-footer .path { color:#9A9A9A; font-size:10px; }
