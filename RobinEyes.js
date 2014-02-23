@@ -35,6 +35,10 @@ var faceRecognitionStream = new opencv.ObjectDetectionStream('./node_modules/ope
 /* Detected faces in the camera image */
 var detectedFaces = [];
 
+/* Interval for the camera output to the web page */
+var cameraOutputInterval = 0;
+
+
 /**
 * Takes a still image of the current videostream
 * Image is saved in tmp folder with the current timestamp
@@ -68,13 +72,23 @@ function cameraOutput()
 	});
 }
 
-var cameraOutputInterval = 0;
-
+/**
+* Starts the camera output interval
+*
+* @global
+* @method startCameraOutput
+*/
 function startCameraOutput()
 {
 	cameraOutputInterval = setInterval(cameraOutput, 500);
 }
 
+/**
+* Stops the camera output interval
+*
+* @global
+* @method stopCameraOutput
+*/
 function stopCameraOutput()
 {
 	clearInterval(cameraOutputInterval);
