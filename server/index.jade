@@ -5,12 +5,10 @@ html(lang="en")
 	body
 		div.container
 			include includes/header
-			div.row clearfix
+			div.row.clearfix
 				div.col-md-2.column
 					include includes/leftcolumn
-
 				div.col-md-6.column
-
 					label(for="basiccmd") Basic command
 					input#basiccmd(type="text" placeholder="Basic command")
 					button#basiccmdSubmit Send
@@ -18,6 +16,5 @@ html(lang="en")
 					label(for="extendedcmd") Extended command
 					input#extendedcmd(type="text" placeholder="Extended command")
 					button#extendedcmdSubmit Send
-
 				div.col-md-4.column
 					include includes/rightcolumn
