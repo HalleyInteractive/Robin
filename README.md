@@ -24,6 +24,7 @@ Now it's time to unleach the awesom Robin on your Raspberry-pi.
 git clone https://github.com/HalleyInteractive/Robin.git
 ```
 After it's finished downloading go to the install directory and run InstallRobin.sh
+If you have installed downloaded Robin to another location then ~/Robin, you should change the APP_DIR variable in /install/startup-scripts/robin to the correct location.
 ```javascript
 cd Robin/install
 ./InstallRobin.sh
