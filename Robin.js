@@ -64,6 +64,12 @@ var registeredBasicCommands = [];
 /* Holds all the registered extended commands */
 var registeredExtendedCommands = [];
 
+var corpusfile = {};
+var restler = require('restler');
+var tarball = require('tarball-extract');
+var wget = require('wget');
+var crypto = require('crypto');
+
 /*
 * Call init on the brain
 * Load plugins after settings are loaded
@@ -160,6 +166,7 @@ function registerCommands()
 	}
 
 	/* Create a corpus file **/
+	var shasum = crypto.createHash('md5');
 	var stream = fs.createWriteStream("Dictionary/Robin.corpus");
 	stream.once('open', function()
 	{
@@ -167,9 +174,18 @@ function registerCommands()
 		{
 			var command = registeredBasicCommands[global.robin.settings.language][i].command.replace(/[^A-Za-z0-9_\s]/g, "");
 			stream.write(command + "\n");
+			shasum.update(command + "\n");
 		}
 
 		stream.end();
+		var hash = shasum.digest('hex');
+		if(global.robin.settings.corpusHash != hash)
+		{
+			console.log("Corpus hash is changed: " + hash);
+			global.robin.settings.corpusHash = hash;
+			global.robin.brain.saveSettings();
+			compileNewCorpus();
+		}
 	});
 }
 
@@ -293,6 +309,62 @@ function convertToDigits(input)
 	return input;
 
 }
+
+function compileNewCorpus()
+{
+	var stats = fs.statSync("Dictionary/Robin.corpus");
+	restler.post("http://www.speech.cs.cmu.edu/cgi-bin/tools/lmtool/run",
+	{
+		multipart: true,
+		encoding: "utf8",
+		followRedirects:false,
+		data:
+		{
+			'corpus': restler.file("Dictionary/Robin.corpus", null, stats.size, null, 'text/plain'),
+			'formtype': 'simple'
+		}
+	}).on('error', function(data) { console.log("ERROR POSTING CORPUS FILE"); }).on('3XX', function(data, response)
+	{
+		console.log("Compiling new corpus file");
+		corpusfile.location = response.headers.location;
+		setTimeout(extractCorpusFilepath, 1000);
+	});
+}
+
+function extractCorpusFilepath()
+{
+	console.log("Downloading new dictionary information");
+	rest.get(corpusfile.location).on('success', function(data)
+	{
+		var tarRegex = /<a href="(\S+)">TAR(\d+).tgz<\/a>/m;
+		var regexRes = tarRegex.exec(data);
+		corpusfile.url = regexRes[1];
+		corpusfile.name = regexRes[2];
+		var download = wget.download(corpusfile.url, "tmp/Robin.tgz", {});
+		download.on('error', function(err) { console.log("Error downloading file"); });
+		download.on('end', function(output)
+		{
+			console.log("Dictionary file downloaded");
+			tarball.extractTarball("tmp/Robin.tgz", "tmp/Dictionary", function(err, data)
+			{
+				console.log("File extracted");
+
+				fs.rename('tmp/Dictionary/'+corpusfile.name+'.dic', 'Dictionary/Robin.dic');
+				fs.rename('tmp/Dictionary/'+corpusfile.name+'.lm', 'Dictionary/Robin.lm');
+				fs.rename('tmp/Dictionary/'+corpusfile.name+'.log_pronounce', 'Dictionary/Robin.log_pronounce');
+				fs.rename('tmp/Dictionary/'+corpusfile.name+'.sent', 'Dictionary/Robin.sent');
+				fs.rename('tmp/Dictionary/'+corpusfile.name+'.vocab', 'Dictionary/Robin.vocab');
+
+				fs.unlink('tmp/Robin.tgz', function (err)
+				{
+					if (err) throw err;
+					console.log("Installed new dictionary");
+				});
+			});
+		});
+	}).on('error', function(data) { console.log("ERROR LOADING CORPUS PAGE"); });
+}
+
 
 /**
 * Restarts the Robin Ears module.

@@ -33,7 +33,8 @@ var Robin =
 	language: "en-US",
 	version: '0.0.1',
 	lastCommand:{},
-	audiodevice:'1'
+	audiodevice:'1',
+	corpusHash:''
 };
 
 /**
@@ -75,6 +76,14 @@ function reloadSettings()
 	init();
 }
 
+function saveSettings()
+{
+	console.log(global.robin.settings);
+	console.log("-------%-------");
+	// var settings = db.document.update("@Settings",Robin);
+	// FIX: Update settings in database
+}
+
 
 /* Exports */
 exports.init = init;
@@ -88,3 +97,4 @@ global.robin.brain = {};
 global.robin.brain.db = db;
 global.robin.settings = Robin;
 global.robin.brain.reloadSettings = reloadSettings;
+global.robin.brain.saveSettings = saveSettings;
