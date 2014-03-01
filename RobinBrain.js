@@ -76,6 +76,13 @@ function reloadSettings()
 	init();
 }
 
+/**
+* Sends settings to the database.
+* Settings are stored in global.robin.settings
+*
+* @global
+* @method saveSettings
+*/
 function saveSettings()
 {
 	db.document.put(global.robin.settings._id, global.robin.settings);
