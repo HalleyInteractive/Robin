@@ -121,6 +121,8 @@ function loadPlugins()
 	});
 }
 
+global.robin.reloadPlugins = loadPlugins;
+
 
 /**
 * Adds all the commands listed in the plugins to the registered commands list.
@@ -310,8 +312,14 @@ function convertToDigits(input)
 
 }
 
+/**
+* Uploads the new corpus file to the lmtool
+*
+* @method compileNewCorpus
+*/
 function compileNewCorpus()
 {
+	console.log("Start compiling new corpus file");
 	var stats = fs.statSync("Dictionary/Robin.corpus");
 	restler.post("http://www.speech.cs.cmu.edu/cgi-bin/tools/lmtool/run",
 	{
@@ -327,14 +335,19 @@ function compileNewCorpus()
 	{
 		console.log("Compiling new corpus file");
 		corpusfile.location = response.headers.location;
-		setTimeout(extractCorpusFilepath, 1000);
+		setTimeout(dowloadAndExtractDictionary, 1000);
 	});
 }
 
-function extractCorpusFilepath()
+/**
+* Downloads and extracts the newly compiled dictionary
+*
+* @method dowloadAndExtractDictionary
+*/
+function dowloadAndExtractDictionary()
 {
 	console.log("Downloading new dictionary information");
-	rest.get(corpusfile.location).on('success', function(data)
+	restler.get(corpusfile.location).on('success', function(data)
 	{
 		var tarRegex = /<a href="(\S+)">TAR(\d+).tgz<\/a>/m;
 		var regexRes = tarRegex.exec(data);
@@ -358,7 +371,8 @@ function extractCorpusFilepath()
 				fs.unlink('tmp/Robin.tgz', function (err)
 				{
 					if (err) throw err;
-					console.log("Installed new dictionary");
+					console.log("Installed new dictionary, restart Robin Ears");
+					restartRobinEars();
 				});
 			});
 		});

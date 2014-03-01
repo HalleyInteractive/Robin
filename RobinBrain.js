@@ -78,10 +78,8 @@ function reloadSettings()
 
 function saveSettings()
 {
-	console.log(global.robin.settings);
-	console.log("-------%-------");
-	// var settings = db.document.update("@Settings",Robin);
-	// FIX: Update settings in database
+	db.document.put(global.robin.settings._id, global.robin.settings);
+	console.log("Settings updated");
 }
 
 

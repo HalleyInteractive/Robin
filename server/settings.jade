@@ -35,6 +35,7 @@ html(lang="en")
 					include includes/rightcolumn
 
 		script.
+			var reloadplugins = false;
 			$(function()
 			{
 				var editableSettings =
@@ -43,7 +44,7 @@ html(lang="en")
 					pk: '#{settings._key}',
 					ajaxOptions: { type: 'put', dataType: 'json' },
 					params: getSettings,
-					success: function() { socket.emit('reload_settings', ''); }
+					success: function() { socket.emit('reload_settings', ''); if(reloadPlugins){ reloadPlugins = false; socket.emit('reload_plugins', ''); } }
 				}
 				$('#name').editable(editableSettings);
 				$('#audiodevice').editable(editableSettings);
@@ -66,5 +67,6 @@ html(lang="en")
 					version:'#{settings.version}'
 				}
 				settings[changedparam.name] = changedparam.value;
+				reloadPlugins = changedparam.name === 'name';
 				return JSON.stringify(settings);
 			}

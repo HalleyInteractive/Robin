@@ -101,6 +101,7 @@ io.sockets.on('connection', function (socket)
 	socket.on('extendedcmd', extendedcmd);
 	socket.on('reload_settings', global.robin.brain.reloadSettings);
 	socket.on('restart_module', restartModule);
+	socket.on('reload_plugins', global.robin.reloadPlugins);
 	socket.on('disconnect', function()
 	{
 		global.robin.server.connections--;
