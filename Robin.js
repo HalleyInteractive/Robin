@@ -113,6 +113,7 @@ function loadPlugins()
 	{
 		if (err) { console.log('Error: ' + err); return; }
 		global.robin.pluginlist = JSON.parse(data);
+		global.robin.plugins = {};
 		for(var plugin in global.robin.pluginlist)
 		{
 			global.robin.plugins[plugin] = require(global.robin.pluginlist[plugin].path);
@@ -170,6 +171,17 @@ function registerCommands()
 	/* Create a corpus file **/
 	var shasum = crypto.createHash('md5');
 	var stream = fs.createWriteStream("Dictionary/Robin.corpus");
+	stream.on('finish', function()
+	{
+		var hash = shasum.digest('hex');
+		if(global.robin.settings.corpusHash != hash)
+		{
+			console.log("Corpus hash is changed: " + hash);
+			global.robin.settings.corpusHash = hash;
+			global.robin.brain.saveSettings();
+			compileNewCorpus();
+		}
+	});
 	stream.once('open', function()
 	{
 		for(var i = 0; i < registeredBasicCommands[global.robin.settings.language].length; i++)
@@ -180,14 +192,7 @@ function registerCommands()
 		}
 
 		stream.end();
-		var hash = shasum.digest('hex');
-		if(global.robin.settings.corpusHash != hash)
-		{
-			console.log("Corpus hash is changed: " + hash);
-			global.robin.settings.corpusHash = hash;
-			global.robin.brain.saveSettings();
-			compileNewCorpus();
-		}
+
 	});
 }
 
@@ -320,7 +325,8 @@ function convertToDigits(input)
 function compileNewCorpus()
 {
 	console.log("Start compiling new corpus file");
-	var stats = fs.statSync("Dictionary/Robin.corpus");
+	var stats = fs.statSync("./Dictionary/Robin.corpus");
+	console.log("FILE STATS: " + stats.size);
 	restler.post("http://www.speech.cs.cmu.edu/cgi-bin/tools/lmtool/run",
 	{
 		multipart: true,
@@ -328,10 +334,10 @@ function compileNewCorpus()
 		followRedirects:false,
 		data:
 		{
-			'corpus': restler.file("Dictionary/Robin.corpus", null, stats.size, null, 'text/plain'),
+			'corpus': restler.file("./Dictionary/Robin.corpus", null, stats.size, null, 'text/plain'),
 			'formtype': 'simple'
 		}
-	}).on('error', function(data) { console.log("ERROR POSTING CORPUS FILE"); }).on('3XX', function(data, response)
+	}).on('fail', function(data) { console.log("ERROR POSTING CORPUS FILE"); }).on('3XX', function(data, response)
 	{
 		console.log("Compiling new corpus file");
 		corpusfile.location = response.headers.location;
@@ -353,20 +359,20 @@ function dowloadAndExtractDictionary()
 		var regexRes = tarRegex.exec(data);
 		corpusfile.url = regexRes[1];
 		corpusfile.name = regexRes[2];
-		var download = wget.download(corpusfile.url, "tmp/Robin.tgz", {});
+		var download = wget.download(corpusfile.url, "./tmp/Robin.tgz", {});
 		download.on('error', function(err) { console.log("Error downloading file"); });
 		download.on('end', function(output)
 		{
 			console.log("Dictionary file downloaded");
-			tarball.extractTarball("tmp/Robin.tgz", "tmp/Dictionary", function(err, data)
+			tarball.extractTarball("./tmp/Robin.tgz", "./tmp/Dictionary", function(err, data)
 			{
 				console.log("File extracted");
 
-				fs.rename('tmp/Dictionary/'+corpusfile.name+'.dic', 'Dictionary/Robin.dic');
-				fs.rename('tmp/Dictionary/'+corpusfile.name+'.lm', 'Dictionary/Robin.lm');
-				fs.rename('tmp/Dictionary/'+corpusfile.name+'.log_pronounce', 'Dictionary/Robin.log_pronounce');
-				fs.rename('tmp/Dictionary/'+corpusfile.name+'.sent', 'Dictionary/Robin.sent');
-				fs.rename('tmp/Dictionary/'+corpusfile.name+'.vocab', 'Dictionary/Robin.vocab');
+				fs.rename('./tmp/Dictionary/'+corpusfile.name+'.dic', './Dictionary/Robin.dic');
+				fs.rename('./tmp/Dictionary/'+corpusfile.name+'.lm', './Dictionary/Robin.lm');
+				fs.rename('./tmp/Dictionary/'+corpusfile.name+'.log_pronounce', './Dictionary/Robin.log_pronounce');
+				fs.rename('./tmp/Dictionary/'+corpusfile.name+'.sent', './Dictionary/Robin.sent');
+				fs.rename('./tmp/Dictionary/'+corpusfile.name+'.vocab', './Dictionary/Robin.vocab');
 
 				fs.unlink('tmp/Robin.tgz', function (err)
 				{
