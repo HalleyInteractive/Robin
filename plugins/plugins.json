@@ -3,66 +3,88 @@
 		"name": "Acknowledge",
 		"description": "Checks if users response is confirmative or not",
 		"path": "./plugins/acknowledge",
-		"version": "1.0.3"
+		"version": "1.0.3",
+		"settings":{}
 	},
 	"calculate": {
 		"name": "Calculate",
 		"description": "Allows robin to do simple calculations. Add, substract, multiply and divide",
 		"path": "./plugins/calculate",
-		"version": "1.0.2"
+		"version": "1.0.2",
+		"settings":{}
 	},
 	"disappoint": {
 		"name": "Disappoint",
 		"description": "Lets the user know that Robin didn't understand your input",
 		"path": "./plugins/disappoint",
-		"version": "1.0.3"
+		"version": "1.0.3",
+		"settings":{}
 	},
 	"hello": {
 		"name": "Hello",
 		"description": "Allowed Robin to respond to hello and goodbye",
 		"path": "./plugins/hello",
-		"version": "1.0.2"
+		"version": "1.0.2",
+		"settings":{}
 	},
 	"info": {
 		"name": "Info",
 		"description": "Provides you with basic information about Robin. IP Address, version, name and language",
 		"path": "./plugins/info",
-		"version": "1.0.3"
+		"version": "1.0.3",
+		"settings":{}
 	},
 	"jokes": {
 		"name": "Jokes",
 		"description": "Tells you a joke",
 		"path": "./plugins/jokes",
-		"version": "1.0.1"
+		"version": "1.0.2",
+		"settings":
+		{
+			"chucknorris":
+			{
+				"catagories":"nerdy,explicit",
+				"firstname":"Chuck",
+				"lastname":"Norris"
+			}
+		}
 	},
 	"polite": {
 		"name": "Polite",
 		"description": "Replies on thank you",
 		"path": "./plugins/polite",
-		"version": "1.0.1"
+		"version": "1.0.1",
+		"settings":{}
 	},
 	"repeat": {
 		"name": "Repeat",
 		"description": "Repeats the last command that Robin executed",
 		"path": "./plugins/repeat",
-		"version": "1.0.3"
+		"version": "1.0.3",
+		"settings":{}
 	},
 	"selfie": {
 		"name": "Selfie",
 		"description": "Lets you take a nice picture of yourself",
 		"path": "./plugins/selfie",
-		"version": "1.0.2"
+		"version": "1.0.3",
+		"settings":
+		{
+			"delay":5
+		}
 	},
 	"timedate": {
 		"name": "Timedate",
 		"description": "Let's you ask Robin for the current time or date",
 		"path": "./plugins/timedate",
-		"version": "1.0.2"
+		"version": "1.0.2",
+		"settings":{}
 	},
 	"timer": {
 		"name": "Timer",
 		"description": "Set a countdown timer for x number of time",
 		"path": "./plugins/timer",
-		"version": "1.0.2"
+		"version": "1.0.2",
+		"settings": {}
 	}
 }

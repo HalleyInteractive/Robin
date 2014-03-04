@@ -9,13 +9,13 @@ function selfie()
 	{
 	case "en-US":
 	default:
-		global.robin.mouth.say("Taking selfie in 3");
+		global.robin.mouth.say("Taking selfie in " + exports.settings.delay);
 	break;
 	case "nl-NL":
-		global.robin.mouth.say("Neem een selfie in 3");
+		global.robin.mouth.say("Neem een selfie in " + exports.settings.delay);
 	break;
 	}
-    countdown = 3;
+    countdown = exports.settings.delay;
     setTimeout(selfieCountdownHandler, 1000);
 }
 

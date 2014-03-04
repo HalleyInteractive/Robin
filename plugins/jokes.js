@@ -3,7 +3,10 @@
 function joke()
 {
 	var http = require("http");
-	var options = {host: 'api.icndb.com', port: 80, path: '/jokes/random?limitTo=[nerdy]'};
+	var category = exports.settings.chucknorris.categories !== null ? 'limitTo=[' + exports.settings.chucknorris.catagories + ']' : 'limitTo=';
+	var firstname = exports.settings.chucknorris.firstname !== null ? '&firstName=' + exports.settings.chucknorris.firstname : '';
+	var lastname = exports.settings.chucknorris.lastname !== null ? '&lastName=' + exports.settings.chucknorris.lastname : '';
+	var options = {host: 'api.icndb.com', port: 80, path: '/jokes/random?' + category + firstname + lastname};
 
 	http.get(options, function(res)
 	{

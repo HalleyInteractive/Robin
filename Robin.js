@@ -117,6 +117,7 @@ function loadPlugins()
 		for(var plugin in global.robin.pluginlist)
 		{
 			global.robin.plugins[plugin] = require(global.robin.pluginlist[plugin].path);
+			global.robin.plugins[plugin].settings = global.robin.pluginlist[plugin].settings;
 		}
 		registerCommands();
 	});
@@ -132,6 +133,8 @@ global.robin.reloadPlugins = loadPlugins;
 function registerCommands()
 {
 	var languages = [];
+	registeredBasicCommands = [];
+	registeredExtendedCommands = [];
 	for(var plugin in global.robin.plugins)
 	{
 		var language;
@@ -149,7 +152,6 @@ function registerCommands()
 			registeredExtendedCommands[language] = registeredExtendedCommands[language].concat(global.robin.plugins[plugin].extendedCommands[language]);
 		}
 	}
-
 	global.robin.languages = languages.concat();
     for(var i = 0; i < global.robin.languages.length; ++i)
 	{
@@ -235,6 +237,7 @@ function listenForExtendedCommand(cmd)
 */
 function runBasicCommand(cmd)
 {
+	console.log(registeredBasicCommands);
     var foundMatch = false;
 	for(var i = 0; i < registeredBasicCommands[global.robin.settings.language].length; i++)
 	{
@@ -374,7 +377,7 @@ function dowloadAndExtractDictionary()
 				fs.rename('./tmp/Dictionary/'+corpusfile.name+'.sent', './Dictionary/Robin.sent');
 				fs.rename('./tmp/Dictionary/'+corpusfile.name+'.vocab', './Dictionary/Robin.vocab');
 
-				fs.unlink('tmp/Robin.tgz', function (err)
+				fs.unlink('./tmp/Robin.tgz', function (err)
 				{
 					if (err) throw err;
 					console.log("Installed new dictionary, restart Robin Ears");
