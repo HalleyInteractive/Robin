@@ -25,6 +25,8 @@
     "merge": "~1.1.2",
     "restler": "~3.2.0",
     "wget": "0.0.1",
-    "tarball-extract": "0.0.3"
+    "tarball-extract": "0.0.3",
+    "formidable": "~1.0.14",
+    "unzip": "~0.1.9"
   }
 }

@@ -23,7 +23,13 @@ html(lang="en")
 									em #{val.description}
 								div.panel-footer
 									em.path.pull-right #{val.path}
-
+						form(action="/upload" method="post" enctype="multipart/form-data")
+							h2 Install new plugin
+							div.form-group
+								label(for="exampleInputFile") File input
+								input#exampleInputFile(type="file" name="plugin")
+								p.help-block Add a .zip file with the contents of the plugin
+								button.btn.btn-default(type="submit") Upload
 
 				div.col-md-4.column
 					include includes/rightcolumn

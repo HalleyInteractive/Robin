@@ -50,6 +50,32 @@ var jade = require('jade');
 */
 var merge = require('merge');
 
+
+var formidable = require('formidable');
+
+var unzip = require('unzip');
+
+var glob = require("glob");
+
+var deleteFolderRecursive = function(path)
+{
+	if( fs.existsSync(path) )
+	{
+		fs.readdirSync(path).forEach(function(file,index)
+		{
+			var curPath = path + "/" + file;
+			if(fs.lstatSync(curPath).isDirectory())
+			{
+				deleteFolderRecursive(curPath);
+			} else
+			{
+				fs.unlinkSync(curPath);
+			}
+		});
+		fs.rmdirSync(path);
+	}
+};
+
 /**
 * Handler for all the requests that are made to the server
 *
@@ -59,7 +85,18 @@ var merge = require('merge');
 */
 function handler(request, response)
 {
+	if (request.url == '/upload' && request.method.toLowerCase() == 'post')
+	{
+		// parse a file upload
+		var form = new formidable.IncomingForm();
+		form.uploadDir = "./tmp";
+		form.parse(request, function(err, fields, files)
+		{
+			uppackZip(files, response);
+		});
 
+		return;
+	}
 	var file = __dirname + (request.url == '/' ? '/server/index.html' : '/server' + request.url);
 	var content_type = mime.lookup(file);
 
@@ -86,6 +123,62 @@ function handler(request, response)
             response.end(data);
         }
     });
+}
+
+function uppackZip(files, response)
+{
+	for(var zip in files)
+	{
+		var plugin = files[zip];
+		if(plugin.type === 'application/zip')
+		{
+			fs.createReadStream('./' + plugin.path).pipe(unzip.Extract({ path: './tmp/newplugins' }).on('close', function()
+			{
+				console.log("Done extracting zip");
+				fs.unlink('./' + plugin.path);
+				installPlugin(response);
+			}));
+		}
+		break;
+	}
+}
+
+function installPlugin(response)
+{
+	var files = glob.sync("./tmp/newplugins/**/plugin.json", {});
+	if(files.length > 0)
+	{
+		var folder = files[0].slice(0, -11);
+		fs.readFile(files[0], 'utf8', function (err, data)
+		{
+			if (err) { console.log('Error: ' + err); return; }
+			var newplugin = JSON.parse(data);
+			merge(global.robin.pluginlist, newplugin);
+			fs.writeFile(__dirname + '/plugins/plugins.json', JSON.stringify(global.robin.pluginlist, null, 4), function(err)
+			{
+				if(err) { console.log(err); }
+				else
+				{
+					fs.unlinkSync(files[0]); // Remove json file
+					var source = fs.createReadStream(folder + "/");
+					var dest = fs.createWriteStream(__dirname + '/plugins/');
+
+					// Copy all plugin files to the plugins folder
+					source.pipe(dest);
+					source.on('end', function()
+					{
+						deleteFolderRecursive('./tmp/newplugins/');
+
+						global.robin.reloadPlugins();
+						response.writeHead(200, {'content-type': 'text/plain'});
+						response.write('received upload:\n\n');
+						response.end();
+					});
+					source.on('error', function(err) { /* error */ });
+				}
+			});
+		});
+	}
 }
 
 /**
