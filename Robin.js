@@ -237,7 +237,6 @@ function listenForExtendedCommand(cmd)
 */
 function runBasicCommand(cmd)
 {
-	console.log(registeredBasicCommands);
     var foundMatch = false;
 	for(var i = 0; i < registeredBasicCommands[global.robin.settings.language].length; i++)
 	{

@@ -21,7 +21,7 @@ io.on('connection', function(socket)
 /* END VIDEO STREAM TEST */
 
 /* Include file system utils */
-var fs = require('fs');
+var fs = require('fs-extra');
 
 /*
 * Determines the mime type of a file.
@@ -50,31 +50,28 @@ var jade = require('jade');
 */
 var merge = require('merge');
 
-
+/*
+* A node.js module for parsing form data, especially file uploads.
+* Author: Felix Geisendörfer
+* Github: https://github.com/felixge/node-formidable
+*/
 var formidable = require('formidable');
 
+/*
+* Unzip cross-platform streaming API compatible with fstream and fs.ReadStream
+* Author: Evan Oxfeld
+* Github: https://github.com/nearinfinity/node-unzip.git
+*/
 var unzip = require('unzip');
 
+/*
+* Glob
+* Match files using the patterns the shell uses, like stars and stuff.
+* This is a glob implementation in JavaScript.
+* Author: Isaac Z. Schlueter
+* Github: git://github.com/isaacs/node-glob.git
+*/
 var glob = require("glob");
-
-var deleteFolderRecursive = function(path)
-{
-	if( fs.existsSync(path) )
-	{
-		fs.readdirSync(path).forEach(function(file,index)
-		{
-			var curPath = path + "/" + file;
-			if(fs.lstatSync(curPath).isDirectory())
-			{
-				deleteFolderRecursive(curPath);
-			} else
-			{
-				fs.unlinkSync(curPath);
-			}
-		});
-		fs.rmdirSync(path);
-	}
-};
 
 /**
 * Handler for all the requests that are made to the server
@@ -125,6 +122,13 @@ function handler(request, response)
     });
 }
 
+/**
+* Unpacks the just uploaded zip file to the newplugins folder for installation
+*
+* @method uppackZip
+* @param files {Array} Array of uploaded files
+* @param response {Bytearray} Response socket to close upload
+*/
 function uppackZip(files, response)
 {
 	for(var zip in files)
@@ -143,6 +147,13 @@ function uppackZip(files, response)
 	}
 }
 
+/**
+* Searches for a plugin.json to install.
+* When found it adds it to the plugins.json and extracts plugin files to plugins folder.
+*
+* @method installPlugin
+* @param response {Bytearray} Response socket to close upload
+*/
 function installPlugin(response)
 {
 	var files = glob.sync("./tmp/newplugins/**/plugin.json", {});
@@ -156,25 +167,26 @@ function installPlugin(response)
 			merge(global.robin.pluginlist, newplugin);
 			fs.writeFile(__dirname + '/plugins/plugins.json', JSON.stringify(global.robin.pluginlist, null, 4), function(err)
 			{
-				if(err) { console.log(err); }
+				if(err) { console.log("ERROR"); console.log(err); }
 				else
 				{
 					fs.unlinkSync(files[0]); // Remove json file
-					var source = fs.createReadStream(folder + "/");
-					var dest = fs.createWriteStream(__dirname + '/plugins/');
-
-					// Copy all plugin files to the plugins folder
-					source.pipe(dest);
-					source.on('end', function()
+					fs.copy(folder, __dirname + '/plugins', function(err)
 					{
-						deleteFolderRecursive('./tmp/newplugins/');
+						if (err) { return console.error(err); }
+						console.log("Copied plugin");
 
-						global.robin.reloadPlugins();
-						response.writeHead(200, {'content-type': 'text/plain'});
-						response.write('received upload:\n\n');
-						response.end();
+						fs.remove('./tmp/newplugins', function(err)
+						{
+							if (err) { return console.error(err); }
+							console.log("Cleaned up files");
+							global.robin.reloadPlugins();
+
+							response.writeHead(200, {'content-type': 'text/plain'});
+							response.write('received upload:\n\n');
+							response.end();
+						});
 					});
-					source.on('error', function(err) { /* error */ });
 				}
 			});
 		});
