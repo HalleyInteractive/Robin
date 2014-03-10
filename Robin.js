@@ -116,8 +116,11 @@ function loadPlugins()
 		global.robin.plugins = {};
 		for(var plugin in global.robin.pluginlist)
 		{
-			global.robin.plugins[plugin] = require(global.robin.pluginlist[plugin].path);
-			global.robin.plugins[plugin].settings = global.robin.pluginlist[plugin].settings;
+			if(global.robin.pluginlist[plugin].active)
+			{
+				global.robin.plugins[plugin] = require(global.robin.pluginlist[plugin].path);
+				global.robin.plugins[plugin].settings = global.robin.pluginlist[plugin].settings;
+			}
 		}
 		registerCommands();
 	});

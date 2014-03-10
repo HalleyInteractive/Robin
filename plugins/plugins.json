@@ -4,6 +4,7 @@
 		"description": "Checks if users response is confirmative or not",
 		"path": "./plugins/acknowledge",
 		"version": "1.0.3",
+		"active": true,
 		"settings":{}
 	},
 	"calculate": {
@@ -11,6 +12,7 @@
 		"description": "Allows robin to do simple calculations. Add, substract, multiply and divide",
 		"path": "./plugins/calculate",
 		"version": "1.0.2",
+		"active": true,
 		"settings":{}
 	},
 	"disappoint": {
@@ -18,6 +20,7 @@
 		"description": "Lets the user know that Robin didn't understand your input",
 		"path": "./plugins/disappoint",
 		"version": "1.0.3",
+		"active": true,
 		"settings":{}
 	},
 	"hello": {
@@ -25,6 +28,7 @@
 		"description": "Allowed Robin to respond to hello and goodbye",
 		"path": "./plugins/hello",
 		"version": "1.0.2",
+		"active": true,
 		"settings":{}
 	},
 	"info": {
@@ -32,6 +36,7 @@
 		"description": "Provides you with basic information about Robin. IP Address, version, name and language",
 		"path": "./plugins/info",
 		"version": "1.0.3",
+		"active": true,
 		"settings":{}
 	},
 	"jokes": {
@@ -39,6 +44,7 @@
 		"description": "Tells you a joke",
 		"path": "./plugins/jokes",
 		"version": "1.0.2",
+		"active": true,
 		"settings":
 		{
 			"chucknorris":
@@ -54,6 +60,7 @@
 		"description": "Replies on thank you",
 		"path": "./plugins/polite",
 		"version": "1.0.1",
+		"active": true,
 		"settings":{}
 	},
 	"repeat": {
@@ -61,6 +68,7 @@
 		"description": "Repeats the last command that Robin executed",
 		"path": "./plugins/repeat",
 		"version": "1.0.3",
+		"active": true,
 		"settings":{}
 	},
 	"selfie": {
@@ -68,6 +76,7 @@
 		"description": "Lets you take a nice picture of yourself",
 		"path": "./plugins/selfie",
 		"version": "1.0.3",
+		"active": true,
 		"settings":
 		{
 			"delay":5
@@ -78,6 +87,7 @@
 		"description": "Let's you ask Robin for the current time or date",
 		"path": "./plugins/timedate",
 		"version": "1.0.2",
+		"active": true,
 		"settings":{}
 	},
 	"timer": {
@@ -85,6 +95,7 @@
 		"description": "Set a countdown timer for x number of time",
 		"path": "./plugins/timer",
 		"version": "1.0.2",
+		"active": true,
 		"settings": {}
 	}
 }
