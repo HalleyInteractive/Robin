@@ -182,8 +182,7 @@ function installPlugin(response)
 							console.log("Cleaned up files");
 							global.robin.reloadPlugins();
 
-							response.writeHead(200, {'content-type': 'text/plain'});
-							response.write('received upload:\n\n');
+							response.writeHead(302, {'Location': 'plugins.html'});
 							response.end();
 						});
 					});
