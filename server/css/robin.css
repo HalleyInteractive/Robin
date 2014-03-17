@@ -54,3 +54,27 @@ html, body
 .panel-body .label { font-size:10px; }
 .panel-footer { overflow:hidden; }
 .panel-footer .path { color:#9A9A9A; font-size:10px; }
+
+.plugin
+{
+	width:150px;
+	float:left;
+	margin-right:10px;
+}
+.plugin-info
+{
+	font-size:1.2em;
+}
+.plugin .active-switch label
+{
+	font-size: 10px;
+	padding: 5px;
+}
+#plugins .plugin:last-of-type
+{
+	clear:right;
+}
+#plugins form
+{
+	clear:left;
+}

@@ -206,12 +206,32 @@ io.sockets.on('connection', function (socket)
 	socket.on('reload_settings', global.robin.brain.reloadSettings);
 	socket.on('restart_module', restartModule);
 	socket.on('reload_plugins', global.robin.reloadPlugins);
+	socket.on('toggle_plugin', togglePlugin);
 	socket.on('disconnect', function()
 	{
 		global.robin.server.connections--;
 		if(global.robin.server.connections === 0){ global.robin.eyes.stopCameraOutput(); }
 	});
 });
+
+/**
+* Saves a plugin active state to the plugins.json
+*
+* @param plugin {String} Name of the plugin
+* @param state {Boolean} New state of the plugin.
+*/
+function togglePlugin(plugin, state)
+{
+	state = state == "off" ? false : true;
+	global.robin.pluginlist[plugin].active = state;
+	fs.writeFile(__dirname + '/plugins/plugins.json', JSON.stringify(global.robin.pluginlist, null, 4), function(err)
+	{
+		if(err) { console.log("ERROR"); console.log(err); }
+		else {
+			console.log("Plugin state toggled, new state will be used when Robin restarts");
+		}
+	});
+}
 
 /**
 * Passes the command as a basic command to Robin.

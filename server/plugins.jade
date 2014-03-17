@@ -19,9 +19,24 @@ html(lang="en")
 								div.panel-heading
 									h3.panel-title #{val.name}
 								div.panel-body
+									span.glyphicon.glyphicon-info-sign.plugin-info(data-container="body" data-toggle="popover" data-placement="right" data-content="#{val.description}")
 									span.label.label-success.pull-right V: #{val.version}
-									em #{val.description}
 								div.panel-footer
+									div.active-switch.btn-group(data-toggle="buttons")
+										if val.active
+											label.btn.btn-primary.active
+												input.active(type="radio" name="#{key}_switch" value="on" plugin-name="#{key}" selected="selected")
+												span On
+											label.btn.btn-primary
+												input.inactive(type="radio" name="#{key}_switch" value="off" plugin-name="#{key}")
+												span Off
+										else
+											label.btn.btn-primary
+												input.active(type="radio" name="#{key}_switch" value="on" plugin-name="#{key}")
+												span On
+											label.btn.btn-primary.active
+												input.inactive(type="radio" name="#{key}_switch" value="off" plugin-name="#{key}" selected="selected")
+												span Off
 									em.path.pull-right #{val.path}
 						form(action="/upload" method="post" enctype="multipart/form-data")
 							h2 Install new plugin
