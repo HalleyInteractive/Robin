@@ -36,38 +36,15 @@ html(lang="en")
 					include includes/rightcolumn
 
 		script.
-			var reloadplugins = false;
-			$(function()
+			var languages = "#{languages}";
+			var settings =
 			{
-				var editableSettings =
-				{
-					url: 'http://' + window.location.hostname + ':8529/_db/Robin/_api/document/#{settings._id}',
-					pk: '#{settings._key}',
-					ajaxOptions: { type: 'put', dataType: 'json' },
-					params: getSettings,
-					success: function() { socket.emit('reload_settings', ''); if(reloadPlugins){ reloadPlugins = false; socket.emit('reload_plugins', ''); } }
-				}
-				$('#name').editable(editableSettings);
-				$('#audiodevice').editable(editableSettings);
-
-				var languages = "#{languages}";
-				editableSettings.source = languages.split(",");
-				$('#language').editable(editableSettings);
-			});
-			function getSettings(changedparam)
-			{
-				var settings =
-				{
-					_id:'#{settings._id}',
-					_key:#{settings._key},
-					_rev:#{settings._rev},
-					audiodevice:'#{settings.audiodevice}',
-					language:'#{settings.language}',
-					lastCommand:{},
-					name:'#{settings.name}',
-					version:'#{settings.version}'
-				}
-				settings[changedparam.name] = changedparam.value;
-				reloadPlugins = changedparam.name === 'name';
-				return JSON.stringify(settings);
+				_id:'#{settings._id}',
+				_key:#{settings._key},
+				_rev:#{settings._rev},
+				audiodevice:'#{settings.audiodevice}',
+				language:'#{settings.language}',
+				lastCommand:{},
+				name:'#{settings.name}',
+				version:'#{settings.version}'
 			}
