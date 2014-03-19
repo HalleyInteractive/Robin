@@ -7,34 +7,13 @@ var customConsole;
 
 $(document).ready(function()
 {
-    $("#basiccmdSubmit").click(function()
-    {
-        console.log("Send basic command: "+$("#basiccmd").val());
-        socket.emit('basiccmd', $("#basiccmd").val().toUpperCase());
-    });
 
-    $("#extendedcmdSubmit").click(function()
-    {
-        console.log("Send extended command: "+$("#extendedcmd").val());
-        socket.emit('extendedcmd', $("#extendedcmd").val().toUpperCase());
-    });
-
-	$("#restart-ears").click(function()
-    {
-        socket.emit('restart_module', 'ears');
-    });
-
-	$("#restart-eyes").click(function()
-    {
-        socket.emit('restart_module', 'eyes');
-    });
 	customConsole = new divConsole();
 	socket.on('log', function (data)
     {
         console.log(data);
 		customConsole.log(data);
     });
-
 
     facesCanvas = document.getElementById("faces");
     facesCtx = facesCanvas.getContext("2d");
@@ -72,13 +51,6 @@ $(document).ready(function()
 		socket.disconnect();
 	};
 
-	$('.plugin-info').popover();
-	$('.plugin .active-switch input').change(function(e)
-	{
-		var plugin_name = $(this).attr('plugin-name');
-		var value = $("input[name='"+plugin_name+"_switch']:checked").val();
-		socket.emit("toggle_plugin", plugin_name, value);
-	});
 });
 
 
