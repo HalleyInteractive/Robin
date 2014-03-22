@@ -24,7 +24,10 @@ html(lang="en")
 						each val, key in plugins
 							div.plugin.panel.panel-info
 								div.panel-heading
-									h3.panel-title #{val.name}
+									h3.panel-title.pull-left #{val.name}
+									span.pull-right
+										span.glyphicon.glyphicon-remove-circle.remove-plugin-btn(plugin-name="#{key}")
+									div &nbsp;
 								div.panel-body
 									//- span.glyphicon.glyphicon-info-sign.plugin-info(data-container="body" data-toggle="popover" data-placement="right" data-content="#{val.description}")
 									//- span.label.label-success.pull-right V: #{val.version}
@@ -68,9 +71,20 @@ html(lang="en")
 								button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
 								h4.modal-title Modal title
 							div.modal-body
-								p One fine body&hellip;
+								p Modal body
 							div.modal-footer
 								button#close.btn.btn-default(type="button" data-dismiss="modal") Close
 								button#save.btn.btn-primary(type="button" data-dismiss="modal") Save changes
+				div#plugin-remove-modal.modal.fade
+					div.modal-dialog
+						div.modal-content
+							div.modal-header
+								button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+								h4.modal-title Modal title
+							div.modal-body
+								p Modal body
+							div.modal-footer
+								button#cancel.btn.btn-default(type="button" data-dismiss="modal") Cancel
+								button#delete.btn.btn-danger(type="button" data-dismiss="modal") Delete
 				script.
 					var plugins = !{JSON.stringify(plugins)}

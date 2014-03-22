@@ -211,6 +211,23 @@ function updatePluginSettings(pluginName, pluginSettings)
 }
 
 /**
+* Removes a plugin
+*
+* @param pluginName {String} Name of the plugin
+*/
+function removePlugin(pluginName)
+{
+	delete global.robin.pluginlist[pluginName]
+	fs.writeFile(__dirname + '/plugins/plugins.json', JSON.stringify(global.robin.pluginlist, null, 4), function(err)
+	{
+		if(err) { console.log("ERROR"); console.log(err); }
+		else {
+			console.log("Plugin removed, plugin will be unloaded when Robin restarts");
+		}
+	});
+}
+
+/**
 * Routes socket requests to specified functions
 *
 * @param {Socket} socket
@@ -226,6 +243,7 @@ io.sockets.on('connection', function (socket)
 	socket.on('reload_plugins', global.robin.reloadPlugins);
 	socket.on('toggle_plugin', togglePlugin);
 	socket.on('update_plugin_settings', updatePluginSettings);
+	socket.on('remove_plugin', removePlugin);
 	socket.on('disconnect', function()
 	{
 		global.robin.server.connections--;

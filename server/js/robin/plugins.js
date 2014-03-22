@@ -31,6 +31,22 @@ $(document).ready(function()
 		socket.emit('update_plugin_settings', $("#settings-form").attr('plugin-id'), JSON.stringify(newSettings));
 		plugins[$("#settings-form").attr('plugin-id')].settings = newSettings;
 	});
+
+	$('.remove-plugin-btn').click(function()
+	{
+		var pluginname = $(this).attr("plugin-name");
+		$("#plugin-remove-modal .modal-title").text("Remove " + pluginname + " plugin");
+		$("#plugin-remove-modal").attr("plugin-id", pluginname);
+		$("#plugin-remove-modal .modal-body").html("Are you <b>sure</b> you want to remove the " + pluginname + " plugin?<br />This action cannot be undone. No ctrl-z for you!");
+		$("#plugin-remove-modal").modal();
+	});
+
+	$('#plugin-remove-modal #delete').click(function()
+	{
+		console.log("Remove: " + $('#plugin-remove-modal').attr('plugin-id'));
+		socket.emit('remove_plugin', $('#plugin-remove-modal').attr('plugin-id'));
+	});
+
 });
 
 function getFormObject(children)
