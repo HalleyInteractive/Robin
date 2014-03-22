@@ -1,4 +1,10 @@
 doctype html
+
+- var isEmpty = function(obj){
+-   for(var prop in obj) { if(obj.hasOwnProperty(prop)){ return false; } }
+-   return true
+- }
+
 html(lang="en")
 	head
 		include includes/head
@@ -20,24 +26,29 @@ html(lang="en")
 								div.panel-heading
 									h3.panel-title #{val.name}
 								div.panel-body
-									span.glyphicon.glyphicon-info-sign.plugin-info(data-container="body" data-toggle="popover" data-placement="right" data-content="#{val.description}")
-									span.label.label-success.pull-right V: #{val.version}
+									//- span.glyphicon.glyphicon-info-sign.plugin-info(data-container="body" data-toggle="popover" data-placement="right" data-content="#{val.description}")
+									//- span.label.label-success.pull-right V: #{val.version}
+									span.description #{val.description}
 								div.panel-footer
-									div.active-switch.btn-group(data-toggle="buttons")
-										if val.active
-											label.btn.btn-primary.active
-												input.active(type="radio" name="#{key}_switch" value="on" plugin-name="#{key}" selected="selected")
-												span On
-											label.btn.btn-primary
-												input.inactive(type="radio" name="#{key}_switch" value="off" plugin-name="#{key}")
-												span Off
-										else
-											label.btn.btn-primary
-												input.active(type="radio" name="#{key}_switch" value="on" plugin-name="#{key}")
-												span On
-											label.btn.btn-primary.active
-												input.inactive(type="radio" name="#{key}_switch" value="off" plugin-name="#{key}" selected="selected")
-												span Off
+									p
+										div.active-switch.btn-group(data-toggle="buttons")
+											if val.active
+												label.btn.btn-primary.active
+													input.active(type="radio" name="#{key}_switch" value="on" plugin-name="#{key}" selected="selected")
+													span On
+												label.btn.btn-primary
+													input.inactive(type="radio" name="#{key}_switch" value="off" plugin-name="#{key}")
+													span Off
+											else
+												label.btn.btn-primary
+													input.active(type="radio" name="#{key}_switch" value="on" plugin-name="#{key}")
+													span On
+												label.btn.btn-primary.active
+													input.inactive(type="radio" name="#{key}_switch" value="off" plugin-name="#{key}" selected="selected")
+													span Off
+										if !isEmpty(val.settings)
+											div.btn.btn-primary.settings-btn.pull-right(settings-key="#{key}")
+												span.glyphicon.glyphicon-wrench
 									em.path.pull-right #{val.path}
 						form(action="/upload" method="post" enctype="multipart/form-data")
 							h2 Install new plugin
@@ -49,3 +60,17 @@ html(lang="en")
 
 				div.col-md-4.column
 					include includes/rightcolumn
+
+				div#settings-modal.modal.fade
+					div.modal-dialog
+						div.modal-content
+							div.modal-header
+								button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+								h4.modal-title Modal title
+							div.modal-body
+								p One fine body&hellip;
+							div.modal-footer
+								button#close.btn.btn-default(type="button" data-dismiss="modal") Close
+								button#save.btn.btn-primary(type="button" data-dismiss="modal") Save changes
+				script.
+					var plugins = !{JSON.stringify(plugins)}

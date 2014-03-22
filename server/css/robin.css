@@ -57,7 +57,7 @@ html, body
 
 .plugin
 {
-	width:150px;
+	width:250px;
 	float:left;
 	margin-right:10px;
 }
@@ -65,10 +65,14 @@ html, body
 {
 	font-size:1.2em;
 }
-.plugin .active-switch label
+.plugin .active-switch label, .plugin .settings-btn
 {
 	font-size: 10px;
 	padding: 5px;
+}
+#plugins .panel-body
+{
+	height:100px;
 }
 #plugins .plugin:last-of-type
 {

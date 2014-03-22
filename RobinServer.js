@@ -193,6 +193,24 @@ function installPlugin(response)
 }
 
 /**
+* Updates settings for a specific plugin
+*
+* @param pluginName {String} Name of the plugin
+* @param pluginSettings {String} JSON representation of the settings
+*/
+function updatePluginSettings(pluginName, pluginSettings)
+{
+	global.robin.pluginlist[pluginName].settings =  JSON.parse(pluginSettings);
+	fs.writeFile(__dirname + '/plugins/plugins.json', JSON.stringify(global.robin.pluginlist, null, 4), function(err)
+	{
+		if(err) { console.log("ERROR"); console.log(err); }
+		else {
+			console.log("Plugin settings saved, new settings will be used when Robin restarts");
+		}
+	});
+}
+
+/**
 * Routes socket requests to specified functions
 *
 * @param {Socket} socket
@@ -207,6 +225,7 @@ io.sockets.on('connection', function (socket)
 	socket.on('restart_module', restartModule);
 	socket.on('reload_plugins', global.robin.reloadPlugins);
 	socket.on('toggle_plugin', togglePlugin);
+	socket.on('update_plugin_settings', updatePluginSettings);
 	socket.on('disconnect', function()
 	{
 		global.robin.server.connections--;
