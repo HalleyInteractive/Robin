@@ -1,6 +1,6 @@
 /* globals document, io, $ */
 
-var socket = io.connect('http://localhost:3141');
+var socket = io.connect(window.location.host);
 var facesCanvas;
 var facesCtx;
 var customConsole;
