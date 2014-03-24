@@ -126,8 +126,8 @@ function handler(request, response)
 * Unpacks the just uploaded zip file to the newplugins folder for installation
 *
 * @method uppackZip
-* @param files {Array} Array of uploaded files
-* @param response {Bytearray} Response socket to close upload
+* @param {Array} files Array of uploaded files
+* @param {Bytearray} response Response socket to close upload
 */
 function uppackZip(files, response)
 {
@@ -152,7 +152,7 @@ function uppackZip(files, response)
 * When found it adds it to the plugins.json and extracts plugin files to plugins folder.
 *
 * @method installPlugin
-* @param response {Bytearray} Response socket to close upload
+* @param {Bytearray} response Response socket to close upload
 */
 function installPlugin(response)
 {
@@ -195,8 +195,8 @@ function installPlugin(response)
 /**
 * Updates settings for a specific plugin
 *
-* @param pluginName {String} Name of the plugin
-* @param pluginSettings {String} JSON representation of the settings
+* @param {String} pluginName Name of the plugin
+* @param {String} pluginSettings JSON representation of the settings
 */
 function updatePluginSettings(pluginName, pluginSettings)
 {
@@ -213,7 +213,7 @@ function updatePluginSettings(pluginName, pluginSettings)
 /**
 * Removes a plugin
 *
-* @param pluginName {String} Name of the plugin
+* @param {String} pluginName Name of the plugin
 */
 function removePlugin(pluginName)
 {
@@ -230,7 +230,7 @@ function removePlugin(pluginName)
 /**
 * Routes socket requests to specified functions
 *
-* @param {Socket} socket
+* @param {Socket} socket Socket thats connected
 */
 io.sockets.on('connection', function (socket)
 {
@@ -238,7 +238,7 @@ io.sockets.on('connection', function (socket)
 	if(global.robin.server.connections === 1){ global.robin.eyes.startCameraOutput(); }
 	socket.on('basiccmd', basiccmd);
 	socket.on('extendedcmd', extendedcmd);
-	socket.on('reload_settings', global.robin.brain.reloadSettings);
+	socket.on('reload_settings', reloadSettings);
 	socket.on('restart_module', restartModule);
 	socket.on('reload_plugins', global.robin.reloadPlugins);
 	socket.on('toggle_plugin', togglePlugin);
@@ -252,10 +252,24 @@ io.sockets.on('connection', function (socket)
 });
 
 /**
+* Calls the reload setting in the brain.
+* If reload Plugin is set it will add this function als a callback to the reload settings function.
+*
+* @method reloadSettings
+* @param {Boolean} reloadPlugins If set the plugins will be reloaded after reloading the settings
+*/
+function reloadSettings(reloadPlugins)
+{
+	var callback = reloadPlugins ? global.robin.reloadPlugins : null;
+	global.robin.brain.reloadSettings(callback);
+}
+
+/**
 * Saves a plugin active state to the plugins.json
 *
-* @param plugin {String} Name of the plugin
-* @param state {Boolean} New state of the plugin.
+* @method togglePlugin
+* @param {String} plugin Name of the plugin
+* @param {Boolean} state New state of the plugin.
 */
 function togglePlugin(plugin, state)
 {
@@ -274,7 +288,7 @@ function togglePlugin(plugin, state)
 * Passes the command as a basic command to Robin.
 *
 * @method basiccmd
-* @param {String} cmd basic command to be passed to Robin
+* @param {String} cmd Basic command to be passed to Robin
 */
 function basiccmd(cmd)
 {
@@ -286,7 +300,7 @@ function basiccmd(cmd)
 * Passes the command as a extended command to Robin.
 *
 * @method extendedcmd
-* @param {String} cmd extended command to be passed to Robin
+* @param {String} cmd Extended command to be passed to Robin
 */
 function extendedcmd(cmd)
 {
@@ -294,7 +308,7 @@ function extendedcmd(cmd)
 	global.robin.runExtendedCommand(cmd);
 }
 
-/*
+/**
 * Restarts a module of Robin
 *
 * @method restartModule
@@ -327,7 +341,7 @@ function log(msg)
 	io.sockets.emit('log', msg);
 }
 
-/*
+/**
 * Emits a functioncall to the sockit
 * This function is used to set globally
 *

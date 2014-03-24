@@ -70,10 +70,10 @@ function init(successCallback, errorCallback)
 * @global
 * @method reloadSettings
 */
-function reloadSettings()
+function reloadSettings(callback)
 {
 	console.log("Settings changed, reload");
-	init();
+	init(callback);
 }
 
 /**
