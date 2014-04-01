@@ -1,16 +1,16 @@
 doctype html
 html(lang="en")
 	head
-		include includes/head
+		include /includes/head
 		link(href="css/bootstrap-editable.css" rel="stylesheet")
 		script(src="js/bootstrap-editable.min.js")
 		script(src="js/robin/settings.js")
 	body
 		div.container
-			include includes/header
+			include /includes/header
 			div.row.clearfix
 				div.col-md-2.column
-					include includes/leftcolumn
+					include /includes/leftcolumn
 
 				div.col-md-6.column
 
@@ -32,7 +32,7 @@ html(lang="en")
 								td
 									a#language(href="#" data-type="select" data-title="Language") #{settings.language}
 				div.col-md-4.column
-					include includes/rightcolumn
+					include /includes/rightcolumn
 		script.
 			var languages = "#{languages}";
 			var defaultSettings =
