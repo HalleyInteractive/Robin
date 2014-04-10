@@ -228,7 +228,7 @@ function listenForExtendedCommand(cmd)
     var feedback = ["yes", "What's up", "What can I do for you"];
 	global.robin.mouth.say(feedback[Math.floor(Math.random()*feedback.length)]);
     global.robin.ears.stt_basic_stop();
-	global.robin.ears.stt_extended_start();
+	setTimeout(global.robin.ears.stt_extended_start, 500);
 }
 
 /**

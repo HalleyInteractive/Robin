@@ -132,7 +132,7 @@ function stt_extended_start()
 	else if(mode === "off")
 	{
 		mode = "extended";
-		stt_extended = spawn('arecord', ['-f', 'cd', '-t', 'wav', '-d', '7', '-r', '16000' , 'tmp/output.wav']);
+		stt_extended = spawn('arecord', ['-f', 'cd', '-t', 'wav', '-d', '7', '-r', '16000', '-D', 'plughw:'+global.robin.settings.audiodevice, 'tmp/output.wav']);
 		stt_extended.stdout.on('data', function (data)
 		{
 			var output = data.toString("utf-8").match(/[^\r\n]+/g);
