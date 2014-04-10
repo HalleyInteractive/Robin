@@ -97,5 +97,17 @@
 		"version": "1.0.2",
 		"active": true,
 		"settings": {}
+	},
+	"pushbullet": {
+		"name": "Pushbullet",
+		"description": "Pushes stuff over to your phone/desktop with the pushbullet API",
+		"path": "./plugins/pushbullet",
+		"version": "1.0.0",
+		"active": true,
+		"settings":
+		{
+			"api":"",
+			"device":""
+		}
 	}
 }
