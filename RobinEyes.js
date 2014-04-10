@@ -153,9 +153,9 @@ faceRecognitionStream.on('data', function(faces, videomatrix)
 /*
 * Pipe video stream through recognition handlers
 */
-// stream.pipe(lowerbodyRecognitionStream);
-// stream.pipe(upperbodyRecognitionStream);
-// stream.pipe(faceRecognitionStream);
+//stream.pipe(lowerbodyRecognitionStream);
+//stream.pipe(upperbodyRecognitionStream);
+stream.pipe(faceRecognitionStream);
 stream.read();
 
 /* Exports */
