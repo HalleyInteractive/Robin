@@ -24,7 +24,7 @@ function address()
 	if(!pusher){ pusher = new PushBullet(exports.settings.api); }
 	pusher.link(exports.settings.device, "Robin", "http://" + ip + ":3141", function()
 	{
-		global.robin.mouth.say("The file has been pushed to your device");
+		global.robin.mouth.say("My address has been pushed to your device");
 	});
 }
 
