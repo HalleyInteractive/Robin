@@ -9,10 +9,10 @@ function selfie()
 	{
 	case "en-US":
 	default:
-		global.robin.mouth.say("Taking selfie in " + exports.settings.delay);
+		global.robin.mouth.say("Taking picture in " + exports.settings.delay);
 	break;
 	case "nl-NL":
-		global.robin.mouth.say("Neem een selfie in " + exports.settings.delay);
+		global.robin.mouth.say("Neem een foto in " + exports.settings.delay);
 	break;
 	}
     countdown = exports.settings.delay;
@@ -21,7 +21,11 @@ function selfie()
 
 function selfieCountdownHandler()
 {
-    if(--countdown === 0) { global.robin.eyes.takeStill(sendSelfie); }
+    if(--countdown === 0)
+	{
+		global.robin.mouth.say("Cheese");
+		global.robin.eyes.takeStill(sendSelfie);
+	}
     else { global.robin.mouth.say(countdown); setTimeout(selfieCountdownHandler, 1000); }
 }
 
@@ -41,7 +45,11 @@ exports.extendedCommands['en-US'] =
 	{command:"TAKE SELFIE", callback:selfie},
 	{command:"TAKE PICTURE", callback:selfie},
     {command:"TAKE STILL", callback:selfie},
-    {command:"TAKE PHOTO", callback:selfie}
+    {command:"TAKE PHOTO", callback:selfie},
+	{command:"TAKE A SELFIE", callback:selfie},
+	{command:"TAKE A PICTURE", callback:selfie},
+    {command:"TAKE A STILL", callback:selfie},
+    {command:"TAKE A PHOTO", callback:selfie}
 ];
 exports.extendedCommands['nl-NL'] =
 [
