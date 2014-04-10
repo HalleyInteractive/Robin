@@ -38,6 +38,9 @@ var detectedFaces = [];
 /* Interval for the camera output to the web page */
 var cameraOutputInterval = 0;
 
+/* Callback after taking a still image. The file name will be passed as an argument*/
+var stillImageCallback;
+
 
 /**
 * Takes a still image of the current videostream
@@ -46,14 +49,19 @@ var cameraOutputInterval = 0;
 * @global
 * @method takeStill
 */
-function takeStill()
+function takeStill(callback)
 {
-    return camera.read(function(err, im)
+	if(callback !== null && callback !== undefined) { stillImageCallback = callback; }
+    camera.read(function(err, im)
     {
         if(err){ console.log(err); }
-        var filename = './tmp/camera_still_' + dateFormat(new Date(), "hMMss") + '.png';
-        im.save(filename);
-        return filename;
+        var filepath = './tmp/camera_still_' + dateFormat(new Date(), "hMMss") + '.png';
+        im.save(filepath);
+		if(stillImageCallback !== undefined)
+		{
+			stillImageCallback(filepath);
+			stillImageCallback = undefined;
+		}
     });
 }
 
