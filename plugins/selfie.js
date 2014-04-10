@@ -21,8 +21,18 @@ function selfie()
 
 function selfieCountdownHandler()
 {
-    if(--countdown === 0) { global.robin.eyes.takeStill(); }
+    if(--countdown === 0) { global.robin.eyes.takeStill(sendSelfie); }
     else { global.robin.mouth.say(countdown); setTimeout(selfieCountdownHandler, 1000); }
+}
+
+function sendSelfie(path)
+{
+	if(global.robin.pluginlist.pushbullet && global.robin.pluginlist.pushbullet.active)
+	{
+		console.log("PUSH PATH: ");
+		console.log(path);
+		global.robin.plugins.pushbullet.file(path);
+	}
 }
 
 exports.extendedCommands = [];
