@@ -2,7 +2,7 @@
 import cv2
 import sys
 import time
-import Nerves
+from Nerves import Nerves
 
 
 class Eyes(Nerves):
@@ -15,6 +15,7 @@ class Eyes(Nerves):
 	looking = False;
 
 	def __init__(self):
+		Nerves.__init__(self)
 		self.face_cascade = cv2.CascadeClassifier(self.face_cascade_path)
 		print "Robin Eyes"
 
