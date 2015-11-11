@@ -19,10 +19,12 @@ class Eyes(Nerves):
 	EVENT_STOP_LOOKING = "eyes.stop.looking"
 	EVENT_FACE_FOUND = "eyes.face.found"
 	EVENT_FACE_LOST = "eyes.face.lost"
+	EVENT_TAKE_SNAPSHOT = "eyes.take.snapshot"
 
 	def __init__(self):
 		Nerves.__init__(self)
 		self.face_cascade = cv2.CascadeClassifier(self.face_cascade_path)
+		self.addEventListener(self.EVENT_TAKE_SNAPSHOT, self.take_snapshot)
 
 	def start_looking(self):
 		self.video_capture = cv2.VideoCapture(0)
@@ -36,6 +38,12 @@ class Eyes(Nerves):
 		self.video_capture.release()
 		cv2.destroyAllWindows()
 		self.dispatchEvent(self.EVENT_STOP_LOOKING)
+
+	def take_snapshot(self):
+		ret, frame = self.video_capture.read()
+		name = "snapshots/snapshot.jpg"
+		cv2.imwrite(name, frame)
+		self.stop_looking()
 
 	def locate_face(self):
 		ret, frame = self.video_capture.read()
