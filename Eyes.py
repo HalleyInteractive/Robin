@@ -75,7 +75,7 @@ class Eyes(Nerves):
 		for (x, y, w, h) in faces:
 			cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 3)
 
-		time.sleep(1)
+		#time.sleep(1)
 
 		# Display the resulting frame
 		cv2.imshow('Video', frame)
