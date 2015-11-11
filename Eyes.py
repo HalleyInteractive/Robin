@@ -3,6 +3,7 @@ import cv2
 import sys
 import time
 from Nerves import Nerves
+import numpy as np
 
 
 class Eyes(Nerves):
@@ -11,7 +12,7 @@ class Eyes(Nerves):
 	face_cascade = None
 	video_capture = None
 	has_face = False
-	face_centre = {'x':0, 'y':0}
+	face_center = {'x':0, 'y':0}
 	looking = False;
 
 	EVENT_START_LOOKING = "eyes.start.looking"
@@ -47,6 +48,9 @@ class Eyes(Nerves):
 			flags=cv2.cv.CV_HAAR_SCALE_IMAGE
 		)
 
+		frame_center_x = np.size(frame, 1) / 2
+		frame_center_y = np.size(frame, 0) / 2
+
 		if len(faces) > 0 and not self.has_face:
 			self.has_face = True
 			self.dispatchEvent(self.EVENT_FACE_FOUND)
@@ -54,6 +58,10 @@ class Eyes(Nerves):
 			self.has_face = False
 			self.dispatchEvent(self.EVENT_FACE_LOST)
 
+		if len(faces) > 0:
+			self.face_center['x'] = (faces[0][0] + (faces[0][2] / 2)) - frame_center_x
+			self.face_center['y'] = (faces[0][1] + (faces[0][3] / 2)) - frame_center_y
+			cv2.line(frame, (frame_center_x, frame_center_y),(frame_center_x + self.face_center['x'], frame_center_y + self.face_center['y']), (0, 255,0), 2)
 
 		# Draw a rectangle around the faces
 		for (x, y, w, h) in faces:
